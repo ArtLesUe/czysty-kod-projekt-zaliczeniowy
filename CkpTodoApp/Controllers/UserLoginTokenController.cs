@@ -35,6 +35,7 @@ namespace CkpTodoApp.Controllers
       }
 
       ApiTokenModel apiTokenModel = new ApiTokenModel(0, userId, Guid.NewGuid().ToString());
+      apiTokenModel.Save();
       
       return new UserLoginTokenResponse
       {

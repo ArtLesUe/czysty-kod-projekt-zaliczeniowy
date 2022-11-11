@@ -8,6 +8,8 @@
 
     void ExecuteSQL(string sql);
 
+    string ExecuteSQLQuery(string sql);
+
     string DatabasePath();
   }
 }

@@ -24,6 +24,12 @@ namespace CkpTodoApp.Controllers
         Response.StatusCode = 422;
         return new UserLoginTokenResponse();
       }
+
+      if (userLoginRequest.Authenticate() == 0)
+      {
+        Response.StatusCode = 401;
+        return new UserLoginTokenResponse();
+      }
       
       return new UserLoginTokenResponse
       {

@@ -1,6 +1,6 @@
 ﻿namespace CkpTodoApp.Interfaces
 {
-  public interface ApiUserInterface
+  public interface IApiUserInterface
   {
     int Id { get; set; }
     

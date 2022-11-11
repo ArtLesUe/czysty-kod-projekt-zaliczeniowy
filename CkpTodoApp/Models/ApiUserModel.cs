@@ -2,7 +2,7 @@
 
 namespace CkpTodoApp.Models
 {
-  public class ApiUserModel : ApiUserInterface
+  public class ApiUserModel : IApiUserInterface
   {
     public ApiUserModel(int id, string name, string surname, string email, string passwordHashed) 
     {

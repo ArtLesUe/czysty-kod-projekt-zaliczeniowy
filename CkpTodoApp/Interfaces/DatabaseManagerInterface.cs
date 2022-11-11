@@ -4,6 +4,9 @@
   {
     void InitDatabase();
 
+
+    void ExecuteSQL(string sql);
+
     string DatabasePath();
   }
 }

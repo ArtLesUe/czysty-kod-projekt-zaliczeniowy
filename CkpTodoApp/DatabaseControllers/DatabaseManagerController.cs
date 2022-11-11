@@ -18,11 +18,21 @@ namespace CkpTodoApp.DatabaseControllers
       return dbFile;
     }
 
-    public void InitDatabase()
+
+    public void ExecuteSQL(string sql)
     {
       var connection = new SqliteConnection("Data Source=" + DatabasePath());
+      var command = connection.CreateCommand();
+
       connection.Open();
+      command.CommandText = sql;
+      command.ExecuteNonQuery();
       connection.Close();
+    }
+
+    public void InitDatabase()
+    {
+      ExecuteSQL("");
     }
   }
 }

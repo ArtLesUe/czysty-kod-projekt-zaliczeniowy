@@ -1,4 +1,5 @@
-﻿using CkpTodoApp.Requests;
+﻿using CkpTodoApp.Models;
+using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -25,16 +26,20 @@ namespace CkpTodoApp.Controllers
         return new UserLoginTokenResponse();
       }
 
-      if (userLoginRequest.Authenticate() == 0)
+      int userId = userLoginRequest.Authenticate();
+
+      if (userId == 0)
       {
         Response.StatusCode = 401;
         return new UserLoginTokenResponse();
       }
+
+      ApiTokenModel apiTokenModel = new ApiTokenModel(0, userId, Guid.NewGuid().ToString());
       
       return new UserLoginTokenResponse
       {
-        UserId = 1,
-        Token = "TOKEN: " + userLoginRequest.Login + " - " + userLoginRequest.Password
+        UserId = apiTokenModel.UserId,
+        Token = apiTokenModel.Token
       };
     }
   }

@@ -1,4 +1,5 @@
 ﻿using CkpTodoApp.Responses;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace CkpTodoApp.Controllers
       _logger = logger;
     }
 
+    [DisableCors]
     [HttpPost]
     public UserLoginTokenResponse Post()
     {

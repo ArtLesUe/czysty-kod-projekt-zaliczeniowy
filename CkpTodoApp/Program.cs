@@ -10,6 +10,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors();
+
 DatabaseManagerController databaseManagerController = new DatabaseManagerController();
 databaseManagerController.InitDatabase();
 databaseManagerController.SeedDatabase();

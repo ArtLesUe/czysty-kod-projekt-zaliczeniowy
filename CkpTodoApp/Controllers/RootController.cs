@@ -1,4 +1,5 @@
 ﻿using CkpTodoApp.Responses;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,6 +17,7 @@ namespace CkpTodoApp.Controllers
       _logger = logger;
     }
 
+    [DisableCors]
     [HttpGet]
     public RootResponse Get()
     {

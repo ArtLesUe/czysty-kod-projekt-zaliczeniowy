@@ -10,8 +10,7 @@ namespace CkpTodoApp.DatabaseControllers
 
     public string DatabasePath()
     {
-      string? folder = Assembly.GetExecutingAssembly().Location;
-      folder = Path.GetDirectoryName(folder);
+      string? folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
       string appFolder = folder != null ? folder : Environment.CurrentDirectory;
       string dbFolder = Path.Combine(appFolder, "database");
       Directory.CreateDirectory(dbFolder);

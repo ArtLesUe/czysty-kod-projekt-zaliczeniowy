@@ -1,6 +1,6 @@
-﻿using CkpTodoApp.Responses;
+﻿using CkpTodoApp.Requests;
+using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers
@@ -18,12 +18,17 @@ namespace CkpTodoApp.Controllers
 
     [DisableCors]
     [HttpPost]
-    public UserLoginTokenResponse Post()
+    public UserLoginTokenResponse Post(UserLoginRequest userLoginRequest)
     {
+      if (!userLoginRequest.Validate()) {
+        Response.StatusCode = 422;
+        return new UserLoginTokenResponse();
+      }
+      
       return new UserLoginTokenResponse
       {
         UserId = 1,
-        Token = "TOKEN"
+        Token = "TOKEN: " + userLoginRequest.Login + " - " + userLoginRequest.Password
       };
     }
   }

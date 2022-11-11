@@ -18,6 +18,11 @@ namespace CkpTodoApp.DatabaseControllers
       return dbFile;
     }
 
+    public void SeedDatabase()
+    {
+      ApiUserSeederController apiUserSeederController = new ApiUserSeederController();
+      apiUserSeederController.MigrateDatabase();
+    }
 
     public void ExecuteSQL(string sql)
     {

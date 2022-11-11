@@ -22,6 +22,7 @@ namespace CkpTodoApp.DatabaseControllers
     {
       ApiUserSeederController apiUserSeederController = new ApiUserSeederController();
       apiUserSeederController.MigrateDatabase();
+      apiUserSeederController.SeedDatabase();
     }
 
     public void ExecuteSQL(string sql)

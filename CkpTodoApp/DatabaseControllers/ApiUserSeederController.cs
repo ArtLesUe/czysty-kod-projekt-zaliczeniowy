@@ -1,6 +1,6 @@
 ﻿using CkpTodoApp.Interfaces;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CkpTodoApp.DatabaseControllers
 {
@@ -26,4 +26,18 @@ namespace CkpTodoApp.DatabaseControllers
         );"
       );
     }
+
+    public void SeedDatabase()
+    {
+      MD5 hasher = MD5.Create();
+      byte[] inputBytes = Encoding.ASCII.GetBytes("admin123");
+      byte[] hashBytes = hasher.ComputeHash(inputBytes);
+
+      databaseManagerController.ExecuteSQL(
+        @"INSERT INTO users (Name, Surname, Email, PasswordHashed) 
+        SELECT 'Administrator', 'Systemu', 'admin@admin.pl', '" + Convert.ToHexString(hashBytes) + @"'
+        WHERE NOT EXISTS (SELECT 1 FROM users WHERE id = 1);"
+      );
+    }
+  }
 }

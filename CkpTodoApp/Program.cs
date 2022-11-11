@@ -12,5 +12,6 @@ app.MapControllers();
 
 DatabaseManagerController databaseManagerController = new DatabaseManagerController();
 databaseManagerController.InitDatabase();
+databaseManagerController.SeedDatabase();
 
 app.Run();

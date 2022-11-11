@@ -4,6 +4,7 @@
   {
     void InitDatabase();
 
+    void SeedDatabase();
 
     void ExecuteSQL(string sql);
 

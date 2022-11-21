@@ -1,4 +1,5 @@
-﻿using CkpTodoApp.Interfaces;
+﻿using CkpTodoApp.DatabaseControllers;
+using CkpTodoApp.Interfaces;
 
 namespace CkpTodoApp.Models
 {
@@ -16,5 +17,16 @@ namespace CkpTodoApp.Models
     public int UserId { get; set; }
 
     public string Token { get; set; }
+
+    public void Save()
+    {
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      databaseManagerController.ExecuteSQL(
+        @"INSERT INTO tokens (UserId, Token) VALUES (
+          " + UserId.ToString() + @",
+          '" + Token + @"'
+        );"
+      );
+    }
   }
 }

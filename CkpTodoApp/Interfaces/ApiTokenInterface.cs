@@ -7,5 +7,7 @@
     int UserId { get; set; }
 
     string Token { get; set; }
+
+    void Save();
   }
 }

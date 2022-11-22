@@ -1,7 +1,6 @@
 ﻿using CkpTodoApp.DatabaseControllers;
 using System.Security.Cryptography;
 using System.Text;
-using System.Collections.Generic;
 using System.Text.Json;
 using CkpTodoApp.Models;
 
@@ -15,10 +14,8 @@ namespace CkpTodoApp.Requests
 
     public bool Validate()
     {
-      return Login != null && 
-        Password != null && 
-        Login.Length > 0 && 
-        Password.Length > 0;
+      return string.IsNullOrEmpty(Login) && 
+        string.IsNullOrEmpty(Password);
     }
 
     public int Authenticate()

@@ -1,5 +1,4 @@
 ﻿using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Interfaces;
 
 namespace CkpTodoApp.Models
 {

@@ -1,6 +1,4 @@
-﻿using CkpTodoApp.Interfaces;
-
-namespace CkpTodoApp.Models
+﻿namespace CkpTodoApp.Models
 {
   public class ApiUserModel : IApiUserInterface
   {

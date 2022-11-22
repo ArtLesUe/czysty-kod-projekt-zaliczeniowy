@@ -1,5 +1,4 @@
-﻿using CkpTodoApp.Interfaces;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace CkpTodoApp.DatabaseControllers

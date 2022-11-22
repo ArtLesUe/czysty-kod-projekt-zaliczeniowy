@@ -1,4 +1,5 @@
-﻿using CkpTodoApp.Responses;
+﻿using CkpTodoApp.Models;
+using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,18 @@ namespace CkpTodoApp.Controllers
     public RootResponse Get()
     {
       Request.Headers.TryGetValue("token", out StringValues headerValues);
-      string jsonWebToken = headerValues.FirstOrDefault();
+      string? jsonWebToken = headerValues.FirstOrDefault();
 
       if (string.IsNullOrEmpty(jsonWebToken))
+      {
+        Response.StatusCode = 401;
+        return new RootResponse { Status = "HTTP 401" };
+      }
+
+      ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+      apiToken.Verify();
+
+      if (apiToken.UserId == 0)
       {
         Response.StatusCode = 401;
         return new RootResponse { Status = "HTTP 401" };

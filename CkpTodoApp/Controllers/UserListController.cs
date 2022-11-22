@@ -1,9 +1,11 @@
-﻿using CkpTodoApp.Models;
+﻿using CkpTodoApp.DatabaseControllers;
+using CkpTodoApp.Models;
 using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using System.Text.Json;
 
 namespace CkpTodoApp.Controllers
 {
@@ -20,7 +22,7 @@ namespace CkpTodoApp.Controllers
 
     [DisableCors]
     [HttpGet]
-    public RootResponse Get()
+    public List<ApiUserModel>? Get()
     {
       Request.Headers.TryGetValue("token", out StringValues headerValues);
       string? jsonWebToken = headerValues.FirstOrDefault();
@@ -28,7 +30,7 @@ namespace CkpTodoApp.Controllers
       if (string.IsNullOrEmpty(jsonWebToken))
       {
         Response.StatusCode = 401;
-        return new RootResponse { Status = "HTTP 401" };
+        return new List<ApiUserModel>();
       }
 
       ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
@@ -37,13 +39,24 @@ namespace CkpTodoApp.Controllers
       if (apiToken.UserId == 0)
       {
         Response.StatusCode = 401;
-        return new RootResponse { Status = "HTTP 401" };
+        return new List<ApiUserModel>();
       }
 
-      return new RootResponse
-      {
-        Status = jsonWebToken
-      };
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      String resultSql = databaseManagerController.ExecuteSQLQuery(
+        @"SELECT json_group_array( 
+          json_object(
+            'Id', Id,
+            'Name', Name,
+            'Surname', Surname,
+            'Email', Email
+          )
+        )
+        FROM users
+        ORDER BY id ASC;"
+      );
+
+      return JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
     }
   }
 }

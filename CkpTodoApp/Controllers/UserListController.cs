@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers
 {
@@ -20,9 +21,18 @@ namespace CkpTodoApp.Controllers
     [HttpGet]
     public RootResponse Get()
     {
+      Request.Headers.TryGetValue("token", out StringValues headerValues);
+      string jsonWebToken = headerValues.FirstOrDefault();
+
+      if (string.IsNullOrEmpty(jsonWebToken))
+      {
+        Response.StatusCode = 401;
+        return new RootResponse { Status = "HTTP 401" };
+      }
+
       return new RootResponse
       {
-        Status = "ok"
+        Status = jsonWebToken
       };
     }
   }

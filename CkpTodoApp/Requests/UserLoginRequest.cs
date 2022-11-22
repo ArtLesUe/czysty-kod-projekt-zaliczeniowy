@@ -44,8 +44,7 @@ namespace CkpTodoApp.Requests
       );
 
       var userList = JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
-      if (userList == null) { return 0; }
-      if (userList.Count == 0) { return 0; }
+      if ((userList == null) || (userList.Count == 0)) { return 0; }
       int userId = userList[0].Id;
 
       return userId;

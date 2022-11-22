@@ -1,5 +1,4 @@
-﻿using CkpTodoApp.Interfaces;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using System.Reflection;
 
 namespace CkpTodoApp.DatabaseControllers

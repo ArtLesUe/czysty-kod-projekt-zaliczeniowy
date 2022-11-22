@@ -1,6 +1,4 @@
-﻿using CkpTodoApp.Interfaces;
-
-namespace CkpTodoApp.DatabaseControllers
+﻿namespace CkpTodoApp.DatabaseControllers
 {
   public class ApiTokenSeederController : ISeederInterface
   {

@@ -1,7 +1,6 @@
 ﻿using CkpTodoApp.DatabaseControllers;
 using System.Security.Cryptography;
 using System.Text;
-using System.Collections.Generic;
 using System.Text.Json;
 using CkpTodoApp.Models;
 

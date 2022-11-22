@@ -60,9 +60,6 @@ namespace CkpTodoApp.DatabaseControllers
       return sqlResult;
     }
 
-    public void InitDatabase()
-    {
-      ExecuteSQL("");
-    }
+    public void InitDatabase() => ExecuteSQL("");
   }
 }

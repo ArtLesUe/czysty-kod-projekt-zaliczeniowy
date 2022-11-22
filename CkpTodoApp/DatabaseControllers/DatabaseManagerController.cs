@@ -5,8 +5,6 @@ namespace CkpTodoApp.DatabaseControllers
 {
   public class DatabaseManagerController : IDatabaseManagerInterface
   {
-    public DatabaseManagerController() { }
-
     public string DatabasePath()
     {
       string? folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

@@ -19,7 +19,7 @@ namespace CkpTodoApp.Controllers
 
     [DisableCors]
     [HttpPost]
-    public RootResponse Post([FromForm] UserRegisterRequest userRegisterRequest)
+    public RootResponse Post(UserRegisterRequest userRegisterRequest)
     {
       if (!userRegisterRequest.Validate()) {
         Response.StatusCode = 422;

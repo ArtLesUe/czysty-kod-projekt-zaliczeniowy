@@ -19,7 +19,7 @@ namespace CkpTodoApp.Controllers
 
     [DisableCors]
     [HttpPost]
-    public UserLoginTokenResponse Post([FromForm] UserLoginRequest userLoginRequest)
+    public UserLoginTokenResponse Post(UserLoginRequest userLoginRequest)
     {
       if (!userLoginRequest.Validate()) {
         Response.StatusCode = 422;

@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using System.Net.NetworkInformation;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CkpTodoApp.Controllers
 {
@@ -17,6 +20,14 @@ namespace CkpTodoApp.Controllers
     public UserRegisterController(ILogger<UserRegisterController> logger)
     {
       _logger = logger;
+    }
+
+    public static string Md5(string text)
+    {
+      MD5 hasher = MD5.Create();
+      byte[] inputBytes = Encoding.ASCII.GetBytes(text);
+      byte[] hashBytes = hasher.ComputeHash(inputBytes);
+      return Convert.ToHexString(hashBytes);
     }
 
     [DisableCors]
@@ -46,6 +57,16 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "wrong-data" };
       }
 
+      ApiUserModel newUser = new ApiUserModel(
+        0, 
+        string.IsNullOrEmpty(userRegisterRequest.Name) ? "" : userRegisterRequest.Name,
+        string.IsNullOrEmpty(userRegisterRequest.Surname) ? "" : userRegisterRequest.Surname,
+        string.IsNullOrEmpty(userRegisterRequest.Email) ? "" : userRegisterRequest.Email,
+        string.IsNullOrEmpty(userRegisterRequest.Password) ? "" : Md5(userRegisterRequest.Password)
+      );
+      newUser.Save();
+
+      Response.StatusCode = 201;
       return new RootResponse { Status = "OK" };
     }
   }

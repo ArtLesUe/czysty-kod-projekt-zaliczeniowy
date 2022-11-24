@@ -1,4 +1,5 @@
-﻿using CkpTodoApp.Responses;
+﻿using CkpTodoApp.Requests;
+using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,13 @@ namespace CkpTodoApp.Controllers
 
     [DisableCors]
     [HttpPost]
-    public RootResponse Post()
+    public RootResponse Post([FromForm] UserRegisterRequest userRegisterRequest)
     {
+      if (!userRegisterRequest.Validate()) {
+        Response.StatusCode = 422;
+        return new RootResponse { Status = "wrong-data" };
+      }
+
       return new RootResponse { Status = "OK" };
     }
   }

@@ -36,11 +36,11 @@ namespace CkpTodoApp.Requests
         @"SELECT json_group_array( 
           json_object(
             'Id', Id,
-            'Email', Email,
+            'Email', Email
           )
         )
         FROM users
-        WHERE Email = '" + email + @";"
+        WHERE Email = '" + email + @"';"
       );
 
       var userList = JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);

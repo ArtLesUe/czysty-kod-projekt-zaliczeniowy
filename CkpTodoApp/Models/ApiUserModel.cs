@@ -55,5 +55,12 @@ namespace CkpTodoApp.Models
     public string Email { get; set; }
 
     public string PasswordHashed { get; set; }
+
+    public void Delete()
+    {
+      if (Id == 0) return;
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      databaseManagerController.ExecuteSQL(@"DELETE FROM users WHERE Id = '" + Id.ToString() + @"'");
+    }
   }
 }

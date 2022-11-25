@@ -48,9 +48,10 @@ namespace CkpTodoApp.Controllers
 
       try 
       { 
-        ApiUserModel apiUserModel = new ApiUserModel(id); 
+        ApiUserModel apiUserModel = new ApiUserModel(id);
+        apiUserModel.Delete();
       } 
-      catch (Exception e)
+      catch (Exception)
       {
         Response.StatusCode = 406;
         return new RootResponse { Status = "deleting-not-existing-forbidden" };

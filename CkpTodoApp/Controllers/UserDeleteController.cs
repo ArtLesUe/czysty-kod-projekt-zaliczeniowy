@@ -46,6 +46,16 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "self-deletion-forbidden" };
       }
 
+      try 
+      { 
+        ApiUserModel apiUserModel = new ApiUserModel(id); 
+      } 
+      catch (Exception e)
+      {
+        Response.StatusCode = 406;
+        return new RootResponse { Status = "deleting-not-existing-forbidden" };
+      }
+
       return new RootResponse { Status = "deleted" };
     }
   }

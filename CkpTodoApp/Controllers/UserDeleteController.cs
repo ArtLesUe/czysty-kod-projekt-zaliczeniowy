@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
+using CkpTodoApp.Models;
+using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers
 {
@@ -20,6 +22,24 @@ namespace CkpTodoApp.Controllers
     [HttpGet]
     public RootResponse Get(int id)
     {
+      Request.Headers.TryGetValue("token", out StringValues headerValues);
+      string? jsonWebToken = headerValues.FirstOrDefault();
+
+      if (string.IsNullOrEmpty(jsonWebToken))
+      {
+        Response.StatusCode = 401;
+        return new RootResponse { Status = "auth-failed" };
+      }
+
+      ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+      apiToken.Verify();
+
+      if (apiToken.UserId == 0)
+      {
+        Response.StatusCode = 401;
+        return new RootResponse { Status = "auth-failed" };
+      }
+
       return new RootResponse { Status = "deleted" };
     }
   }

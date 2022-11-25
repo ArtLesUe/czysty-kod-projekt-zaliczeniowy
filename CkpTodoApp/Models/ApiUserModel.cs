@@ -61,6 +61,7 @@ namespace CkpTodoApp.Models
       if (Id == 0) return;
       DatabaseManagerController databaseManagerController = new DatabaseManagerController();
       databaseManagerController.ExecuteSQL(@"DELETE FROM users WHERE Id = '" + Id.ToString() + @"'");
+      databaseManagerController.ExecuteSQL(@"DELETE FROM tokens WHERE UserId = '" + Id.ToString() + @"'");
     }
   }
 }

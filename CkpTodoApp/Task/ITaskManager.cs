@@ -7,4 +7,6 @@ public interface ITaskManager
     void Add(TaskModel task);
     
     void CheckTaskById(int id);
+    
+    void DeleteTaskById(int id);
 }

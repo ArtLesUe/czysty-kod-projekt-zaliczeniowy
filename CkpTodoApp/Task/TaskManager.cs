@@ -24,4 +24,11 @@ public class TaskManager : ITaskManager
             @"UPDATE tasks SET IsCheck=1 WHERE id=" + id + @";"
         );
     }
+    
+    public void DeleteTaskById(int id)
+    {  
+       _databaseManagerController.ExecuteSQL(
+           @"DELETE FROM tasks WHERE id=" + id + @";"
+           );
+    }
 }

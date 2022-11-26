@@ -14,8 +14,8 @@ namespace CkpTodoApp.Requests
 
     public bool Validate()
     {
-      return string.IsNullOrEmpty(Login) && 
-        string.IsNullOrEmpty(Password);
+      return !string.IsNullOrEmpty(Login) && 
+        !string.IsNullOrEmpty(Password);
     }
 
     public int Authenticate()

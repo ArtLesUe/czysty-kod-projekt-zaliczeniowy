@@ -9,4 +9,6 @@ public interface ITaskManager
     void CheckTaskById(int id);
     
     void DeleteTaskById(int id);
+    
+    void EditTaskById(int id, string? newTitle, string? newDescription);
 }

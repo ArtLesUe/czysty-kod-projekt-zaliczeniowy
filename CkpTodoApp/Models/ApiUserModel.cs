@@ -63,5 +63,18 @@ namespace CkpTodoApp.Models
       databaseManagerController.ExecuteSQL(@"DELETE FROM users WHERE Id = '" + Id.ToString() + @"'");
       databaseManagerController.ExecuteSQL(@"DELETE FROM tokens WHERE UserId = '" + Id.ToString() + @"'");
     }
+    
+    public void Save()
+    {
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      databaseManagerController.ExecuteSQL(
+        @"INSERT INTO users (Name, Surname, Email, PasswordHashed) VALUES (
+          '" + Name + @"', 
+          '" + Surname + @"', 
+          '" + Email + @"', 
+          '" + PasswordHashed + @"'
+        );"
+      );
+    }
   }
 }

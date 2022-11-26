@@ -24,6 +24,10 @@ namespace CkpTodoApp.DatabaseControllers
       ApiTokenSeederController apiTokenSeederController = new ApiTokenSeederController();
       apiTokenSeederController.MigrateDatabase();
       apiTokenSeederController.SeedDatabase();
+      
+      TaskSeederController taskSeederController = new TaskSeederController();
+      taskSeederController.MigrateDatabase();
+      taskSeederController.SeedDatabase();
     }
 
     public void ExecuteSQL(string sql)

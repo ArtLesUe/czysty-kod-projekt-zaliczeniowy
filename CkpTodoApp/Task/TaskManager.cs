@@ -17,4 +17,11 @@ public class TaskManager : ITaskManager
             );"
         );
     }
+
+    public void CheckTaskById(int id)
+    {
+        _databaseManagerController.ExecuteSQL(
+            @"UPDATE tasks SET IsCheck=1 WHERE id=" + id + @";"
+        );
+    }
 }

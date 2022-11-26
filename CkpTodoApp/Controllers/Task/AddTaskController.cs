@@ -36,9 +36,7 @@ namespace CkpTodoApp.Controllers
         
         var newTask = new TaskModel(
           taskRequest.Title ?? "", 
-          taskRequest.Description ?? "", 
-          false
-          );
+          taskRequest.Description ?? "");
 
         var taskManager = new TaskManager();
         taskManager.Add(newTask);

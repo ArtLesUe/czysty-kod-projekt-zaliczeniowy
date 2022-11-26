@@ -1,4 +1,5 @@
 using CkpTodoApp.Models;
+using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Task;
 using Microsoft.AspNetCore.Cors;
@@ -7,13 +8,13 @@ using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers;
 
-[Route("api/task/check/{id:int}")]
+[Route("api/task/edit/{id:int}")]
 [ApiController]
-public class CheckTaskController : ControllerBase
+public class EditTaskController : ControllerBase
 {
     [DisableCors]
-    [HttpGet]
-    public RootResponse Get(int id)
+    [HttpPost]
+    public RootResponse Post(TaskRequest taskRequest, int id)
     {
         Request.Headers.TryGetValue("token", out StringValues headerValues);
         string? jsonWebToken = headerValues.FirstOrDefault();
@@ -21,7 +22,7 @@ public class CheckTaskController : ControllerBase
         if (string.IsNullOrEmpty(jsonWebToken))
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "auth-failed" };
+            return new RootResponse { Status = "wrong-auth" };
         }
 
         ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
@@ -30,21 +31,13 @@ public class CheckTaskController : ControllerBase
         if (apiToken.UserId == 0)
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "auth-failed" };
+            return new RootResponse { Status = "wrong-auth" };
         }
 
         var taskManager = new TaskManager();
-        
-        try
-        {
-            taskManager.CheckTaskById(id);
-        } 
-        catch (Exception)
-        {
-            Response.StatusCode = 406;
-            return new RootResponse { Status = "checking-not-existing-forbidden" };
-        }
-
-        return new RootResponse { Status = "checked" };
+        taskManager.EditTaskById(id, taskRequest.Title, taskRequest.Description);
+  
+        Response.StatusCode = 201;
+        return new RootResponse { Status = "OK" };
     }
 }

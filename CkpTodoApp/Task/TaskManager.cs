@@ -31,4 +31,21 @@ public class TaskManager : ITaskManager
            @"DELETE FROM tasks WHERE id=" + id + @";"
            );
     }
+    
+    public void EditTaskById(int id, string? newTitle, string? newDescription)
+    {
+        if (newDescription != null)
+        {
+            _databaseManagerController.ExecuteSQL(
+                @"UPDATE tasks SET Description='" + newDescription + @"'WHERE id=" + id + @";"
+            );            
+        } 
+        
+        if (newTitle != null)
+        {
+            _databaseManagerController.ExecuteSQL(
+                @"UPDATE tasks SET Title='" + newTitle + @"' WHERE id=" + id + @";"
+            );
+        }
+    }
 }

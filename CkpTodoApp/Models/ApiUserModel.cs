@@ -1,4 +1,6 @@
-﻿namespace CkpTodoApp.Models
+﻿using CkpTodoApp.DatabaseControllers;
+
+namespace CkpTodoApp.Models
 {
   public class ApiUserModel : IApiUserInterface
   {
@@ -20,5 +22,18 @@
     public string Email { get; set; }
 
     public string PasswordHashed { get; set; }
+
+    public void Save()
+    {
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      databaseManagerController.ExecuteSQL(
+        @"INSERT INTO users (Name, Surname, Email, PasswordHashed) VALUES (
+          '" + Name + @"', 
+          '" + Surname + @"', 
+          '" + Email + @"', 
+          '" + PasswordHashed + @"'
+        );"
+      );
+    }
   }
 }

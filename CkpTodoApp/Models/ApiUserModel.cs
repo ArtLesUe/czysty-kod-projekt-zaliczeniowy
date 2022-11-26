@@ -1,9 +1,42 @@
 ﻿using CkpTodoApp.DatabaseControllers;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CkpTodoApp.Models
 {
   public class ApiUserModel : IApiUserInterface
   {
+    public ApiUserModel(int id)
+    {
+      Id = id;
+
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      String resultSql = databaseManagerController.ExecuteSQLQuery(
+        @"SELECT json_group_array( 
+          json_object(
+            'Id', Id,
+            'Name', Name,
+            'Surname', Surname,
+            'Email', Email,
+            'PasswordHashed', PasswordHashed
+          )
+        )
+        FROM users
+        WHERE Id = '" + Id.ToString() + @"';"
+      );
+
+      var userList = JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
+
+      if ((userList == null) || (userList.Count == 0)) 
+        throw new Exception("User with specified Id don't exists in database.");
+
+      Name = userList[0].Name;
+      Surname = userList[0].Surname;
+      Email = userList[0].Email;
+      PasswordHashed = userList[0].PasswordHashed;
+    }
+
+    [JsonConstructor]
     public ApiUserModel(int id, string name, string surname, string email, string passwordHashed) 
     {
       Id = id;
@@ -23,6 +56,14 @@ namespace CkpTodoApp.Models
 
     public string PasswordHashed { get; set; }
 
+    public void Delete()
+    {
+      if (Id == 0) return;
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      databaseManagerController.ExecuteSQL(@"DELETE FROM users WHERE Id = '" + Id.ToString() + @"'");
+      databaseManagerController.ExecuteSQL(@"DELETE FROM tokens WHERE UserId = '" + Id.ToString() + @"'");
+    }
+    
     public void Save()
     {
       DatabaseManagerController databaseManagerController = new DatabaseManagerController();

@@ -129,5 +129,15 @@ namespace CkpTodoApp.Models
           WHERE Id = '" + Id.ToString() + @"';"
       );
     }
+
+    public void PasswordChange(string passwordHashed) 
+    {
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      databaseManagerController.ExecuteSQL(
+        @"UPDATE users SET 
+          PasswordHashed='" + passwordHashed + @"'
+          WHERE Id = '" + Id.ToString() + @"';"
+      );
+    }
   }
 }

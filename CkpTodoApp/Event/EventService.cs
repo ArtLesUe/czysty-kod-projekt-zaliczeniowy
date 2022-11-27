@@ -19,6 +19,13 @@ public class EventService : IEventService
         );
     }
 
+    public void DeleteEventById(int id)
+    {
+        _databaseManagerController.ExecuteSQL(
+            @"DELETE FROM events WHERE id=" + id + @";"
+            );
+    }
+
     public void EditEventById(int id, string? newTitle, string? newDescription, DateTime? newStartDate, DateTime? newEndDate)
     {
         if (newDescription != null)

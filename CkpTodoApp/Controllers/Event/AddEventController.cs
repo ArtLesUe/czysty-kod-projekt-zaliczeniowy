@@ -37,8 +37,8 @@ namespace CkpTodoApp.Controllers
         var newEvent = new EventModel(
           eventRequest.Title ?? "", 
           eventRequest.Description ?? "",
-          eventRequest.StartDate ?? DateTime.Now,
-          eventRequest.EndDate ?? DateTime.Now);
+          eventRequest.StartDate ?? DateTime.Now.ToString(),
+          eventRequest.EndDate ?? DateTime.Now.ToString());
 
         var eventService = new EventService();
             eventService.Add(newEvent);

@@ -14,7 +14,7 @@ public class EventService : IEventService
             '" + @event.Title + @"', 
             '" + @event.Description + @"',
             '" + @event.StartDate + @"',
-            '" + @event.EndDate + @"',
+            '" + @event.EndDate + @"'
             );"
         );
     }
@@ -26,7 +26,7 @@ public class EventService : IEventService
             );
     }
 
-    public void EditEventById(int id, string? newTitle, string? newDescription, DateTime? newStartDate, DateTime? newEndDate)
+    public void EditEventById(int id, string? newTitle, string? newDescription, string? newStartDate, string? newEndDate)
     {
         if (newDescription != null)
         {

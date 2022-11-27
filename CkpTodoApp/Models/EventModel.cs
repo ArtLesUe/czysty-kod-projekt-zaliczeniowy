@@ -4,7 +4,7 @@ namespace CkpTodoApp.Models
 {
     public class EventModel : IEventInterface
     {
-        public EventModel(string title, string description, DateTime startDate, DateTime endDate)
+        public EventModel(string title, string description, string startDate, string endDate)
         {
             Id = UniqueNumber.GetUniqueNumber();
             Title = title;
@@ -13,15 +13,15 @@ namespace CkpTodoApp.Models
             EndDate = endDate;
         }
 
-        public int Id { get; }
+        public int Id { get; set; }
         
         public string Title { get; set; }
 
         public string Description { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
     }
 }
 

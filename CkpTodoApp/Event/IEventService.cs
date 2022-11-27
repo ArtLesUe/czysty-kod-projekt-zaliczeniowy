@@ -8,5 +8,5 @@ public interface IEventService
 
     void DeleteEventById(int id);
 
-    void EditEventById(int id, string? newTitle, string? newDescription, DateTime? newStartDate, DateTime? newEndDate);
+    void EditEventById(int id, string? newTitle, string? newDescription, string? newStartDate, string? newEndDate);
 }

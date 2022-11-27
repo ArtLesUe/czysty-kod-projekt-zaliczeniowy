@@ -6,6 +6,19 @@ namespace CkpTodoApp.Models
 {
   public class ApiUserModel : IApiUserInterface
   {
+    public ApiUserModel() 
+    {
+      Id = 0;
+      Name = "";
+      Surname = "";
+      Email = "";
+      PasswordHashed = "";
+      AboutMe = "";
+      City = "";
+      Country = "";
+      University = "";
+    }
+    
     public ApiUserModel(int id)
     {
       Id = id;

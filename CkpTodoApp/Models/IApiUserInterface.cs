@@ -11,5 +11,13 @@
         string Email { get; set; }
 
         string PasswordHashed { get; set; }
+
+        string AboutMe { get; set; }
+
+        string City { get; set; }
+
+        string Country { get; set; }
+
+        string University { get; set; }
     }
 }

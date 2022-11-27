@@ -16,6 +16,14 @@ namespace CkpTodoApp.Requests
 
     public string? Password { get; set; }
 
+    public string? AboutMe { get; set; }
+
+    public string? City { get; set; }
+
+    public string? Country { get; set; }
+
+    public string? University { get; set; }
+
     public static bool IsValidEmail(string email)
     {
       try

@@ -56,7 +56,6 @@ namespace CkpTodoApp.Controllers
             'Name', Name,
             'Surname', Surname,
             'Email', Email,
-            'PasswordHashed', PasswordHashed,
             'AboutMe', AboutMe,
             'City', City,
             'Country', Country,

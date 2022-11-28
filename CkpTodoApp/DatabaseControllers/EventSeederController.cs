@@ -19,8 +19,8 @@ namespace CkpTodoApp.DatabaseControllers
                   'Id' INTEGER NOT NULL UNIQUE,
                   'Title' TEXT NOT NULL,
                   'Description' TEXT,
-                  'DateStart' DATETIME NOT NULL,
-                  'DateEnd' DATETIME NOT NULL,
+                  'StartDate' TEXT NOT NULL,
+                  'EndDate' TEXT,
                   PRIMARY KEY ('Id' AUTOINCREMENT)
                 );"
             );

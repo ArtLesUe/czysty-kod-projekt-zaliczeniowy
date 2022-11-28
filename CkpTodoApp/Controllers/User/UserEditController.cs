@@ -50,7 +50,16 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "self-deletion-forbidden" };
       }
 
-      ApiUserModel oldUser = new ApiUserModel(id);
+      try 
+      {
+        ApiUserModel oldUser = new ApiUserModel(id);
+      } 
+      catch(Exception)
+      {
+        Response.StatusCode = 406;
+        return new RootResponse { Status = "user-dont-exists" };
+      }
+
       ApiUserModel newUser = new ApiUserModel(
         oldUser.Id, 
         string.IsNullOrEmpty(userEditRequest.Name) ? oldUser.Name : userEditRequest.Name,

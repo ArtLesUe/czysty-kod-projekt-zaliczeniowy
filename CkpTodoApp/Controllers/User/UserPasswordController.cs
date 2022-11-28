@@ -56,7 +56,16 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "empty-password-not-permitted" };
       }
 
-      ApiUserModel user = new ApiUserModel(id);
+      try 
+      {
+        ApiUserModel user = new ApiUserModel(id);
+      }
+      catch (Exception)
+      {
+        Response.StatusCode = 406;
+        return new RootResponse { Status = "user-not-exists" };
+      }
+
       user.PasswordChange(UserRegisterController.Md5(userPasswordRequest.Password));
 
       Response.StatusCode = 201;

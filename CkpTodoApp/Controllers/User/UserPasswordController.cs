@@ -50,6 +50,12 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "self-deletion-forbidden" };
       }
 
+      if (string.IsNullOrEmpty(userPasswordRequest.Password))
+      {
+        Response.StatusCode = 406;
+        return new RootResponse { Status = "empty-password-not-permitted" };
+      }
+
       ApiUserModel user = new ApiUserModel(id);
       user.PasswordChange(UserRegisterController.Md5(userPasswordRequest.Password));
 

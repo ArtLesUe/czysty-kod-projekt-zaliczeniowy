@@ -11,20 +11,20 @@ using System.Text;
 
 namespace CkpTodoApp.Controllers
 {
-  [Route("api/user/edit/{id}")]
+  [Route("api/user/password/{id}")]
   [ApiController]
-  public class UserEditController : ControllerBase
+  public class UserPasswordController : ControllerBase
   {
-    private readonly ILogger<UserEditController> _logger;
+    private readonly ILogger<UserPasswordController> _logger;
 
-    public UserEditController(ILogger<UserEditController> logger)
+    public UserPasswordController(ILogger<UserPasswordController> logger)
     {
       _logger = logger;
     }
 
     [DisableCors]
     [HttpPost]
-    public RootResponse Post(UserEditRequest userEditRequest, int id)
+    public RootResponse Post(UserPasswordRequest userPasswordRequest, int id)
     {
       Request.Headers.TryGetValue("token", out StringValues headerValues);
       string? jsonWebToken = headerValues.FirstOrDefault();
@@ -50,28 +50,23 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "self-deletion-forbidden" };
       }
 
-      try 
-      {
-        ApiUserModel oldUser = new ApiUserModel(id);
-      } 
-      catch(Exception)
+      if (string.IsNullOrEmpty(userPasswordRequest.Password))
       {
         Response.StatusCode = 406;
-        return new RootResponse { Status = "user-dont-exists" };
+        return new RootResponse { Status = "empty-password-not-permitted" };
       }
 
-      ApiUserModel newUser = new ApiUserModel(
-        oldUser.Id, 
-        string.IsNullOrEmpty(userEditRequest.Name) ? oldUser.Name : userEditRequest.Name,
-        string.IsNullOrEmpty(userEditRequest.Surname) ? oldUser.Surname : userEditRequest.Surname,
-        oldUser.Email,
-        oldUser.PasswordHashed,
-        string.IsNullOrEmpty(userEditRequest.AboutMe) ? oldUser.AboutMe : userEditRequest.AboutMe,
-        string.IsNullOrEmpty(userEditRequest.City) ? oldUser.City : userEditRequest.City,
-        string.IsNullOrEmpty(userEditRequest.Country) ? oldUser.Country : userEditRequest.Country,
-        string.IsNullOrEmpty(userEditRequest.University) ? oldUser.University : userEditRequest.University
-      );
-      newUser.Update();
+      try 
+      {
+        ApiUserModel user = new ApiUserModel(id);
+      }
+      catch (Exception)
+      {
+        Response.StatusCode = 406;
+        return new RootResponse { Status = "user-not-exists" };
+      }
+
+      user.PasswordChange(UserRegisterController.Md5(userPasswordRequest.Password));
 
       Response.StatusCode = 201;
       return new RootResponse { Status = "OK" };

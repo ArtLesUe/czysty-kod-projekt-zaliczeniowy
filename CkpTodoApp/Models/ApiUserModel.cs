@@ -18,7 +18,11 @@ namespace CkpTodoApp.Models
             'Name', Name,
             'Surname', Surname,
             'Email', Email,
-            'PasswordHashed', PasswordHashed
+            'PasswordHashed', PasswordHashed,
+            'AboutMe', AboutMe,
+            'City', City,
+            'Country', Country,
+            'University', University,
           )
         )
         FROM users
@@ -34,16 +38,25 @@ namespace CkpTodoApp.Models
       Surname = userList[0].Surname;
       Email = userList[0].Email;
       PasswordHashed = userList[0].PasswordHashed;
+      AboutMe = userList[0].AboutMe;
+      City = userList[0].City;
+      Country = userList[0].Country;
+      University = userList[0].University;
     }
 
     [JsonConstructor]
-    public ApiUserModel(int id, string name, string surname, string email, string passwordHashed) 
+    public ApiUserModel(int id, string name, string surname, string email, string passwordHashed, string aboutMe,
+                        string city, string country, string university) 
     {
       Id = id;
       Name = name;
       Surname = surname;
       Email = email;
       PasswordHashed = passwordHashed;
+      AboutMe = aboutMe;
+      City = city;
+      Country = country;
+      University = university;
     }
 
     public int Id { get; set; }
@@ -55,6 +68,14 @@ namespace CkpTodoApp.Models
     public string Email { get; set; }
 
     public string PasswordHashed { get; set; }
+
+    public string AboutMe { get; set; }
+
+    public string City { get; set; }
+
+    public string Country { get; set; }
+
+    public string University { get; set; }
 
     public void Delete()
     {
@@ -68,11 +89,15 @@ namespace CkpTodoApp.Models
     {
       DatabaseManagerController databaseManagerController = new DatabaseManagerController();
       databaseManagerController.ExecuteSQL(
-        @"INSERT INTO users (Name, Surname, Email, PasswordHashed) VALUES (
+        @"INSERT INTO users (Name, Surname, Email, PasswordHashed, AboutMe, City, Country, University) VALUES (
           '" + Name + @"', 
           '" + Surname + @"', 
           '" + Email + @"', 
-          '" + PasswordHashed + @"'
+          '" + PasswordHashed + @"',
+          '" + AboutMe + @"', 
+          '" + City + @"', 
+          '" + Country + @"', 
+          '" + University + @"'
         );"
       );
     }

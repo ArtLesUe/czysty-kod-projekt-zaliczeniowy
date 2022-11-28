@@ -62,7 +62,11 @@ namespace CkpTodoApp.Controllers
         string.IsNullOrEmpty(userRegisterRequest.Name) ? "" : userRegisterRequest.Name,
         string.IsNullOrEmpty(userRegisterRequest.Surname) ? "" : userRegisterRequest.Surname,
         string.IsNullOrEmpty(userRegisterRequest.Email) ? "" : userRegisterRequest.Email,
-        string.IsNullOrEmpty(userRegisterRequest.Password) ? "" : Md5(userRegisterRequest.Password)
+        string.IsNullOrEmpty(userRegisterRequest.Password) ? "" : Md5(userRegisterRequest.Password),
+        string.IsNullOrEmpty(userRegisterRequest.AboutMe) ? "" : userRegisterRequest.AboutMe,
+        string.IsNullOrEmpty(userRegisterRequest.City) ? "" : userRegisterRequest.City,
+        string.IsNullOrEmpty(userRegisterRequest.Country) ? "" : userRegisterRequest.Country,
+        string.IsNullOrEmpty(userRegisterRequest.University) ? "" : userRegisterRequest.University
       );
       newUser.Save();
 

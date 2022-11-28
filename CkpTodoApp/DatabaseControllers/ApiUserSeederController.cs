@@ -21,6 +21,10 @@ namespace CkpTodoApp.DatabaseControllers
           'Surname' TEXT NOT NULL,
           'Email' TEXT NOT NULL UNIQUE,
           'PasswordHashed' TEXT NOT NULL,
+          'AboutMe' TEXT,
+          'City' TEXT,
+          'Country' TEXT,
+          'University' TEXT,
           PRIMARY KEY ('Id' AUTOINCREMENT)
         );"
       );
@@ -33,8 +37,9 @@ namespace CkpTodoApp.DatabaseControllers
       byte[] hashBytes = hasher.ComputeHash(inputBytes);
 
       databaseManagerController.ExecuteSQL(
-        @"INSERT INTO users (Name, Surname, Email, PasswordHashed) 
-        SELECT 'Administrator', 'Systemu', 'admin@admin.pl', '" + Convert.ToHexString(hashBytes) + @"'
+        @"INSERT INTO users (Name, Surname, Email, PasswordHashed, AboutMe, City, Country, University) 
+        SELECT 'Administrator', 'Systemu', 'admin@admin.pl', '" + Convert.ToHexString(hashBytes) + @"',
+          'Kilka slow o sobie', 'Katowice', 'Polska', 'Uniwersytet Ekonomiczny w Katowicach'
         WHERE NOT EXISTS (SELECT 1 FROM users WHERE id = 1);"
       );
     }

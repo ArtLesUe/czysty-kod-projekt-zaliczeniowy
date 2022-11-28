@@ -71,7 +71,7 @@ namespace CkpTodoApp.Controllers
         string.IsNullOrEmpty(userEditRequest.Country) ? oldUser.Country : userEditRequest.Country,
         string.IsNullOrEmpty(userEditRequest.University) ? oldUser.University : userEditRequest.University
       );
-      newUser.Edit();
+      newUser.Update();
 
       Response.StatusCode = 201;
       return new RootResponse { Status = "OK" };

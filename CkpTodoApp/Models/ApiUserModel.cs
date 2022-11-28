@@ -115,7 +115,7 @@ namespace CkpTodoApp.Models
       );
     }
 
-    public void Edit()
+    public void Update()
     {
       DatabaseManagerController databaseManagerController = new DatabaseManagerController();
       databaseManagerController.ExecuteSQL(

@@ -28,6 +28,10 @@ namespace CkpTodoApp.DatabaseControllers
       TaskSeederController taskSeederController = new TaskSeederController();
       taskSeederController.MigrateDatabase();
       taskSeederController.SeedDatabase();
+
+      EventSeederController eventSeederController = new EventSeederController();
+      eventSeederController.MigrateDatabase();
+      eventSeederController.SeedDatabase();
     }
 
     public void ExecuteSQL(string sql)

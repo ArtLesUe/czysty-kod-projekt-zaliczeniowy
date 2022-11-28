@@ -2,14 +2,15 @@ using CkpTodoApp.Commons;
 
 namespace CkpTodoApp.Models
 {
-    public class TaskModel : ITaskInterface
+    public class EventModel : IEventInterface
     {
-        public TaskModel(string title, string description, bool isCheck = false)
+        public EventModel(string title, string description, DateTime startDate, DateTime endDate)
         {
             Id = UniqueNumber.GetUniqueNumber();
             Title = title;
             Description = description;
-            IsCheck = isCheck;
+            StartDate = startDate;
+            EndDate = endDate;
         }
 
         public int Id { get; }
@@ -17,8 +18,10 @@ namespace CkpTodoApp.Models
         public string Title { get; set; }
 
         public string Description { get; set; }
-        
-        public bool IsCheck { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
     }
 }
 

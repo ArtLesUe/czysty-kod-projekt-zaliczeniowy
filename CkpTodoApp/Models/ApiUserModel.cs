@@ -114,5 +114,20 @@ namespace CkpTodoApp.Models
         );"
       );
     }
+
+    public void Edit()
+    {
+      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+      databaseManagerController.ExecuteSQL(
+        @"UPDATE users SET 
+          Name='" + Name + @"', 
+          Surname='" + Surname + @"', 
+          AboutMe='" + AboutMe + @"', 
+          City='" + City + @"', 
+          Country='" + Country + @"', 
+          University='" + University + @"', 
+          WHERE Id = '" + Id.ToString() + @"';"
+      );
+    }
   }
 }

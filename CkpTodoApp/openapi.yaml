@@ -13,6 +13,8 @@ tags:
     description: Operacje związane z operacjami na modelu użytkownika.
   - name: task
     description: Operacje związane z operacjami na modelu zadania.
+  - name: event
+    description: Operacje związane z operacjami na modelu wydarzenia.
 paths:
   /api/user/login:
     post:
@@ -325,6 +327,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/RootResponse'
               example: { "Status": "checked" }
+  /api/events/list:
+    get:
+      tags:
+        - event
+      summary: Pobieranie listy wszystkich wydarzeń.
+      operationId: GetApiEventsList
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/EventModel'
+                example: '[]'
+        '200':
+          description: Autoryzacja udana, pobrano listę wydarzeń.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/EventModel'
 components:
   schemas:
     UserLoginRequest:
@@ -444,6 +472,29 @@ components:
           type: string
           format: string
           example: "Opis nowego zadania"
+    EventModel:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+          example: 1
+        Title:
+          type: string
+          format: string
+          example: 'Tytuł zaplanowanego zdarzenia'
+        Description:
+          type: string
+          format: string
+          example: 'Opis zaplanowanego zdarzenia'
+        StartDate:
+          type: string
+          format: date-time
+          example: '2022-12-01 00:00:00'
+        EndDate:
+          type: string
+          format: date-time
+          example: '2022-12-02 00:00:00'
   securitySchemes:
     api_key:
       type: apiKey

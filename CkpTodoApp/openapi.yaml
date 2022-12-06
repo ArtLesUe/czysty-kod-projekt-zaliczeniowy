@@ -285,6 +285,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/RootResponse'
               example: { "Status": "checked" }
+  /api/task/check/{id}:
+    get:
+      tags:
+        - task
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID zadania w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Oznaczanie zadania z systemu jako wykonane.
+      operationId: GetApiTaskCheckId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Próba zakończenia nieistniejącego zadania z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                checking-not-existing-forbidden:
+                  value: { "Status": "checking-not-existing-forbidden" }
+        '200':
+          description: Zadanie pomyślnie zakończono w bazie danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "checked" }
 components:
   schemas:
     UserLoginRequest:

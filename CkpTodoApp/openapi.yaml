@@ -530,7 +530,54 @@ paths:
                 $ref: '#/components/schemas/RootResponse'
               example: { "Status": "auth-failed" }
         '201':
-          description: Treść zadania została edytowana.
+          description: Profil użytkownika został edytowany.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+  /api/user/password/{id}:
+    post:
+      tags:
+        - profile
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID użytkownika w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Edytowanie hasła istniejącego użytkownika.
+      operationId: PostApiUserPasswordId
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Zmiana hasła na puste jest niedozwolona lub użytkownik nie istnieje.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                empty-password-not-permitted:
+                  value: { "Status": "empty-password-not-permitted" }
+                user-not-exists:
+                  value: { "Status": "user-not-exists" }
+        '201':
+          description: Hasło użytkownika zostało zmienione.
           content:
             application/json:
               schema:
@@ -605,6 +652,13 @@ components:
           type: string
           format: string
           example: UE Katowice
+    UserPasswordRequest:
+      type: object
+      properties:
+        Password:
+          type: string
+          format: string
+          example: password
     RootResponse:
       type: object
       properties:

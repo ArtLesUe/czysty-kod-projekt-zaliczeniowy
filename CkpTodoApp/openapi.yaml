@@ -499,6 +499,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiUserModel'
+  /api/user/edit/{id}:
+    post:
+      tags:
+        - profile
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID użytkownika w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Edytowanie danych istniejącego użytkownika.
+      operationId: PostApiUserEditId
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEditRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '201':
+          description: Treść zadania została edytowana.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
 components:
   schemas:
     UserLoginRequest:
@@ -542,6 +578,33 @@ components:
           type: string
           format: string
           example: admin123
+    UserEditRequest:
+      type: object
+      properties:
+        Name:
+          type: string
+          format: string
+          example: Jan
+        Surname:
+          type: string
+          format: string
+          example: Kowalski
+        AboutMe:
+          type: string
+          format: string
+          example: Opis profilu
+        City:
+          type: string
+          format: string
+          example: Warszawa
+        Country:
+          type: string
+          format: string
+          example: Polska
+        University:
+          type: string
+          format: string
+          example: UE Katowice
     RootResponse:
       type: object
       properties:

@@ -44,12 +44,6 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "auth-failed" };
       }
 
-      if (apiToken.UserId == id)
-      {
-        Response.StatusCode = 406;
-        return new RootResponse { Status = "self-deletion-forbidden" };
-      }
-
       if (string.IsNullOrEmpty(userPasswordRequest.Password))
       {
         Response.StatusCode = 406;

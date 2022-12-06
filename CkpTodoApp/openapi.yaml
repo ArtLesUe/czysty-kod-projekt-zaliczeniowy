@@ -54,6 +54,7 @@ paths:
     get:
       tags:
         - user
+      summary: Pobranie listy wszystkich użytkowników systemu bez pola z hasłem.
       operationId: GetApiUserList
       responses:
         '401':
@@ -73,6 +74,39 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/ApiUserModel'
+  /api/user/register:
+    post:
+      tags:
+        - user
+      summary: Zakładanie nowego konta użytkownikowi przez administratora.
+      operationId: PostApiUserRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-auth" }
+        '422':
+          description: Do zapytania przekazano niewłaściwe parametry lub brakuje wartości w niektóych wymaganych polach. Status zwracany również, jeżeli użytkownik o podanym adresie e-mail jest już zarejestrowany.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-data" }
+        '201':
+          description: Użytkownik został pomyślnie zarejestrowany w aplikacji.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
 components:
   schemas:
     UserLoginRequest:
@@ -97,6 +131,32 @@ components:
           type: string
           format: string
           example: 05734e7d-55cf-4d99-8a9d-961b36103ac0
+    UserRegisterRequest:
+      type: object
+      properties:
+        Name:
+          type: string
+          format: string
+          example: Jan
+        Surname:
+          type: string
+          format: string
+          example: Kowalski
+        Email:
+          type: string
+          format: email
+          example: admin@admin.pl
+        Password:
+          type: string
+          format: string
+          example: admin123
+    RootResponse:
+      type: object
+      properties:
+        Status:
+          type: string
+          format: string
+          example: OK
     ApiUserModel:
       type: object
       properties:

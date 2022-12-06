@@ -56,6 +56,8 @@ paths:
         - user
       summary: Pobranie listy wszystkich użytkowników systemu bez pola z hasłem.
       operationId: GetApiUserList
+      security:
+        - api_key: []
       responses:
         '401':
           description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
@@ -80,6 +82,8 @@ paths:
         - user
       summary: Zakładanie nowego konta użytkownikowi przez administratora.
       operationId: PostApiUserRegister
+      security:
+        - api_key: []
       requestBody:
         content:
           application/json:
@@ -196,3 +200,8 @@ components:
           type: string
           format: string
           example: UE Katowice
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

@@ -209,6 +209,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RootResponse'
+  /api/task/edit/{id}:
+    post:
+      tags:
+        - task
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID zadania w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Edytowanie treści istniejącego zadania.
+      operationId: PostApiTaskEdit
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-auth" }
+        '201':
+          description: Treść zadania została edytowana.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
 components:
   schemas:
     UserLoginRequest:

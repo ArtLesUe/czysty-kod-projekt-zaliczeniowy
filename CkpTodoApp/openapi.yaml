@@ -353,6 +353,34 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/EventModel'
+  /api/events/add:
+    post:
+      tags:
+        - event
+      summary: Dodawanie nowego wydarzenia na listę wydarzeń.
+      operationId: PostApiEventsAdd
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-auth" }
+        '201':
+          description: Nowe wydarzenie zostało dodane do aplikacji.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
 components:
   schemas:
     UserLoginRequest:
@@ -487,6 +515,29 @@ components:
           type: string
           format: string
           example: 'Opis zaplanowanego zdarzenia'
+        StartDate:
+          type: string
+          format: date-time
+          example: '2022-12-01 00:00:00'
+        EndDate:
+          type: string
+          format: date-time
+          example: '2022-12-02 00:00:00'
+    EventRequest:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+          example: 1
+        Title:
+          type: string
+          format: string
+          example: 'Tytuł nowego wydarzenia'
+        Description:
+          type: string
+          format: string
+          example: 'Opis nowego wydarzenia'
         StartDate:
           type: string
           format: date-time

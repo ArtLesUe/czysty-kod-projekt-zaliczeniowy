@@ -9,6 +9,8 @@ servers:
 tags:
   - name: auth
     description: Operacje związane z procesem logowania do aplikacji.
+  - name: user
+    description: Operacje związane z operacjami na modelu użytkownika.
 paths:
   /api/user/login:
     post:
@@ -48,6 +50,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserLoginTokenResponse'
+  /api/user/list:
+    get:
+      tags:
+        - user
+      operationId: GetApiUserList
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ApiUserModel'
+                example: '[]'
+        '200':
+          description: Autoryzacja udana, pobrano listę użytkowników.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ApiUserModel'
 components:
   schemas:
     UserLoginRequest:
@@ -56,11 +81,11 @@ components:
         Login:
           type: string
           format: email
-          example: user@domain.com
+          example: admin@admin.pl
         Password:
           type: string
           format: string
-          example: password
+          example: admin123
     UserLoginTokenResponse:
       type: object
       properties:
@@ -72,3 +97,42 @@ components:
           type: string
           format: string
           example: 05734e7d-55cf-4d99-8a9d-961b36103ac0
+    ApiUserModel:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+          example: 1
+        Name:
+          type: string
+          format: string
+          example: Jan
+        Surname:
+          type: string
+          format: string
+          example: Nowak
+        Email:
+          type: string
+          format: email
+          example: admin@admin.com
+        PasswordHashed:
+          type: string
+          format: md5
+          example: 0192023A7BBD73250516F069DF18B500
+        AboutMe:
+          type: string
+          format: string
+          example: Opis profilu
+        City:
+          type: string
+          format: string
+          example: Katowice
+        Country:
+          type: string
+          format: string
+          example: Polska
+        University:
+          type: string
+          format: string
+          example: UE Katowice

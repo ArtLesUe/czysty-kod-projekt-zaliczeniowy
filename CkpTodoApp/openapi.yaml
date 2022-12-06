@@ -11,6 +11,8 @@ tags:
     description: Operacje związane z procesem logowania do aplikacji.
   - name: user
     description: Operacje związane z operacjami na modelu użytkownika.
+  - name: task
+    description: Operacje związane z operacjami na modelu zadania.
 paths:
   /api/user/login:
     post:
@@ -153,6 +155,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/RootResponse'
               example: { "Status": "deleted" }
+  /api/tasks/list:
+    get:
+      tags:
+        - task
+      summary: Pobieranie listy wszystkich zadań.
+      operationId: GetApiTasksList
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/TaskModel'
+                example: '[]'
+        '200':
+          description: Autoryzacja udana, pobrano listę zadań.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/TaskModel'
 components:
   schemas:
     UserLoginRequest:
@@ -242,8 +270,27 @@ components:
           type: string
           format: string
           example: UE Katowice
+    TaskModel:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+          example: 1
+        Title:
+          type: string
+          format: string
+          example: 'Przykładowe zadanie'
+        Description:
+          type: string
+          format: string
+          example: "Opis przykładowego zadania"
+        IsCheck:
+          type: boolean
+          format: boolean
+          example: false
   securitySchemes:
     api_key:
       type: apiKey
-      name: api_key
+      name: token
       in: header

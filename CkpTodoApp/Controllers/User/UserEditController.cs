@@ -50,9 +50,11 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "self-deletion-forbidden" };
       }
 
+      ApiUserModel oldUser;
+
       try 
       {
-        ApiUserModel oldUser = new ApiUserModel(id);
+        oldUser = new ApiUserModel(id);
       } 
       catch(Exception)
       {

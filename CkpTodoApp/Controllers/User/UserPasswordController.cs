@@ -56,9 +56,11 @@ namespace CkpTodoApp.Controllers
         return new RootResponse { Status = "empty-password-not-permitted" };
       }
 
+      ApiUserModel user;
+
       try 
       {
-        ApiUserModel user = new ApiUserModel(id);
+        user = new ApiUserModel(id);
       }
       catch (Exception)
       {

@@ -111,6 +111,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RootResponse'
+  /api/user/delete/{id}:
+    get:
+      tags:
+        - user
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID użytkownika w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Usuwanie konta istniejącego użytkownika z systemu.
+      operationId: GetApiUserDeleteId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Usunięcie siebie samego z bazy danych jest zakazane lub próba usunięcia nieistniejącego użytkownika.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                self-deletion-forbidden:
+                  value: { "Status": "self-deletion-forbidden" }
+                deleting-not-existing-forbidden:
+                  value: { "Status": "deleting-not-existing-forbidden" }
+        '200':
+          description: Użytkownik pomyślnie usunięty z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "deleted" }
 components:
   schemas:
     UserLoginRequest:

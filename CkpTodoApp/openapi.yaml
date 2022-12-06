@@ -1,0 +1,74 @@
+openapi: 3.0.3
+info:
+  title: Czysty kod - programowanie - projekt API
+  description: Specyfikacja endpointów API w projekcie zaliczeniowym z przedmiotu "Czysty kod - programowanie".
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+  - url: http://localhost:5039
+tags:
+  - name: auth
+    description: Operacje związane z procesem logowania do aplikacji.
+paths:
+  /api/user/login:
+    post:
+      tags:
+        - auth
+      summary: Generuje token używany do autoryzacji innych zapytań do API. Wymaga podania loginu i hasła istniejącego użytkownika.
+      operationId: PostApiUserLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+        required: true
+      responses:
+        '422':
+          description: Do zapytania przekazano niewłaściwe parametry lub brakuje wartości w niektóych wymaganych polach.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginTokenResponse'
+              example: '{ "UserId": 0, "token": null }'
+        '401':
+          description: Użytkownik nie istnieje w bazie danych lub podano niewłaściwy login i hasło.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginTokenResponse'
+              example: '{ "UserId": 0, "token": null }'
+        '400':
+          description: Niewłaściwe zapytanie. W body nie przekazano prawidłowego dokumentu JSON.
+          content:
+            application/json:
+              example: '{"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"One or more validation errors occurred.","status":400,"traceId":"00-65cf8791d60a7eed48934ca825a386dc-7a49c856f4dd7379-00","errors":{"":["A non-empty request body is required."],"userLoginRequest":["The userLoginRequest field is required."]}}'
+        '200':
+          description: Logowanie przebiegło prawidłowo, token został zwrócony.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginTokenResponse'
+components:
+  schemas:
+    UserLoginRequest:
+      type: object
+      properties:
+        Login:
+          type: string
+          format: email
+          example: user@domain.com
+        Password:
+          type: string
+          format: string
+          example: password
+    UserLoginTokenResponse:
+      type: object
+      properties:
+        UserId:
+          type: integer
+          format: int64
+          example: 1
+        Token:
+          type: string
+          format: string
+          example: 05734e7d-55cf-4d99-8a9d-961b36103ac0

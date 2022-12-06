@@ -245,6 +245,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RootResponse'
+  /api/task/delete/{id}:
+    get:
+      tags:
+        - task
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID zadania w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Usuwanie istniejącego zadania z systemu.
+      operationId: GetApiTaskDeleteId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Próba usunięcia nieistniejącego zadania z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                deleting-not-existing-forbidden:
+                  value: { "Status": "deleting-not-existing-forbidden" }
+        '200':
+          description: Zadanie pomyślnie usunięto z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "checked" }
 components:
   schemas:
     UserLoginRequest:

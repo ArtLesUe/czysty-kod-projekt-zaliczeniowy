@@ -1,0 +1,788 @@
+openapi: 3.0.3
+info:
+  title: Czysty kod - programowanie - projekt API
+  description: Specyfikacja endpointów API w projekcie zaliczeniowym z przedmiotu "Czysty kod - programowanie".
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+  - url: http://localhost:5039
+tags:
+  - name: auth
+    description: Operacje związane z procesem logowania do aplikacji.
+  - name: user
+    description: Operacje związane z operacjami na modelu użytkownika.
+  - name: task
+    description: Operacje związane z operacjami na modelu zadania.
+  - name: event
+    description: Operacje związane z operacjami na modelu wydarzenia.
+  - name: profile
+    description: Operacje związane z operacjami na modelu profilu użytkownika.
+paths:
+  /api/user/login:
+    post:
+      tags:
+        - auth
+      summary: Generuje token używany do autoryzacji innych zapytań do API. Wymaga podania loginu i hasła istniejącego użytkownika.
+      operationId: PostApiUserLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+        required: true
+      responses:
+        '422':
+          description: Do zapytania przekazano niewłaściwe parametry lub brakuje wartości w niektóych wymaganych polach.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginTokenResponse'
+              example: '{ "UserId": 0, "token": null }'
+        '401':
+          description: Użytkownik nie istnieje w bazie danych lub podano niewłaściwy login i hasło.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginTokenResponse'
+              example: '{ "UserId": 0, "token": null }'
+        '400':
+          description: Niewłaściwe zapytanie. W body nie przekazano prawidłowego dokumentu JSON.
+          content:
+            application/json:
+              example: '{"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"One or more validation errors occurred.","status":400,"traceId":"00-65cf8791d60a7eed48934ca825a386dc-7a49c856f4dd7379-00","errors":{"":["A non-empty request body is required."],"userLoginRequest":["The userLoginRequest field is required."]}}'
+        '200':
+          description: Logowanie przebiegło prawidłowo, token został zwrócony.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginTokenResponse'
+  /api/user/list:
+    get:
+      tags:
+        - user
+      summary: Pobranie listy wszystkich użytkowników systemu bez pola z hasłem.
+      operationId: GetApiUserList
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ApiUserModel'
+                example: '[]'
+        '200':
+          description: Autoryzacja udana, pobrano listę użytkowników.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ApiUserModel'
+  /api/user/register:
+    post:
+      tags:
+        - user
+      summary: Zakładanie nowego konta użytkownikowi przez administratora.
+      operationId: PostApiUserRegister
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-auth" }
+        '422':
+          description: Do zapytania przekazano niewłaściwe parametry lub brakuje wartości w niektóych wymaganych polach. Status zwracany również, jeżeli użytkownik o podanym adresie e-mail jest już zarejestrowany.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-data" }
+        '201':
+          description: Użytkownik został pomyślnie zarejestrowany w aplikacji.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+  /api/user/delete/{id}:
+    get:
+      tags:
+        - user
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID użytkownika w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Usuwanie konta istniejącego użytkownika z systemu.
+      operationId: GetApiUserDeleteId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Usunięcie siebie samego z bazy danych jest zakazane lub próba usunięcia nieistniejącego użytkownika.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                self-deletion-forbidden:
+                  value: { "Status": "self-deletion-forbidden" }
+                deleting-not-existing-forbidden:
+                  value: { "Status": "deleting-not-existing-forbidden" }
+        '200':
+          description: Użytkownik pomyślnie usunięty z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "deleted" }
+  /api/tasks/list:
+    get:
+      tags:
+        - task
+      summary: Pobieranie listy wszystkich zadań.
+      operationId: GetApiTasksList
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/TaskModel'
+                example: '[]'
+        '200':
+          description: Autoryzacja udana, pobrano listę zadań.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/TaskModel'
+  /api/task/add:
+    post:
+      tags:
+        - task
+      summary: Dodawanie nowego zadania na listę zadań.
+      operationId: PostApiTaskAdd
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-auth" }
+        '201':
+          description: Nowe zadanie zostało dodane do aplikacji.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+  /api/task/edit/{id}:
+    post:
+      tags:
+        - task
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID zadania w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Edytowanie treści istniejącego zadania.
+      operationId: PostApiTaskEdit
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-auth" }
+        '201':
+          description: Treść zadania została edytowana.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+  /api/task/delete/{id}:
+    get:
+      tags:
+        - task
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID zadania w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Usuwanie istniejącego zadania z systemu.
+      operationId: GetApiTaskDeleteId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Próba usunięcia nieistniejącego zadania z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                deleting-not-existing-forbidden:
+                  value: { "Status": "deleting-not-existing-forbidden" }
+        '200':
+          description: Zadanie pomyślnie usunięto z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "checked" }
+  /api/task/check/{id}:
+    get:
+      tags:
+        - task
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID zadania w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Oznaczanie zadania z systemu jako wykonane.
+      operationId: GetApiTaskCheckId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Próba zakończenia nieistniejącego zadania z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                checking-not-existing-forbidden:
+                  value: { "Status": "checking-not-existing-forbidden" }
+        '200':
+          description: Zadanie pomyślnie zakończono w bazie danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "checked" }
+  /api/events/list:
+    get:
+      tags:
+        - event
+      summary: Pobieranie listy wszystkich wydarzeń.
+      operationId: GetApiEventsList
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/EventModel'
+                example: '[]'
+        '200':
+          description: Autoryzacja udana, pobrano listę wydarzeń.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/EventModel'
+  /api/events/add:
+    post:
+      tags:
+        - event
+      summary: Dodawanie nowego wydarzenia na listę wydarzeń.
+      operationId: PostApiEventsAdd
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-auth" }
+        '201':
+          description: Nowe wydarzenie zostało dodane do aplikacji.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+  /api/events/edit/{id}:
+    post:
+      tags:
+        - event
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID zadania w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Edytowanie treści istniejącego wydarzenia.
+      operationId: PostApiEventsEditId
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "wrong-auth" }
+        '201':
+          description: Treść zadania została edytowana.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+  /api/events/delete/{id}:
+    get:
+      tags:
+        - event
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID wydarzenia w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Usuwanie istniejącego wydarzenia z systemu.
+      operationId: GetApiEventsDeleteId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Próba usunięcia nieistniejącego wydarzenia z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                deleting-not-existing-forbidden:
+                  value: { "Status": "deleting-not-existing-forbidden" }
+        '200':
+          description: Wydarzenie pomyślnie usunięto z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "checked" }
+  /api/user/details/{id}:
+    get:
+      tags:
+        - profile
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID użytkownika w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Pobranie profilu konkretnego użytkownika.
+      operationId: GetApiUserDetailsId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUserModel'
+              example: { 
+                "Id": 0, 
+                "Name": null, 
+                "Surname": null,
+                "Email": null,
+                "PasswordHashed": null,
+                "AboutMe": null,
+                "City": null,
+                "Country": null,
+                "University": null
+              }
+        '200':
+          description: Wydarzenie pomyślnie usunięto z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUserModel'
+  /api/user/edit/{id}:
+    post:
+      tags:
+        - profile
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID użytkownika w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Edytowanie danych istniejącego użytkownika.
+      operationId: PostApiUserEditId
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEditRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '201':
+          description: Profil użytkownika został edytowany.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+  /api/user/password/{id}:
+    post:
+      tags:
+        - profile
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID użytkownika w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Edytowanie hasła istniejącego użytkownika.
+      operationId: PostApiUserPasswordId
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordRequest'
+        required: true
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Zmiana hasła na puste jest niedozwolona lub użytkownik nie istnieje.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                empty-password-not-permitted:
+                  value: { "Status": "empty-password-not-permitted" }
+                user-not-exists:
+                  value: { "Status": "user-not-exists" }
+        '201':
+          description: Hasło użytkownika zostało zmienione.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+components:
+  schemas:
+    UserLoginRequest:
+      type: object
+      properties:
+        Login:
+          type: string
+          format: email
+          example: admin@admin.pl
+        Password:
+          type: string
+          format: string
+          example: admin123
+    UserLoginTokenResponse:
+      type: object
+      properties:
+        UserId:
+          type: integer
+          format: int64
+          example: 1
+        Token:
+          type: string
+          format: string
+          example: 05734e7d-55cf-4d99-8a9d-961b36103ac0
+    UserRegisterRequest:
+      type: object
+      properties:
+        Name:
+          type: string
+          format: string
+          example: Jan
+        Surname:
+          type: string
+          format: string
+          example: Kowalski
+        Email:
+          type: string
+          format: email
+          example: admin@admin.pl
+        Password:
+          type: string
+          format: string
+          example: admin123
+    UserEditRequest:
+      type: object
+      properties:
+        Name:
+          type: string
+          format: string
+          example: Jan
+        Surname:
+          type: string
+          format: string
+          example: Kowalski
+        AboutMe:
+          type: string
+          format: string
+          example: Opis profilu
+        City:
+          type: string
+          format: string
+          example: Warszawa
+        Country:
+          type: string
+          format: string
+          example: Polska
+        University:
+          type: string
+          format: string
+          example: UE Katowice
+    UserPasswordRequest:
+      type: object
+      properties:
+        Password:
+          type: string
+          format: string
+          example: password
+    RootResponse:
+      type: object
+      properties:
+        Status:
+          type: string
+          format: string
+          example: OK
+    ApiUserModel:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+          example: 1
+        Name:
+          type: string
+          format: string
+          example: Jan
+        Surname:
+          type: string
+          format: string
+          example: Nowak
+        Email:
+          type: string
+          format: email
+          example: admin@admin.com
+        PasswordHashed:
+          type: string
+          format: md5
+          example: 0192023A7BBD73250516F069DF18B500
+        AboutMe:
+          type: string
+          format: string
+          example: Opis profilu
+        City:
+          type: string
+          format: string
+          example: Katowice
+        Country:
+          type: string
+          format: string
+          example: Polska
+        University:
+          type: string
+          format: string
+          example: UE Katowice
+    TaskModel:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+          example: 1
+        Title:
+          type: string
+          format: string
+          example: 'Przykładowe zadanie'
+        Description:
+          type: string
+          format: string
+          example: "Opis przykładowego zadania"
+        IsCheck:
+          type: boolean
+          format: boolean
+          example: false
+    TaskRequest:
+      type: object
+      properties:
+        Title:
+          type: string
+          format: string
+          example: "Nowe zadanie"
+        Description:
+          type: string
+          format: string
+          example: "Opis nowego zadania"
+    EventModel:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+          example: 1
+        Title:
+          type: string
+          format: string
+          example: 'Tytuł zaplanowanego zdarzenia'
+        Description:
+          type: string
+          format: string
+          example: 'Opis zaplanowanego zdarzenia'
+        StartDate:
+          type: string
+          format: date-time
+          example: '2022-12-01 00:00:00'
+        EndDate:
+          type: string
+          format: date-time
+          example: '2022-12-02 00:00:00'
+    EventRequest:
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int64
+          example: 1
+        Title:
+          type: string
+          format: string
+          example: 'Tytuł nowego wydarzenia'
+        Description:
+          type: string
+          format: string
+          example: 'Opis nowego wydarzenia'
+        StartDate:
+          type: string
+          format: date-time
+          example: '2022-12-01 00:00:00'
+        EndDate:
+          type: string
+          format: date-time
+          example: '2022-12-02 00:00:00'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: token
+      in: header

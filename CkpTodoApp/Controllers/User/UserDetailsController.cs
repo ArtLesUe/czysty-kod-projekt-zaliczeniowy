@@ -42,12 +42,6 @@ namespace CkpTodoApp.Controllers
         return new ApiUserModel();
       }
 
-      if (apiToken.UserId == id)
-      {
-        Response.StatusCode = 406;
-        return new ApiUserModel();
-      }
-
       DatabaseManagerController databaseManagerController = new DatabaseManagerController();
       String resultSql = databaseManagerController.ExecuteSQLQuery(
         @"SELECT json_group_array( 

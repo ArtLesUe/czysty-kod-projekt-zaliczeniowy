@@ -417,6 +417,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RootResponse'
+  /api/events/delete/{id}:
+    get:
+      tags:
+        - event
+      parameters:
+        - name: id
+          in: path
+          description: identyfikator ID wydarzenia w bazie danych
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: Usuwanie istniejącego wydarzenia z systemu.
+      operationId: GetApiEventsDeleteId
+      security:
+        - api_key: []
+      responses:
+        '401':
+          description: Nie przekazano Tokenu logowania lub Token jest niewłaściwy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "auth-failed" }
+        '406':
+          description: Próba usunięcia nieistniejącego wydarzenia z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              examples: 
+                deleting-not-existing-forbidden:
+                  value: { "Status": "deleting-not-existing-forbidden" }
+        '200':
+          description: Wydarzenie pomyślnie usunięto z bazy danych.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+              example: { "Status": "checked" }
 components:
   schemas:
     UserLoginRequest:

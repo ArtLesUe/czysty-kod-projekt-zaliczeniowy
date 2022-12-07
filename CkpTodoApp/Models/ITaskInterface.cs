@@ -6,7 +6,7 @@ namespace CkpTodoApp.Models
 
         string Description { get; set; }
         
-        bool IsCheck { get; set; }
+        int IsCheck { get; set; }
     }
 }
 

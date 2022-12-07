@@ -35,7 +35,7 @@ namespace CkpTodoApp.Models
             'AboutMe', AboutMe,
             'City', City,
             'Country', Country,
-            'University', University,
+            'University', University
           )
         )
         FROM users

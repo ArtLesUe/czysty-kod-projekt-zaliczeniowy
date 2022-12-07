@@ -1,15 +1,25 @@
 using CkpTodoApp.Commons;
+using System.Text.Json.Serialization;
 
 namespace CkpTodoApp.Models
 {
     public class TaskModel : ITaskInterface
     {
-        public TaskModel(string title, string description, bool isCheck = false)
+        public TaskModel(string title, string description, int isCheck = 0)
         {
             Id = UniqueNumber.GetUniqueNumber();
             Title = title;
             Description = description;
             IsCheck = isCheck;
+        }
+
+        [JsonConstructor] 
+        public TaskModel(int id, string title, string description, int isCheck = 0)
+        {
+          Id = id;
+          Title = title;
+          Description = description;
+          IsCheck = isCheck;
         }
 
         public int Id { get; }
@@ -18,7 +28,7 @@ namespace CkpTodoApp.Models
 
         public string Description { get; set; }
         
-        public bool IsCheck { get; set; }
+        public int IsCheck { get; set; }
     }
 }
 

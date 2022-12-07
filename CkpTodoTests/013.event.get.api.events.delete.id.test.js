@@ -164,7 +164,6 @@ describe('GET /api/events/delete/{id} (good token, existing task, delete success
 
     expect(response.status).toBe(200); 
     expect(response.statusText).toBe('OK'); 
-    expect(response_json.length > 0).toBeTruthy();
 
     search = response_json.filter(obj => {
       return obj.title === new_task.Title

@@ -39,7 +39,8 @@ namespace CkpTodoApp.Controllers
           json_object(
             'Id', Id,
             'Title', Title,
-            'Description', Description
+            'Description', Description,
+            'IsCheck', IsCheck
           )
         )
         FROM tasks

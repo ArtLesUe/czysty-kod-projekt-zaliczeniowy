@@ -34,6 +34,12 @@ namespace CkpTodoApp.Controllers
           return new RootResponse { Status = "wrong-auth" };
         }
         
+        if (string.IsNullOrEmpty(taskRequest.Title))
+        {
+          Response.StatusCode = 422;
+          return new RootResponse { Status = "wrong-data" };
+        }
+        
         var newTask = new TaskModel(
           taskRequest.Title ?? "", 
           taskRequest.Description ?? "");

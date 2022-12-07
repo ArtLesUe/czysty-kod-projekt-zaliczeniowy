@@ -22,7 +22,7 @@ namespace CkpTodoApp.Controllers
 
     [DisableCors]
     [HttpGet]
-    public ApiUserModel? Get(int id)
+    public List<ApiUserModel>? Get(int id)
     {
       Request.Headers.TryGetValue("token", out StringValues headerValues);
       string? jsonWebToken = headerValues.FirstOrDefault();
@@ -30,7 +30,7 @@ namespace CkpTodoApp.Controllers
       if (string.IsNullOrEmpty(jsonWebToken))
       {
         Response.StatusCode = 401;
-        return new ApiUserModel();
+        return new List<ApiUserModel>();
       }
 
       ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
@@ -39,7 +39,7 @@ namespace CkpTodoApp.Controllers
       if (apiToken.UserId == 0)
       {
         Response.StatusCode = 401;
-        return new ApiUserModel();
+        return new List<ApiUserModel>();
       }
 
       DatabaseManagerController databaseManagerController = new DatabaseManagerController();
@@ -50,17 +50,21 @@ namespace CkpTodoApp.Controllers
             'Name', Name,
             'Surname', Surname,
             'Email', Email,
+            'PasswordHashed', '',
             'AboutMe', AboutMe,
             'City', City,
             'Country', Country,
-            'University', University,
+            'University', University
           )
         )
         FROM users
         WHERE Id = '" + id.ToString() + @"';"
       );
 
-      return JsonSerializer.Deserialize<ApiUserModel>(resultSql);
+      if (resultSql.Length == 0)
+        return new List<ApiUserModel>();
+
+      return JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
     }
   }
 }

@@ -12,7 +12,6 @@ namespace CkpTodoApp.Controllers;
 [ApiController]
 public class EditEventController : ControllerBase
 {
-    [DisableCors]
     [HttpPost]
     public RootResponse Post(EventRequest eventRequest, int id)
     {

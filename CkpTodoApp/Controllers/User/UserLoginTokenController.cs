@@ -17,7 +17,6 @@ namespace CkpTodoApp.Controllers
       _logger = logger;
     }
 
-    [DisableCors]
     [HttpPost]
     public UserLoginTokenResponse Post(UserLoginRequest userLoginRequest)
     {

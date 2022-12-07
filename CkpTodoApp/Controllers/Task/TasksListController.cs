@@ -11,7 +11,6 @@ namespace CkpTodoApp.Controllers
   [ApiController]
   public class TasksListController : ControllerBase
   {
-    [DisableCors]
     [HttpGet]
     public List<TaskModel>? Get()
     {

@@ -20,7 +20,6 @@ namespace CkpTodoApp.Controllers
       _logger = logger;
     }
 
-    [DisableCors]
     [HttpGet]
     public List<ApiUserModel>? Get(int id)
     {

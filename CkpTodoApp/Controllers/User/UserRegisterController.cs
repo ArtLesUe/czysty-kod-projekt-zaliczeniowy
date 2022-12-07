@@ -30,7 +30,6 @@ namespace CkpTodoApp.Controllers
       return Convert.ToHexString(hashBytes);
     }
 
-    [DisableCors]
     [HttpPost]
     public RootResponse Post(UserRegisterRequest userRegisterRequest)
     {

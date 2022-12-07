@@ -22,7 +22,6 @@ namespace CkpTodoApp.Controllers
       _logger = logger;
     }
 
-    [DisableCors]
     [HttpPost]
     public RootResponse Post(UserPasswordRequest userPasswordRequest, int id)
     {

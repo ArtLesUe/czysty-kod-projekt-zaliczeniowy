@@ -12,7 +12,6 @@ namespace CkpTodoApp.Controllers;
 [ApiController]
 public class EditTaskController : ControllerBase
 {
-    [DisableCors]
     [HttpPost]
     public RootResponse Post(TaskRequest taskRequest, int id)
     {

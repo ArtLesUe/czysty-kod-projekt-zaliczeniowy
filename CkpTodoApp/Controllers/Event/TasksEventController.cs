@@ -11,7 +11,6 @@ namespace CkpTodoApp.Controllers
   [ApiController]
   public class TasksEventController : ControllerBase
   {
-    [DisableCors]
     [HttpGet]
     public List<EventModel>? Get()
     {

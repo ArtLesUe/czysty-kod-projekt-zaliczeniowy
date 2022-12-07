@@ -18,7 +18,6 @@ namespace CkpTodoApp.Controllers
       _logger = logger;
     }
 
-    [DisableCors]
     [HttpGet]
     public RootResponse Get(int id)
     {

@@ -10,7 +10,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors();
+app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) 
+                .AllowCredentials());
 
 DatabaseManagerController databaseManagerController = new DatabaseManagerController();
 databaseManagerController.InitDatabase();

@@ -11,7 +11,6 @@ namespace CkpTodoApp.Controllers;
 [ApiController]
 public class DeleteTaskController : ControllerBase
 {
-    [DisableCors]
     [HttpGet]
     public RootResponse Get(int id)
     {

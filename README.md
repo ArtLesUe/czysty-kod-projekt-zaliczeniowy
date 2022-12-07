@@ -20,3 +20,4 @@ Program przeznaczony do zapisywania krókich zadań oraz informacji o zaplanowan
 
 * CkpTodoApp - kod źródłowy modułu backend aplikacji
 * CkpTodoFrontend - kod źródłowy modułu frontend aplikacji
+* CkpTodoTests - automatyczne testy endpointów api

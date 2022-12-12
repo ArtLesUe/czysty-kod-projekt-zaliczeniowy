@@ -1,0 +1,3 @@
+[submodule "CkpTodoFrontend"]
+	path = CkpTodoFrontend
+	url = https://github.com/pawelpiatek1707/clean-code-fe.git

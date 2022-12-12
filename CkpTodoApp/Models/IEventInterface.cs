@@ -1,13 +1,12 @@
-namespace CkpTodoApp.Models
+namespace CkpTodoApp.Models;
+
+public interface IEventInterface
 {
-    public interface IEventInterface
-    {
-        string Title { get; set; }
+    string Title { get; set; }
 
-        string Description { get; set; }
+    string Description { get; set; }
 
-        string StartDate { get; set; }
+    string StartDate { get; set; }
 
-        string EndDate { get; set; }
-    }
+    string EndDate { get; set; }
 }

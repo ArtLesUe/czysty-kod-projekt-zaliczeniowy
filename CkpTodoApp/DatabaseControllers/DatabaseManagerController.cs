@@ -7,29 +7,31 @@ namespace CkpTodoApp.DatabaseControllers
   {
     public string DatabasePath()
     {
-      string? folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-      string appFolder = folder ?? Environment.CurrentDirectory;
-      string dbFolder = Path.Combine(appFolder, "database");
+      var folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+      var appFolder = folder ?? Environment.CurrentDirectory;
+      var dbFolder = Path.Combine(appFolder, "database");
+      
       Directory.CreateDirectory(dbFolder);
-      string dbFile = Path.Combine(dbFolder, "database.db");
+      
+      var dbFile = Path.Combine(dbFolder, "database.db");
       return dbFile;
     }
 
     public void SeedDatabase()
     {
-      ApiUserSeederController apiUserSeederController = new ApiUserSeederController();
+      var apiUserSeederController = new ApiUserSeederController();
       apiUserSeederController.MigrateDatabase();
-      apiUserSeederController.SeedDatabase();
+      apiUserSeederController.SeedDatabase(); //TODO
 
-      ApiTokenSeederController apiTokenSeederController = new ApiTokenSeederController();
+      var apiTokenSeederController = new ApiTokenSeederController();
       apiTokenSeederController.MigrateDatabase();
       apiTokenSeederController.SeedDatabase();
       
-      TaskSeederController taskSeederController = new TaskSeederController();
+      var taskSeederController = new TaskSeederController();
       taskSeederController.MigrateDatabase();
       taskSeederController.SeedDatabase();
 
-      EventSeederController eventSeederController = new EventSeederController();
+      var eventSeederController = new EventSeederController();
       eventSeederController.MigrateDatabase();
       eventSeederController.SeedDatabase();
     }

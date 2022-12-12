@@ -1,7 +1,6 @@
-﻿namespace CkpTodoApp.Responses
+﻿namespace CkpTodoApp.Responses;
+
+public class RootResponse
 {
-  public class RootResponse
-  {
-    public string? Status { get; set; }
-  }
+  public string? Status { get; set; }
 }

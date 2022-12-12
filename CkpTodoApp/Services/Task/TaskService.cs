@@ -37,14 +37,14 @@ public class TaskManager : ITaskManager
         if (newDescription != null)
         {
             _databaseManagerController.ExecuteSQL(
-                @"UPDATE tasks SET Description = '" + newDescription + @"' WHERE Id = '" + id.ToString() + @"';"
+                @"UPDATE tasks SET Description = '" + newDescription + @"' WHERE Id = '" + id + @"';"
             );
         } 
         
         if (newTitle != null)
         {
             _databaseManagerController.ExecuteSQL(
-                @"UPDATE tasks SET Title = '" + newTitle + @"' WHERE Id = '" + id.ToString() + @"';"
+                @"UPDATE tasks SET Title = '" + newTitle + @"' WHERE Id = '" + id + @"';"
             );
         }
     }

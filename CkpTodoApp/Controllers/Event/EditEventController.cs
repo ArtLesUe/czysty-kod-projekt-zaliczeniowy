@@ -15,7 +15,7 @@ public class EditEventController : ControllerBase
     public RootResponse Post(EventRequest eventRequest, int id)
     {
         Request.Headers.TryGetValue("token", out StringValues headerValues);
-        string? jsonWebToken = headerValues.FirstOrDefault();
+        var jsonWebToken = headerValues.FirstOrDefault();
 
         if (string.IsNullOrEmpty(jsonWebToken))
         {
@@ -23,7 +23,7 @@ public class EditEventController : ControllerBase
             return new RootResponse { Status = "wrong-auth" };
         }
 
-        ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
         apiToken.Verify();
 
         if (apiToken.UserId == 0)

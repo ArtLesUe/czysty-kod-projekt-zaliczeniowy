@@ -6,7 +6,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.Event;
 
-[Route("api/events/delete/{id}")]
+[Route("api/events/delete/{id:int}")]
 [ApiController]
 public class DeleteEventController : ControllerBase
 {
@@ -19,20 +19,20 @@ public class DeleteEventController : ControllerBase
         if (string.IsNullOrEmpty(jsonWebToken))
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "auth-failed" };
+            return new RootResponse { Status = "wrong-auth" };
         }
 
-        ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
         apiToken.Verify();
 
         if (apiToken.UserId == 0)
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "auth-failed" };
+            return new RootResponse { Status = "wrong-auth" };
         }
 
         var eventService = new EventService();
-        
+            
         try
         {
             eventService.DeleteEventById(id);

@@ -1,4 +1,4 @@
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.Task;
 using Microsoft.AspNetCore.Mvc;

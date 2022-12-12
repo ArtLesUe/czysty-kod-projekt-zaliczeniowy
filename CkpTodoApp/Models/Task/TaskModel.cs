@@ -1,7 +1,7 @@
-using CkpTodoApp.Commons;
 using System.Text.Json.Serialization;
+using CkpTodoApp.Commons;
 
-namespace CkpTodoApp.Models;
+namespace CkpTodoApp.Models.Task;
 
 public class TaskModel : ITaskInterface
 {

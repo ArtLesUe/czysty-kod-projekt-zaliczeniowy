@@ -1,15 +1,15 @@
 using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.Task;
 
 namespace CkpTodoApp.Services.Task;
 
 public class TaskManager : ITaskManager
 {
-    private readonly DatabaseManagerController _databaseManagerController = new();
+    private readonly DatabaseServiceController _databaseServiceController = new();
     
     public void Add(TaskModel task)
     {
-        _databaseManagerController.ExecuteSQL(
+        _databaseServiceController.ExecuteSQL(
             @"INSERT INTO tasks (Title, Description, IsCheck) VALUES (
           '" + task.Title + @"', 
           '" + task.Description + @"',
@@ -20,14 +20,14 @@ public class TaskManager : ITaskManager
 
     public void CheckTaskById(int id)
     {
-        _databaseManagerController.ExecuteSQL(
+        _databaseServiceController.ExecuteSQL(
             @"UPDATE tasks SET IsCheck=1 WHERE id=" + id + @";"
         );
     }
     
     public void DeleteTaskById(int id)
     {  
-       _databaseManagerController.ExecuteSQL(
+       _databaseServiceController.ExecuteSQL(
            @"DELETE FROM tasks WHERE id=" + id + @";"
            );
     }
@@ -36,14 +36,14 @@ public class TaskManager : ITaskManager
     {
         if (newDescription != null)
         {
-            _databaseManagerController.ExecuteSQL(
+            _databaseServiceController.ExecuteSQL(
                 @"UPDATE tasks SET Description = '" + newDescription + @"' WHERE Id = '" + id + @"';"
             );
         } 
         
         if (newTitle != null)
         {
-            _databaseManagerController.ExecuteSQL(
+            _databaseServiceController.ExecuteSQL(
                 @"UPDATE tasks SET Title = '" + newTitle + @"' WHERE Id = '" + id + @"';"
             );
         }

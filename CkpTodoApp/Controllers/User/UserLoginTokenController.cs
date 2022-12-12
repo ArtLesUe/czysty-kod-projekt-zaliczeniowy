@@ -1,5 +1,5 @@
-﻿using CkpTodoApp.Models;
-using CkpTodoApp.Requests;
+﻿using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Mvc;
 

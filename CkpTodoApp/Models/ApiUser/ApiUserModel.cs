@@ -1,8 +1,8 @@
-﻿using CkpTodoApp.DatabaseControllers;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using CkpTodoApp.DatabaseControllers;
 
-namespace CkpTodoApp.Models;
+namespace CkpTodoApp.Models.ApiUser;
 //TODO
 public class ApiUserModel : IApiUserInterface
 {
@@ -23,7 +23,7 @@ public class ApiUserModel : IApiUserInterface
   {
     Id = id;
 
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
     var resultSql = databaseManagerController.ExecuteSQLQuery(
       @"SELECT json_group_array( 
           json_object(
@@ -93,14 +93,14 @@ public class ApiUserModel : IApiUserInterface
   public void Delete()
   {
     if (Id == 0) return;
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
     databaseManagerController.ExecuteSQL(@"DELETE FROM users WHERE Id = '" + Id + @"'");
     databaseManagerController.ExecuteSQL(@"DELETE FROM tokens WHERE UserId = '" + Id + @"'");
   }
     
   public void Save()
   {
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
     databaseManagerController.ExecuteSQL(
       @"INSERT INTO users (Name, Surname, Email, PasswordHashed, AboutMe, City, Country, University) VALUES (
           '" + Name + @"', 
@@ -117,7 +117,7 @@ public class ApiUserModel : IApiUserInterface
 
   public void Update()
   {
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
     databaseManagerController.ExecuteSQL(
       @"UPDATE users SET 
           Name='" + Name + @"', 
@@ -132,7 +132,7 @@ public class ApiUserModel : IApiUserInterface
 
   public void PasswordChange(string passwordHashed) 
   {
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
     databaseManagerController.ExecuteSQL(
       @"UPDATE users SET 
           PasswordHashed='" + passwordHashed + @"'

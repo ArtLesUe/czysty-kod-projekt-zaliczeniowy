@@ -1,10 +1,10 @@
-﻿using CkpTodoApp.DatabaseControllers;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using CkpTodoApp.Models;
+using CkpTodoApp.DatabaseControllers;
+using CkpTodoApp.Models.ApiUser;
 
-namespace CkpTodoApp.Requests
+namespace CkpTodoApp.Requests.User
 {
   public class UserLoginRequest
   {
@@ -24,8 +24,8 @@ namespace CkpTodoApp.Requests
       byte[] inputBytes = Encoding.ASCII.GetBytes(Password);
       byte[] hashBytes = hasher.ComputeHash(inputBytes);
 
-      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
-      String resultSql = databaseManagerController.ExecuteSQLQuery(
+      DatabaseServiceController databaseServiceController = new DatabaseServiceController();
+      String resultSql = databaseServiceController.ExecuteSQLQuery(
         @"SELECT json_group_array( 
           json_object(
             'Id', Id,

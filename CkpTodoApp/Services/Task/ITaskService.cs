@@ -1,4 +1,4 @@
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.Task;
 
 namespace CkpTodoApp.Services.Task;
 

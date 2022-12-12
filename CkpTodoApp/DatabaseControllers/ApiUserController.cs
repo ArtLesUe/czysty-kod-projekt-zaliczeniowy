@@ -3,18 +3,18 @@ using System.Text;
 
 namespace CkpTodoApp.DatabaseControllers;
 
-public class ApiUserSeederController : ISeederInterface
+public class ApiUserController : IMigrantInterface, ISeederInterface
 {
-  private readonly DatabaseManagerController _databaseManagerController;
+  private readonly DatabaseServiceController _databaseServiceController;
     
-  public ApiUserSeederController()
+  public ApiUserController()
   {
-    _databaseManagerController = new DatabaseManagerController();
+    _databaseServiceController = new DatabaseServiceController();
   }
 
   public void MigrateDatabase()
   {
-    _databaseManagerController.ExecuteSQL(
+    _databaseServiceController.ExecuteSQL(
       @"CREATE TABLE IF NOT EXISTS 'users' (
           'Id' INTEGER NOT NULL UNIQUE,
           'Name' TEXT NOT NULL,
@@ -36,7 +36,7 @@ public class ApiUserSeederController : ISeederInterface
     var inputBytes = Encoding.ASCII.GetBytes("admin123");
     var hashBytes = hasher.ComputeHash(inputBytes);
 
-    _databaseManagerController.ExecuteSQL(
+    _databaseServiceController.ExecuteSQL(
       @"INSERT INTO users (Name, Surname, Email, PasswordHashed, AboutMe, City, Country, University) 
         SELECT 'Administrator', 'Systemu', 'admin@admin.pl', '" + Convert.ToHexString(hashBytes) + @"',
           'Kilka slow o sobie', 'Katowice', 'Polska', 'Uniwersytet Ekonomiczny w Katowicach'

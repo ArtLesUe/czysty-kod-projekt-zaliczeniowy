@@ -1,10 +1,9 @@
-﻿using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Models;
-using System.Net.Mail;
-using System.Net.NetworkInformation;
+﻿using System.Net.Mail;
 using System.Text.Json;
+using CkpTodoApp.DatabaseControllers;
+using CkpTodoApp.Models.ApiUser;
 
-namespace CkpTodoApp.Requests
+namespace CkpTodoApp.Requests.User
 {
   public class UserRegisterRequest
   {
@@ -39,8 +38,8 @@ namespace CkpTodoApp.Requests
 
     public static bool IsEmailNotDuplicated(string email)
     {
-      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
-      String resultSql = databaseManagerController.ExecuteSQLQuery(
+      DatabaseServiceController databaseServiceController = new DatabaseServiceController();
+      String resultSql = databaseServiceController.ExecuteSQLQuery(
         @"SELECT json_group_array( 
           json_object(
             'Id', Id,

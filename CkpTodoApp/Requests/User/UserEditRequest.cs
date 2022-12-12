@@ -1,4 +1,4 @@
-namespace CkpTodoApp.Requests;
+namespace CkpTodoApp.Requests.User;
 
 public class UserEditRequest
 {

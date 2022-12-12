@@ -1,17 +1,17 @@
 ﻿namespace CkpTodoApp.DatabaseControllers;
 
-public class ApiTokenSeederController : ISeederInterface
+public class ApiTokenController : IMigrantInterface
 {
-  private readonly DatabaseManagerController _databaseManagerController;
+  private readonly DatabaseServiceController _databaseServiceController;
     
-  public ApiTokenSeederController() 
+  public ApiTokenController() 
   { 
-    _databaseManagerController = new DatabaseManagerController();
+    _databaseServiceController = new DatabaseServiceController();
   }
 
   public void MigrateDatabase()
   {
-    _databaseManagerController.ExecuteSQL(
+    _databaseServiceController.ExecuteSQL(
       @"CREATE TABLE IF NOT EXISTS 'tokens' (
           'Id' INTEGER NOT NULL UNIQUE,
           'UserId' INTEGER NOT NULL,
@@ -20,6 +20,4 @@ public class ApiTokenSeederController : ISeederInterface
         );"
     );
   }
-
-  public void SeedDatabase() { }
 }

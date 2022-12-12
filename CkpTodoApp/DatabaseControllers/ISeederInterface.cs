@@ -1,9 +1,6 @@
-﻿namespace CkpTodoApp.DatabaseControllers
-{
-    public interface ISeederInterface
-    {
-        void MigrateDatabase();
+﻿namespace CkpTodoApp.DatabaseControllers;
 
-        void SeedDatabase();
-    }
+public interface ISeederInterface
+{
+    void SeedDatabase();
 }

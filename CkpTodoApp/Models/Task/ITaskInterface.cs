@@ -1,4 +1,4 @@
-namespace CkpTodoApp.Models;
+namespace CkpTodoApp.Models.Task;
 
 public interface ITaskInterface
 {

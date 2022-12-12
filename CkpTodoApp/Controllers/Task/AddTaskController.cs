@@ -1,4 +1,5 @@
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Models.Task;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.Task;

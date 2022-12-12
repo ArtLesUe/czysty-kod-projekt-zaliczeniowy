@@ -1,6 +1,7 @@
 using System.Text.Json;
 using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Models.ApiUser;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -31,7 +32,7 @@ public class UserDetailsController : ControllerBase
       return new List<ApiUserModel>();
     }
 
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
     var resultSql = databaseManagerController.ExecuteSQLQuery(
       @"SELECT json_group_array( 
           json_object(

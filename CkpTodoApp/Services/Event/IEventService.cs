@@ -1,4 +1,4 @@
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.Event;
 
 namespace CkpTodoApp.Services.Event;
 

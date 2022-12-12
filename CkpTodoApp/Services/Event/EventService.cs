@@ -1,15 +1,15 @@
 using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.Event;
 
 namespace CkpTodoApp.Services.Event;
 
 public class EventService : IEventService
 {
-    private readonly DatabaseManagerController _databaseManagerController = new();
+    private readonly DatabaseServiceController _databaseServiceController = new();
 
     public void Add(EventModel @event)
     {
-        _databaseManagerController.ExecuteSQL(
+        _databaseServiceController.ExecuteSQL(
             @"INSERT INTO events (Title, Description, StartDate, EndDate) VALUES (
             '" + @event.Title + @"', 
             '" + @event.Description + @"',
@@ -21,7 +21,7 @@ public class EventService : IEventService
 
     public void DeleteEventById(int id)
     {
-        _databaseManagerController.ExecuteSQL(
+        _databaseServiceController.ExecuteSQL(
             @"DELETE FROM events WHERE id=" + id + @";"
             );
     }
@@ -30,28 +30,28 @@ public class EventService : IEventService
     {
         if (newDescription != null)
         {
-            _databaseManagerController.ExecuteSQL(
+            _databaseServiceController.ExecuteSQL(
                 @"UPDATE tasks SET Description='" + newDescription + @"'WHERE id=" + id + @";"
             );
         }
 
         if (newTitle != null)
         {
-            _databaseManagerController.ExecuteSQL(
+            _databaseServiceController.ExecuteSQL(
                 @"UPDATE events SET Title='" + newTitle + @"' WHERE id=" + id + @";"
             );
         }
 
         if (newStartDate != null)
         {
-            _databaseManagerController.ExecuteSQL(
+            _databaseServiceController.ExecuteSQL(
                 @"UPDATE events SET StartDate='" + newStartDate + @"' WHERE id=" + id + @";"
             );
         }
 
         if (newEndDate != null)
         {
-            _databaseManagerController.ExecuteSQL(
+            _databaseServiceController.ExecuteSQL(
                 @"UPDATE events SET EndDate='" + newEndDate + @"' WHERE id=" + id + @";"
             );
         }

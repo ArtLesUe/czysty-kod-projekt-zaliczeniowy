@@ -16,7 +16,7 @@ app.UseCors(x => x
                 .SetIsOriginAllowed(_ => true) 
                 .AllowCredentials());
 
-var databaseManagerController = new DatabaseManagerController();
+var databaseManagerController = new DatabaseServiceController();
 databaseManagerController.InitDatabase();
 databaseManagerController.SeedDatabase();
 

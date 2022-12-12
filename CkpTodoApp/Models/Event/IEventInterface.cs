@@ -1,4 +1,4 @@
-namespace CkpTodoApp.Models;
+namespace CkpTodoApp.Models.Event;
 
 public interface IEventInterface
 {

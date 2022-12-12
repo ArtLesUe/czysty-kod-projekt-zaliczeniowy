@@ -1,15 +1,14 @@
-﻿namespace CkpTodoApp.DatabaseControllers
+﻿namespace CkpTodoApp.DatabaseControllers;
+
+public interface IDatabaseManagerInterface
 {
-    public interface IDatabaseManagerInterface
-    {
-        void InitDatabase();
+    void InitDatabase();
 
-        void SeedDatabase();
+    void SeedDatabase();
 
-        void ExecuteSQL(string sql);
+    void ExecuteSQL(string sql);
 
-        string ExecuteSQLQuery(string sql);
+    string ExecuteSQLQuery(string sql);
 
-        string DatabasePath();
-    }
+    string DatabasePath();
 }

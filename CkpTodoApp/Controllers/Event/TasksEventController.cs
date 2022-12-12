@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Models.Event;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -31,7 +32,7 @@ public class TasksEventController : ControllerBase
       return new List<EventModel>();
     }
 
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
     var resultSql = databaseManagerController.ExecuteSQLQuery(
       @"SELECT json_group_array( 
           json_object(

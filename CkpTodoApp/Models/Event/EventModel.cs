@@ -1,6 +1,6 @@
 using CkpTodoApp.Commons;
 
-namespace CkpTodoApp.Models;
+namespace CkpTodoApp.Models.Event;
 
 public class EventModel : IEventInterface
 {

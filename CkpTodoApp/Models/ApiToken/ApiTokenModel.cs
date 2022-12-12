@@ -1,7 +1,7 @@
-﻿using CkpTodoApp.DatabaseControllers;
-using System.Text.Json;
+﻿using System.Text.Json;
+using CkpTodoApp.DatabaseControllers;
 
-namespace CkpTodoApp.Models;
+namespace CkpTodoApp.Models.ApiToken;
 
 public class ApiTokenModel : IApiTokenInterface 
 {
@@ -20,7 +20,7 @@ public class ApiTokenModel : IApiTokenInterface
 
   public void Verify()
   {
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
 
     var resultSql = databaseManagerController.ExecuteSQLQuery(
       @"SELECT json_group_array( 
@@ -44,7 +44,7 @@ public class ApiTokenModel : IApiTokenInterface
 
   public void Save()
   {
-    var databaseManagerController = new DatabaseManagerController();
+    var databaseManagerController = new DatabaseServiceController();
       
     databaseManagerController.ExecuteSQL(
       @"INSERT INTO tokens (UserId, Token) VALUES (

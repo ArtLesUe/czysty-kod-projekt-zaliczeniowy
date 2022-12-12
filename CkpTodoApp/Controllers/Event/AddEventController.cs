@@ -1,5 +1,6 @@
 using System.Globalization;
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Models.Event;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.Event;

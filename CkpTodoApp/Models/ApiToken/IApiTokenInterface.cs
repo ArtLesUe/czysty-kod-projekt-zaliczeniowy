@@ -1,4 +1,4 @@
-﻿namespace CkpTodoApp.Models;
+﻿namespace CkpTodoApp.Models.ApiToken;
 
 public interface IApiTokenInterface
 {

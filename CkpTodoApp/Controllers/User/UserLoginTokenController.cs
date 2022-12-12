@@ -1,6 +1,7 @@
 ﻿using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
+using CkpTodoApp.Services.ApiTokenService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.User;
@@ -25,13 +26,14 @@ public class UserLoginTokenController : ControllerBase
       return new UserLoginTokenResponse();
     }
 
-    var apiTokenModel = new ApiTokenModel(0, userId, Guid.NewGuid().ToString());
-    apiTokenModel.Save();
-      
+    var apiToken = new ApiTokenModel(0, userId, Guid.NewGuid().ToString());
+    var apiTokenService = new ApiTokenService();
+    apiTokenService.Save(apiToken);   
+    
     return new UserLoginTokenResponse
     {
-      UserId = apiTokenModel.UserId,
-      Token = apiTokenModel.Token
+      UserId = apiToken.UserId,
+      Token = apiToken.Token
     };
   }
 }

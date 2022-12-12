@@ -1,6 +1,7 @@
 using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
+using CkpTodoApp.Services.ApiTokenService;
 using CkpTodoApp.Services.Event;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -24,8 +25,9 @@ public class EditEventController : ControllerBase
         }
 
         var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-        apiToken.Verify();
-
+        var apiTokenService = new ApiTokenService();
+        apiTokenService.Verify(apiToken);
+        
         if (apiToken.UserId == 0)
         {
             Response.StatusCode = 401;

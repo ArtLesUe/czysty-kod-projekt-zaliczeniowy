@@ -4,6 +4,7 @@ using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
+using CkpTodoApp.Services.ApiTokenService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -34,8 +35,9 @@ public class UserRegisterController : ControllerBase
     }
 
     var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    apiToken.Verify();
-
+    var apiTokenService = new ApiTokenService();
+    apiTokenService.Verify(apiToken);
+    
     if (apiToken.UserId == 0)
     {
       Response.StatusCode = 401;

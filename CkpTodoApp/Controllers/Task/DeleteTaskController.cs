@@ -14,7 +14,7 @@ public class DeleteTaskController : ControllerBase
     public RootResponse Get(int id)
     {
         Request.Headers.TryGetValue("token", out StringValues headerValues);
-        string? jsonWebToken = headerValues.FirstOrDefault();
+        var jsonWebToken = headerValues.FirstOrDefault();
 
         if (string.IsNullOrEmpty(jsonWebToken))
         {
@@ -22,7 +22,7 @@ public class DeleteTaskController : ControllerBase
             return new RootResponse { Status = "auth-failed" };
         }
 
-        ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
         apiToken.Verify();
 
         if (apiToken.UserId == 0)

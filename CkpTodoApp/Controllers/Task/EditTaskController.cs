@@ -15,21 +15,21 @@ public class EditTaskController : ControllerBase
     public RootResponse Post(TaskRequest taskRequest, int id)
     {
         Request.Headers.TryGetValue("token", out StringValues headerValues);
-        string? jsonWebToken = headerValues.FirstOrDefault();
+        var jsonWebToken = headerValues.FirstOrDefault();
 
         if (string.IsNullOrEmpty(jsonWebToken))
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "wrong-auth" };
+            return new RootResponse { Status = "auth-failed" };
         }
 
-        ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
         apiToken.Verify();
 
         if (apiToken.UserId == 0)
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "wrong-auth" };
+            return new RootResponse { Status = "auth-failed" };
         }
 
         var taskManager = new TaskManager();

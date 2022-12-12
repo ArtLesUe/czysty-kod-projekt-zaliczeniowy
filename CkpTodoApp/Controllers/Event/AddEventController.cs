@@ -1,3 +1,4 @@
+using System.Globalization;
 using CkpTodoApp.Models;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
@@ -15,12 +16,12 @@ public class AddEventController : ControllerBase
   public RootResponse Post(EventRequest eventRequest)
   {
     Request.Headers.TryGetValue("token", out StringValues headerValues);
-    string? jsonWebToken = headerValues.FirstOrDefault();
+    var jsonWebToken = headerValues.FirstOrDefault();
 
     if (string.IsNullOrEmpty(jsonWebToken))
     {
       Response.StatusCode = 401;
-      return new RootResponse { Status = "wrong-auth" };
+      return new RootResponse { Status = "auth-failed" };
     }
 
     var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
@@ -29,14 +30,14 @@ public class AddEventController : ControllerBase
     if (apiToken.UserId == 0)
     {
       Response.StatusCode = 401;
-      return new RootResponse { Status = "wrong-auth" };
+      return new RootResponse { Status = "auth-failed" };
     }
         
     var newEvent = new EventModel(
       eventRequest.Title ?? "", 
       eventRequest.Description ?? "",
-      eventRequest.StartDate ?? DateTime.Now.ToString(),
-      eventRequest.EndDate ?? DateTime.Now.ToString());
+      eventRequest.StartDate ?? DateTime.Now.ToString(CultureInfo.CurrentCulture),
+      eventRequest.EndDate ?? DateTime.Now.ToString(CultureInfo.CurrentCulture));
 
     var eventService = new EventService();
     eventService.Add(newEvent);

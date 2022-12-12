@@ -14,12 +14,12 @@ public class DeleteEventController : ControllerBase
     public RootResponse Get(int id)
     {
         Request.Headers.TryGetValue("token", out StringValues headerValues);
-        string? jsonWebToken = headerValues.FirstOrDefault();
+        var jsonWebToken = headerValues.FirstOrDefault();
 
         if (string.IsNullOrEmpty(jsonWebToken))
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "wrong-auth" };
+            return new RootResponse { Status = "auth-failed" };
         }
 
         var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
@@ -28,7 +28,7 @@ public class DeleteEventController : ControllerBase
         if (apiToken.UserId == 0)
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "wrong-auth" };
+            return new RootResponse { Status = "auth-failed" };
         }
 
         var eventService = new EventService();

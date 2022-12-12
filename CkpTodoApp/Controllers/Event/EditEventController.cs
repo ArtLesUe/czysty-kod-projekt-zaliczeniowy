@@ -20,7 +20,7 @@ public class EditEventController : ControllerBase
         if (string.IsNullOrEmpty(jsonWebToken))
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "wrong-auth" };
+            return new RootResponse { Status = "auth-failed" };
         }
 
         var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
@@ -29,7 +29,7 @@ public class EditEventController : ControllerBase
         if (apiToken.UserId == 0)
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "wrong-auth" };
+            return new RootResponse { Status = "auth-failed" };
         }
 
         var eventService = new EventService();

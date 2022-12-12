@@ -2,7 +2,7 @@ using CkpTodoApp.Models.Task;
 
 namespace CkpTodoApp.Services.Task;
 
-public interface ITaskManager
+public interface ITaskServiceInterface
 { 
     void Add(TaskModel task);
     

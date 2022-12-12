@@ -3,7 +3,7 @@ using CkpTodoApp.Models.Task;
 
 namespace CkpTodoApp.Services.Task;
 
-public class TaskManager : ITaskManager
+public class TaskService : ITaskServiceInterface
 {
     private readonly DatabaseServiceController _databaseServiceController = new();
     

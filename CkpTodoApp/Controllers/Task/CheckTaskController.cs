@@ -33,7 +33,7 @@ public class CheckTaskController : ControllerBase
             return new RootResponse { Status = "auth-failed" };
         }
 
-        var taskManager = new TaskManager();
+        var taskManager = new TaskService();
         
         try
         {

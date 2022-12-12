@@ -45,7 +45,7 @@ public class AddTaskController : ControllerBase
       taskRequest.Title ?? "", 
       taskRequest.Description ?? "");
 
-    var taskManager = new TaskManager();
+    var taskManager = new TaskService();
     taskManager.Add(newTask);
   
     Response.StatusCode = 201;

@@ -3,7 +3,7 @@ using CkpTodoApp.Models.ApiUser;
 
 namespace CkpTodoApp.Services.ApiUserService;
 
-public class ApiUserService: IApiUserService
+public class ApiUserService: IApiUserServiceInterface
 {
     
     public void Delete(ApiUserModel apiUser)

@@ -2,7 +2,7 @@
 
 namespace CkpTodoApp.Services.ApiUserService;
 
-public interface IApiUserService
+public interface IApiUserServiceInterface
 {
     void Delete(ApiUserModel apiUser);
     void Save(ApiUserModel apiUser);

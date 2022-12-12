@@ -2,7 +2,7 @@ using CkpTodoApp.Models.Event;
 
 namespace CkpTodoApp.Services.Event;
 
-public interface IEventService
+public interface IEventServiceInterface
 {
     void Add(EventModel @event);
 

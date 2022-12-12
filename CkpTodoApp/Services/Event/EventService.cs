@@ -3,7 +3,7 @@ using CkpTodoApp.Models.Event;
 
 namespace CkpTodoApp.Services.Event;
 
-public class EventService : IEventService
+public class EventService : IEventServiceInterface
 {
     private readonly DatabaseServiceController _databaseServiceController = new();
 

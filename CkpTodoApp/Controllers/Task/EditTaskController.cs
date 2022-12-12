@@ -34,7 +34,7 @@ public class EditTaskController : ControllerBase
             return new RootResponse { Status = "auth-failed" };
         }
 
-        var taskManager = new TaskManager();
+        var taskManager = new TaskService();
         taskManager.EditTaskById(id, taskRequest.Title, taskRequest.Description);
   
         Response.StatusCode = 201;

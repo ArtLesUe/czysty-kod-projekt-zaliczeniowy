@@ -33,7 +33,7 @@ public class DeleteTaskController : ControllerBase
             return new RootResponse { Status = "auth-failed" };
         }
 
-        var taskManager = new TaskManager();
+        var taskManager = new TaskService();
         
         try
         {

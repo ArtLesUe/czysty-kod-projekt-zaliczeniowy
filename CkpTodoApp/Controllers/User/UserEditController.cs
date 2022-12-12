@@ -3,6 +3,7 @@ using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.ApiUserService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -57,7 +58,9 @@ public class UserEditController : ControllerBase
       string.IsNullOrEmpty(userEditRequest.Country) ? oldUser.Country : userEditRequest.Country,
       string.IsNullOrEmpty(userEditRequest.University) ? oldUser.University : userEditRequest.University
     );
-    newUser.Update();
+    
+    var apiUserService = new ApiUserService();
+    apiUserService.Update(newUser);
 
     Response.StatusCode = 201;
     return new RootResponse { Status = "OK" };

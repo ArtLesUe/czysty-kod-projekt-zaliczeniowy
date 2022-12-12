@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using CkpTodoApp.DatabaseControllers;
 
 namespace CkpTodoApp.Models.ApiUser;
-//TODO
+
 public class ApiUserModel : IApiUserInterface
 {
   public ApiUserModel() 
@@ -89,54 +89,4 @@ public class ApiUserModel : IApiUserInterface
   public string Country { get; set; }
 
   public string University { get; set; }
-
-  public void Delete()
-  {
-    if (Id == 0) return;
-    var databaseManagerController = new DatabaseServiceController();
-    databaseManagerController.ExecuteSQL(@"DELETE FROM users WHERE Id = '" + Id + @"'");
-    databaseManagerController.ExecuteSQL(@"DELETE FROM tokens WHERE UserId = '" + Id + @"'");
-  }
-    
-  public void Save()
-  {
-    var databaseManagerController = new DatabaseServiceController();
-    databaseManagerController.ExecuteSQL(
-      @"INSERT INTO users (Name, Surname, Email, PasswordHashed, AboutMe, City, Country, University) VALUES (
-          '" + Name + @"', 
-          '" + Surname + @"', 
-          '" + Email + @"', 
-          '" + PasswordHashed + @"',
-          '" + AboutMe + @"', 
-          '" + City + @"', 
-          '" + Country + @"', 
-          '" + University + @"'
-        );"
-    );
-  }
-
-  public void Update()
-  {
-    var databaseManagerController = new DatabaseServiceController();
-    databaseManagerController.ExecuteSQL(
-      @"UPDATE users SET 
-          Name='" + Name + @"', 
-          Surname='" + Surname + @"', 
-          AboutMe='" + AboutMe + @"', 
-          City='" + City + @"', 
-          Country='" + Country + @"', 
-          University='" + University + @"' 
-          WHERE Id = '" + Id + @"';"
-    );
-  }
-
-  public void PasswordChange(string passwordHashed) 
-  {
-    var databaseManagerController = new DatabaseServiceController();
-    databaseManagerController.ExecuteSQL(
-      @"UPDATE users SET 
-          PasswordHashed='" + passwordHashed + @"'
-          WHERE Id = '" + Id + @"';"
-    );
-  }
 }

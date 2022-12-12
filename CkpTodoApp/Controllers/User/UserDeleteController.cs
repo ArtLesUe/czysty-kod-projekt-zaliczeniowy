@@ -2,6 +2,7 @@
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.ApiUserService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -42,7 +43,8 @@ public class UserDeleteController : ControllerBase
     try 
     { 
       var apiUserModel = new ApiUserModel(id);
-      apiUserModel.Delete();
+      var apiUserService = new ApiUserService();
+      apiUserService.Delete(apiUserModel);
     } 
     catch (Exception)
     {

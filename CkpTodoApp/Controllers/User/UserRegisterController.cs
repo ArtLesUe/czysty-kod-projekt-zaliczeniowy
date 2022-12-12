@@ -5,6 +5,7 @@ using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.ApiUserService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -60,7 +61,9 @@ public class UserRegisterController : ControllerBase
       string.IsNullOrEmpty(userRegisterRequest.Country) ? "" : userRegisterRequest.Country,
       string.IsNullOrEmpty(userRegisterRequest.University) ? "" : userRegisterRequest.University
     );
-    newUser.Save();
+    
+    var apiUserService = new ApiUserService();
+    apiUserService.Save(newUser);
 
     Response.StatusCode = 201;
     return new RootResponse { Status = "OK" };

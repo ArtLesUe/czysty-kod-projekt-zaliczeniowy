@@ -1,12 +1,11 @@
-using CkpTodoApp.Event;
 using CkpTodoApp.Models;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Cors;
+using CkpTodoApp.Services.Event;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.Event
 {
     [Route("api/events/add")]
     [ApiController]

@@ -1,15 +1,12 @@
-﻿using CkpTodoApp.Models;
+﻿using System.Security.Cryptography;
+using System.Text;
+using CkpTodoApp.Models;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Net.NetworkInformation;
-using System.Security.Cryptography;
-using System.Text;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.User
 {
   [Route("api/user/register")]
   [ApiController]

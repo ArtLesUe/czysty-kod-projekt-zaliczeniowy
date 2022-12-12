@@ -1,6 +1,6 @@
 using CkpTodoApp.Models;
 
-namespace CkpTodoApp.Task;
+namespace CkpTodoApp.Services.Task;
 
 public interface ITaskManager
 { 

@@ -1,7 +1,7 @@
 using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models;
 
-namespace CkpTodoApp.Event;
+namespace CkpTodoApp.Services.Event;
 
 public class EventService : IEventService
 {

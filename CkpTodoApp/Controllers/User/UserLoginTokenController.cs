@@ -1,10 +1,9 @@
 ﻿using CkpTodoApp.Models;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.User
 {
   [Route("api/user/login")]
   [ApiController]

@@ -1,11 +1,9 @@
-﻿using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Http;
+﻿using CkpTodoApp.Models;
+using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Cors;
-using CkpTodoApp.Models;
 using Microsoft.Extensions.Primitives;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.User
 {
   [Route("api/user/delete/{id}")]
   [ApiController]

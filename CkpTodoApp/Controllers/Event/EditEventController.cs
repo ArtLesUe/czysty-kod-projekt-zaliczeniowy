@@ -1,12 +1,11 @@
 using CkpTodoApp.Models;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Event;
-using Microsoft.AspNetCore.Cors;
+using CkpTodoApp.Services.Event;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
-namespace CkpTodoApp.Controllers;
+namespace CkpTodoApp.Controllers.Event;
 
 [Route("api/events/edit/{id:int}")]
 [ApiController]

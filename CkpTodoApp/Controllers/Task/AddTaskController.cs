@@ -1,12 +1,11 @@
 using CkpTodoApp.Models;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Task;
-using Microsoft.AspNetCore.Cors;
+using CkpTodoApp.Services.Task;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.Task
 {
     [Route("api/task/add")]
     [ApiController]

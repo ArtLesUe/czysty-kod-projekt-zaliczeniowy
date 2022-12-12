@@ -1,13 +1,10 @@
-﻿using CkpTodoApp.DatabaseControllers;
+﻿using System.Text.Json;
+using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models;
-using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Text.Json;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.User
 {
   [Route("api/user/list")]
   [ApiController]

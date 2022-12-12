@@ -1,7 +1,7 @@
 using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models;
 
-namespace CkpTodoApp.Task;
+namespace CkpTodoApp.Services.Task;
 
 public class TaskManager : ITaskManager
 {

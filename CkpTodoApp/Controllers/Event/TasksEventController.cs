@@ -1,11 +1,10 @@
-﻿using CkpTodoApp.DatabaseControllers;
+﻿using System.Text.Json;
+using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Text.Json;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.Event
 {
   [Route("api/events/list")]
   [ApiController]

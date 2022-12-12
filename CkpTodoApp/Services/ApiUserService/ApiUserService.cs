@@ -1,5 +1,6 @@
 ﻿using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models.ApiUser;
+using CkpTodoApp.Services.DatabaseService;
 
 namespace CkpTodoApp.Services.ApiUserService;
 
@@ -9,14 +10,14 @@ public class ApiUserService: IApiUserServiceInterface
     public void Delete(ApiUserModel apiUser)
     {
         if (apiUser.Id == 0) return;
-        var databaseManagerController = new DatabaseServiceController();
+        var databaseManagerController = new DatabaseService.DatabaseService();
         databaseManagerController.ExecuteSQL(@"DELETE FROM users WHERE Id = '" + apiUser.Id + @"'");
         databaseManagerController.ExecuteSQL(@"DELETE FROM tokens WHERE UserId = '" + apiUser.Id + @"'");
     }
     
     public void Save(ApiUserModel apiUser)
     {
-        var databaseManagerController = new DatabaseServiceController();
+        var databaseManagerController = new DatabaseService.DatabaseService();
         databaseManagerController.ExecuteSQL(
             @"INSERT INTO users (Name, Surname, Email, PasswordHashed, AboutMe, City, Country, University) VALUES (
           '" + apiUser.Name + @"', 
@@ -33,7 +34,7 @@ public class ApiUserService: IApiUserServiceInterface
 
     public void Update(ApiUserModel apiUser)
     {
-        var databaseManagerController = new DatabaseServiceController();
+        var databaseManagerController = new DatabaseService.DatabaseService();
         databaseManagerController.ExecuteSQL(
             @"UPDATE users SET 
           Name='" + apiUser.Name + @"', 
@@ -48,7 +49,7 @@ public class ApiUserService: IApiUserServiceInterface
 
     public void ChangePassword(ApiUserModel apiUser, string newPassword) 
     {
-        var databaseManagerController = new DatabaseServiceController();
+        var databaseManagerController = new DatabaseService.DatabaseService();
         databaseManagerController.ExecuteSQL(
             @"UPDATE users SET 
           PasswordHashed='" + newPassword + @"'

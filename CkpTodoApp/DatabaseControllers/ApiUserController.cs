@@ -1,20 +1,21 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using CkpTodoApp.Services.DatabaseService;
 
 namespace CkpTodoApp.DatabaseControllers;
 
 public class ApiUserController : IMigrantInterface, ISeederInterface
 {
-  private readonly DatabaseServiceController _databaseServiceController;
+  private readonly DatabaseService _databaseService;
     
   public ApiUserController()
   {
-    _databaseServiceController = new DatabaseServiceController();
+    _databaseService = new DatabaseService();
   }
 
   public void MigrateDatabase()
   {
-    _databaseServiceController.ExecuteSQL(
+    _databaseService.ExecuteSQL(
       @"CREATE TABLE IF NOT EXISTS 'users' (
           'Id' INTEGER NOT NULL UNIQUE,
           'Name' TEXT NOT NULL,
@@ -36,7 +37,7 @@ public class ApiUserController : IMigrantInterface, ISeederInterface
     var inputBytes = Encoding.ASCII.GetBytes("admin123");
     var hashBytes = hasher.ComputeHash(inputBytes);
 
-    _databaseServiceController.ExecuteSQL(
+    _databaseService.ExecuteSQL(
       @"INSERT INTO users (Name, Surname, Email, PasswordHashed, AboutMe, City, Country, University) 
         SELECT 'Administrator', 'Systemu', 'admin@admin.pl', '" + Convert.ToHexString(hashBytes) + @"',
           'Kilka slow o sobie', 'Katowice', 'Polska', 'Uniwersytet Ekonomiczny w Katowicach'

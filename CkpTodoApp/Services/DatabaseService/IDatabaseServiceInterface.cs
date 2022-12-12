@@ -1,6 +1,6 @@
-﻿namespace CkpTodoApp.DatabaseControllers;
+﻿namespace CkpTodoApp.Services.DatabaseService;
 
-public interface IDatabaseManagerInterface
+public interface IDatabaseServiceInterface
 {
     void InitDatabase();
 

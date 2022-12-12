@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using CkpTodoApp.DatabaseControllers;
+using CkpTodoApp.Services.DatabaseService;
 
 namespace CkpTodoApp.Models.ApiUser;
 
@@ -23,7 +24,7 @@ public class ApiUserModel : IApiUserInterface
   {
     Id = id;
 
-    var databaseManagerController = new DatabaseServiceController();
+    var databaseManagerController = new DatabaseService();
     var resultSql = databaseManagerController.ExecuteSQLQuery(
       @"SELECT json_group_array( 
           json_object(

@@ -1,15 +1,16 @@
 using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models.Event;
+using CkpTodoApp.Services.DatabaseService;
 
 namespace CkpTodoApp.Services.Event;
 
 public class EventService : IEventServiceInterface
 {
-    private readonly DatabaseServiceController _databaseServiceController = new();
+    private readonly DatabaseService.DatabaseService _databaseService = new();
 
     public void Add(EventModel @event)
     {
-        _databaseServiceController.ExecuteSQL(
+        _databaseService.ExecuteSQL(
             @"INSERT INTO events (Title, Description, StartDate, EndDate) VALUES (
             '" + @event.Title + @"', 
             '" + @event.Description + @"',
@@ -21,7 +22,7 @@ public class EventService : IEventServiceInterface
 
     public void DeleteEventById(int id)
     {
-        _databaseServiceController.ExecuteSQL(
+        _databaseService.ExecuteSQL(
             @"DELETE FROM events WHERE id=" + id + @";"
             );
     }
@@ -30,28 +31,28 @@ public class EventService : IEventServiceInterface
     {
         if (newDescription != null)
         {
-            _databaseServiceController.ExecuteSQL(
+            _databaseService.ExecuteSQL(
                 @"UPDATE tasks SET Description='" + newDescription + @"'WHERE id=" + id + @";"
             );
         }
 
         if (newTitle != null)
         {
-            _databaseServiceController.ExecuteSQL(
+            _databaseService.ExecuteSQL(
                 @"UPDATE events SET Title='" + newTitle + @"' WHERE id=" + id + @";"
             );
         }
 
         if (newStartDate != null)
         {
-            _databaseServiceController.ExecuteSQL(
+            _databaseService.ExecuteSQL(
                 @"UPDATE events SET StartDate='" + newStartDate + @"' WHERE id=" + id + @";"
             );
         }
 
         if (newEndDate != null)
         {
-            _databaseServiceController.ExecuteSQL(
+            _databaseService.ExecuteSQL(
                 @"UPDATE events SET EndDate='" + newEndDate + @"' WHERE id=" + id + @";"
             );
         }

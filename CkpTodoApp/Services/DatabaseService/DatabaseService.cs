@@ -1,9 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.Reflection;
+using CkpTodoApp.DatabaseControllers;
 
-namespace CkpTodoApp.DatabaseControllers;
+namespace CkpTodoApp.Services.DatabaseService;
 
-public class DatabaseServiceController : IDatabaseManagerInterface
+public class DatabaseService : IDatabaseServiceInterface
 {
   public string DatabasePath()
   {

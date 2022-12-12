@@ -3,6 +3,7 @@ using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Models.Task;
 using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -34,7 +35,7 @@ namespace CkpTodoApp.Controllers.Task
         return new List<TaskModel>();
       }
 
-      var databaseManagerController = new DatabaseServiceController();
+      var databaseManagerController = new DatabaseService();
       var resultSql = databaseManagerController.ExecuteSQLQuery(
         @"SELECT json_group_array( 
           json_object(

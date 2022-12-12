@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models.ApiUser;
+using CkpTodoApp.Services.DatabaseService;
 
 namespace CkpTodoApp.Requests.User
 {
@@ -24,8 +25,8 @@ namespace CkpTodoApp.Requests.User
       byte[] inputBytes = Encoding.ASCII.GetBytes(Password);
       byte[] hashBytes = hasher.ComputeHash(inputBytes);
 
-      DatabaseServiceController databaseServiceController = new DatabaseServiceController();
-      String resultSql = databaseServiceController.ExecuteSQLQuery(
+      DatabaseService databaseService = new DatabaseService();
+      String resultSql = databaseService.ExecuteSQLQuery(
         @"SELECT json_group_array( 
           json_object(
             'Id', Id,

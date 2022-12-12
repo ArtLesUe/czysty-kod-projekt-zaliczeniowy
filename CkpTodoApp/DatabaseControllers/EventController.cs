@@ -1,17 +1,19 @@
+using CkpTodoApp.Services.DatabaseService;
+
 namespace CkpTodoApp.DatabaseControllers;
 
 public class EventController : IMigrantInterface
 {
-    private readonly DatabaseServiceController _databaseServiceController;
+    private readonly DatabaseService _databaseService;
 
     public EventController()
     {
-        _databaseServiceController = new DatabaseServiceController();
+        _databaseService = new DatabaseService();
     }
 
     public void MigrateDatabase()
     {
-        _databaseServiceController.ExecuteSQL(
+        _databaseService.ExecuteSQL(
             @"CREATE TABLE IF NOT EXISTS 'events' (
                   'Id' INTEGER NOT NULL UNIQUE,
                   'Title' TEXT NOT NULL,

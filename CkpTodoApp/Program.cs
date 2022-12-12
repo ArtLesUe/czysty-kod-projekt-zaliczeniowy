@@ -1,4 +1,5 @@
 using CkpTodoApp.DatabaseControllers;
+using CkpTodoApp.Services.DatabaseService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ app.UseCors(x => x
                 .SetIsOriginAllowed(_ => true) 
                 .AllowCredentials());
 
-var databaseManagerController = new DatabaseServiceController();
+var databaseManagerController = new DatabaseService();
 databaseManagerController.InitDatabase();
 databaseManagerController.SeedDatabase();
 

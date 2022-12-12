@@ -1,17 +1,19 @@
+using CkpTodoApp.Services.DatabaseService;
+
 namespace CkpTodoApp.DatabaseControllers;
 
 public class TaskController: IMigrantInterface
 {
-    private readonly DatabaseServiceController _databaseServiceController;
+    private readonly DatabaseService _databaseService;
     
     public TaskController()
     {
-        _databaseServiceController = new DatabaseServiceController();
+        _databaseService = new DatabaseService();
     }
 
     public void MigrateDatabase()
     {
-        _databaseServiceController.ExecuteSQL(
+        _databaseService.ExecuteSQL(
             @"CREATE TABLE IF NOT EXISTS 'tasks' (
                   'Id' INTEGER NOT NULL UNIQUE,
                   'Title' TEXT NOT NULL,

@@ -1,19 +1,17 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Services.ApiTokenService;
 using CkpTodoApp.Services.ApiUserService;
+using CkpTodoApp.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.User;
 
 [Route("api/user/register")]
 [ApiController]
-public class UserRegisterController : ControllerBase
+public class UserRegisterController : AuthService
 {
   public static string Md5(string text)
   {
@@ -26,23 +24,11 @@ public class UserRegisterController : ControllerBase
   [HttpPost]
   public RootResponse Post(UserRegisterRequest userRegisterRequest)
   {
-    Request.Headers.TryGetValue("token", out StringValues headerValues);
-    var jsonWebToken = headerValues.FirstOrDefault();
-
-    if (string.IsNullOrEmpty(jsonWebToken))
-    {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "wrong-auth" };
-    }
-
-    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    var apiTokenService = new ApiTokenService();
-    apiTokenService.Verify(apiToken);
+    var rootResponse = CheckAuth();
     
-    if (apiToken.UserId == 0)
+    if (rootResponse.Status != "OK")
     {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "wrong-auth" };
+      return rootResponse;
     }
 
     if (!userRegisterRequest.Validate()) {

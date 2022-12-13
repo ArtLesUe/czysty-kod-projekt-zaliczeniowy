@@ -1,38 +1,24 @@
-using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Services.ApiTokenService;
 using CkpTodoApp.Services.ApiUserService;
+using CkpTodoApp.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.User;
 
 [Route("api/user/edit/{id:int}")]
 [ApiController]
-public class UserEditController : ControllerBase
+public class UserEditController : AuthService
 {
   [HttpPost]
   public RootResponse Post(UserEditRequest userEditRequest, int id)
   {
-    Request.Headers.TryGetValue("token", out StringValues headerValues);
-    var jsonWebToken = headerValues.FirstOrDefault();
-
-    if (string.IsNullOrEmpty(jsonWebToken))
-    {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "auth-failed" };
-    }
-
-    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    var apiTokenService = new ApiTokenService();
-    apiTokenService.Verify(apiToken);
+    var rootResponse = CheckAuth();
     
-    if (apiToken.UserId == 0)
+    if (rootResponse.Status != "OK")
     {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "auth-failed" };
+      return rootResponse;
     }
 
     ApiUserModel oldUser;

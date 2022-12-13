@@ -412,7 +412,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RootResponse'
-              example: { "Status": "wrong-auth" }
+              example: { "Status": "auth-failed" }
         '201':
           description: Treść zadania została edytowana.
           content:

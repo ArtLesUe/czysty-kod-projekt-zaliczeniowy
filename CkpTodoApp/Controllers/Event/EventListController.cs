@@ -11,7 +11,7 @@ namespace CkpTodoApp.Controllers.Event;
 
 [Route("api/events/list")]
 [ApiController]
-public class TasksEventController : ControllerBase
+public class EventListController : ControllerBase
 {
   [HttpGet]
   public List<EventModel>? Get()

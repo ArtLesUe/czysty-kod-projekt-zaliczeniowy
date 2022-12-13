@@ -3,52 +3,41 @@ using CkpTodoApp.Models.Task;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.Auth;
 using CkpTodoApp.Services.Task;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.Task;
 
 [Route("api/task/add")]
 [ApiController]
-public class AddTaskController : ControllerBase
+public class AddTaskService : AuthService
 {
   [HttpPost]
   public RootResponse Post(TaskRequest taskRequest)
   {
-    Request.Headers.TryGetValue("token", out StringValues headerValues);
-    var jsonWebToken = headerValues.FirstOrDefault();
-
-    if (string.IsNullOrEmpty(jsonWebToken))
-    {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "auth-failed" };
-    }
-
-    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    var apiTokenService = new ApiTokenService();
-    apiTokenService.Verify(apiToken);
+    var rootResponse = CheckAuth();
     
-    if (apiToken.UserId == 0)
+    if (rootResponse.Status != "OK")
     {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "auth-failed" };
+      return rootResponse;
     }
-        
+    
     if (string.IsNullOrEmpty(taskRequest.Title))
     {
       Response.StatusCode = 422;
       return new RootResponse { Status = "wrong-data" };
     }
-        
+      
     var newTask = new TaskModel(
       taskRequest.Title ?? "", 
       taskRequest.Description ?? "");
 
     var taskManager = new TaskService();
     taskManager.Add(newTask);
-  
+    
     Response.StatusCode = 201;
     return new RootResponse { Status = "OK" };
+
   }
 }

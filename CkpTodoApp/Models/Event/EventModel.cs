@@ -1,4 +1,3 @@
-using CkpTodoApp.Commons;
 
 namespace CkpTodoApp.Models.Event;
 
@@ -6,7 +5,7 @@ public class EventModel : IEventInterface
 {
     public EventModel(string title, string description, string startDate, string endDate)
     {
-        Id = UniqueNumber.GetUniqueNumber();
+        Id = 0;
         Title = title;
         Description = description;
         StartDate = startDate;

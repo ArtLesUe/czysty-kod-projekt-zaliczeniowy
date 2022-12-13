@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using CkpTodoApp.Commons;
 
 namespace CkpTodoApp.Models.Task;
 
@@ -7,7 +6,7 @@ public class TaskModel : ITaskInterface
 {
     public TaskModel(string title, string description, int isCheck = 0)
     {
-        Id = UniqueNumber.GetUniqueNumber();
+        Id = 0;
         Title = title;
         Description = description;
         IsCheck = isCheck;

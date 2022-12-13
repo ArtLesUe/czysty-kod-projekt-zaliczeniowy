@@ -1,4 +1,4 @@
-using CkpTodoApp.Constants;
+using CkpTodoApp.Commons;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
@@ -41,7 +41,7 @@ public class UserPasswordController : AuthService
     }
 
     var apiUserService = new ApiUserService();
-    apiUserService.ChangePassword(user, UserRegisterController.Md5(userPasswordRequest.Password));
+    apiUserService.ChangePassword(user,  Md5HashGenerator.TextToMd5(userPasswordRequest.Password));
 
     Response.StatusCode = StatusCodes.Status201Created;
     return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };

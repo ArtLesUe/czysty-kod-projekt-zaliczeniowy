@@ -1,4 +1,4 @@
-namespace CkpTodoApp.Constants;
+namespace CkpTodoApp.Commons;
 
 public enum StatusCodeEnum
 {

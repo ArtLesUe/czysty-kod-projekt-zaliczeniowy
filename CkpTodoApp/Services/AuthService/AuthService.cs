@@ -5,7 +5,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Services.AuthService;
 
-public class AuthService: ControllerBase
+public class AuthService: ControllerBase, IAuthServiceInterface
 {
     public RootResponse CheckAuth()
     {

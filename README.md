@@ -40,7 +40,7 @@ Wymagane oprogramowanie do uruchomienia:
 Kompilacja ze źródła:
 
 ```
-git submodule update --remote --recursive
+git submodule init
 cd CkpTodoFrontend
 npm install
 npm run build

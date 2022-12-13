@@ -12,9 +12,9 @@ public class TaskService : ITaskServiceInterface
     {
         _databaseService.ExecuteSQL(
             @"INSERT INTO tasks (Title, Description, IsCheck) VALUES (
-          '" + task.Title + @"', 
-          '" + task.Description + @"',
-            0
+                '" + task.Title + @"', 
+                '" + task.Description + @"',
+                0
             );"
         );
     }
@@ -22,15 +22,15 @@ public class TaskService : ITaskServiceInterface
     public void CheckTaskById(int id)
     {
         _databaseService.ExecuteSQL(
-            @"UPDATE tasks SET IsCheck=1 WHERE id=" + id + @";"
+            @"UPDATE tasks SET IsCheck = 1 WHERE id = '" + id + @"';"
         );
     }
     
     public void DeleteTaskById(int id)
     {  
-       _databaseService.ExecuteSQL(
-           @"DELETE FROM tasks WHERE id=" + id + @";"
-           );
+        _databaseService.ExecuteSQL(
+            @"DELETE FROM tasks WHERE id = '" + id + @"';"
+        );
     }
     
     public void EditTaskById(int id, string? newTitle, string? newDescription)

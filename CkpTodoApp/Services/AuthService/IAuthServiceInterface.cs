@@ -1,6 +1,6 @@
 ﻿using CkpTodoApp.Responses;
 
-namespace CkpTodoApp.Services.Auth;
+namespace CkpTodoApp.Services.AuthService;
 
 public interface IAuthServiceInterface
 {

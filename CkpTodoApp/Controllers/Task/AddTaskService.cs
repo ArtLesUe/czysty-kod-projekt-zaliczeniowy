@@ -3,7 +3,7 @@ using CkpTodoApp.Models.Task;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.ApiTokenService;
-using CkpTodoApp.Services.Auth;
+using CkpTodoApp.Services.AuthService;
 using CkpTodoApp.Services.Task;
 using Microsoft.AspNetCore.Mvc;
 

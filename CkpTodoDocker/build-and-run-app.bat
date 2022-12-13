@@ -3,6 +3,7 @@ cd ..
 git reset --hard
 git clean -f -d -x
 git submodule init
+git submodule update --remote --recursive
 
 copy CkpTodoDocker\Config\baseUrl.ts CkpTodoFrontend\src\api\consts\baseUrl.ts /Y
 

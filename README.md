@@ -41,6 +41,7 @@ Kompilacja ze źródła:
 
 ```
 git submodule init
+git submodule update --remote --recursive
 cd CkpTodoFrontend
 npm install
 npm run build

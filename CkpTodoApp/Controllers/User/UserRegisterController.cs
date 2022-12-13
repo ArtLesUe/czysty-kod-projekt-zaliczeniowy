@@ -1,76 +1,71 @@
-﻿using CkpTodoApp.Models;
-using CkpTodoApp.Requests;
+﻿using System.Security.Cryptography;
+using System.Text;
+using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Models.ApiUser;
+using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
+using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.ApiUserService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Net.NetworkInformation;
-using System.Security.Cryptography;
-using System.Text;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.User;
+
+[Route("api/user/register")]
+[ApiController]
+public class UserRegisterController : ControllerBase
 {
-  [Route("api/user/register")]
-  [ApiController]
-  public class UserRegisterController : ControllerBase
+  public static string Md5(string text)
   {
-    private readonly ILogger<UserRegisterController> _logger;
+    var hasher = MD5.Create();
+    var inputBytes = Encoding.ASCII.GetBytes(text);
+    var hashBytes = hasher.ComputeHash(inputBytes);
+    return Convert.ToHexString(hashBytes);
+  }
 
-    public UserRegisterController(ILogger<UserRegisterController> logger)
+  [HttpPost]
+  public RootResponse Post(UserRegisterRequest userRegisterRequest)
+  {
+    Request.Headers.TryGetValue("token", out StringValues headerValues);
+    var jsonWebToken = headerValues.FirstOrDefault();
+
+    if (string.IsNullOrEmpty(jsonWebToken))
     {
-      _logger = logger;
+      Response.StatusCode = 401;
+      return new RootResponse { Status = "wrong-auth" };
     }
 
-    public static string Md5(string text)
+    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+    var apiTokenService = new ApiTokenService();
+    apiTokenService.Verify(apiToken);
+    
+    if (apiToken.UserId == 0)
     {
-      MD5 hasher = MD5.Create();
-      byte[] inputBytes = Encoding.ASCII.GetBytes(text);
-      byte[] hashBytes = hasher.ComputeHash(inputBytes);
-      return Convert.ToHexString(hashBytes);
+      Response.StatusCode = 401;
+      return new RootResponse { Status = "wrong-auth" };
     }
 
-    [HttpPost]
-    public RootResponse Post(UserRegisterRequest userRegisterRequest)
-    {
-      Request.Headers.TryGetValue("token", out StringValues headerValues);
-      string? jsonWebToken = headerValues.FirstOrDefault();
-
-      if (string.IsNullOrEmpty(jsonWebToken))
-      {
-        Response.StatusCode = 401;
-        return new RootResponse { Status = "wrong-auth" };
-      }
-
-      ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-      apiToken.Verify();
-
-      if (apiToken.UserId == 0)
-      {
-        Response.StatusCode = 401;
-        return new RootResponse { Status = "wrong-auth" };
-      }
-
-      if (!userRegisterRequest.Validate()) {
-        Response.StatusCode = 422;
-        return new RootResponse { Status = "wrong-data" };
-      }
-
-      ApiUserModel newUser = new ApiUserModel(
-        0, 
-        string.IsNullOrEmpty(userRegisterRequest.Name) ? "" : userRegisterRequest.Name,
-        string.IsNullOrEmpty(userRegisterRequest.Surname) ? "" : userRegisterRequest.Surname,
-        string.IsNullOrEmpty(userRegisterRequest.Email) ? "" : userRegisterRequest.Email,
-        string.IsNullOrEmpty(userRegisterRequest.Password) ? "" : Md5(userRegisterRequest.Password),
-        string.IsNullOrEmpty(userRegisterRequest.AboutMe) ? "" : userRegisterRequest.AboutMe,
-        string.IsNullOrEmpty(userRegisterRequest.City) ? "" : userRegisterRequest.City,
-        string.IsNullOrEmpty(userRegisterRequest.Country) ? "" : userRegisterRequest.Country,
-        string.IsNullOrEmpty(userRegisterRequest.University) ? "" : userRegisterRequest.University
-      );
-      newUser.Save();
-
-      Response.StatusCode = 201;
-      return new RootResponse { Status = "OK" };
+    if (!userRegisterRequest.Validate()) {
+      Response.StatusCode = 422;
+      return new RootResponse { Status = "wrong-data" };
     }
+
+    var newUser = new ApiUserModel(
+      0, 
+      string.IsNullOrEmpty(userRegisterRequest.Name) ? "" : userRegisterRequest.Name,
+      string.IsNullOrEmpty(userRegisterRequest.Surname) ? "" : userRegisterRequest.Surname,
+      string.IsNullOrEmpty(userRegisterRequest.Email) ? "" : userRegisterRequest.Email,
+      string.IsNullOrEmpty(userRegisterRequest.Password) ? "" : Md5(userRegisterRequest.Password),
+      string.IsNullOrEmpty(userRegisterRequest.AboutMe) ? "" : userRegisterRequest.AboutMe,
+      string.IsNullOrEmpty(userRegisterRequest.City) ? "" : userRegisterRequest.City,
+      string.IsNullOrEmpty(userRegisterRequest.Country) ? "" : userRegisterRequest.Country,
+      string.IsNullOrEmpty(userRegisterRequest.University) ? "" : userRegisterRequest.University
+    );
+    
+    var apiUserService = new ApiUserService();
+    apiUserService.Save(newUser);
+
+    Response.StatusCode = 201;
+    return new RootResponse { Status = "OK" };
   }
 }

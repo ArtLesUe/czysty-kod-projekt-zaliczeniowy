@@ -1,46 +1,39 @@
-﻿using CkpTodoApp.Models;
-using CkpTodoApp.Requests;
+﻿using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Cors;
+using CkpTodoApp.Services.ApiTokenService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.User;
+
+[Route("api/user/login")]
+[ApiController]
+public class UserLoginTokenController : ControllerBase
 {
-  [Route("api/user/login")]
-  [ApiController]
-  public class UserLoginTokenController : ControllerBase
+  [HttpPost]
+  public UserLoginTokenResponse Post(UserLoginRequest userLoginRequest)
   {
-    private readonly ILogger<UserLoginTokenController> _logger;
-
-    public UserLoginTokenController(ILogger<UserLoginTokenController> logger)
-    {
-      _logger = logger;
+    if (!userLoginRequest.Validate()) {
+      Response.StatusCode = 422;
+      return new UserLoginTokenResponse();
     }
 
-    [HttpPost]
-    public UserLoginTokenResponse Post(UserLoginRequest userLoginRequest)
+    var userId = userLoginRequest.Authenticate();
+
+    if (userId == 0)
     {
-      if (!userLoginRequest.Validate()) {
-        Response.StatusCode = 422;
-        return new UserLoginTokenResponse();
-      }
-
-      int userId = userLoginRequest.Authenticate();
-
-      if (userId == 0)
-      {
-        Response.StatusCode = 401;
-        return new UserLoginTokenResponse();
-      }
-
-      ApiTokenModel apiTokenModel = new ApiTokenModel(0, userId, Guid.NewGuid().ToString());
-      apiTokenModel.Save();
-      
-      return new UserLoginTokenResponse
-      {
-        UserId = apiTokenModel.UserId,
-        Token = apiTokenModel.Token
-      };
+      Response.StatusCode = 401;
+      return new UserLoginTokenResponse();
     }
+
+    var apiToken = new ApiTokenModel(0, userId, Guid.NewGuid().ToString());
+    var apiTokenService = new ApiTokenService();
+    apiTokenService.Save(apiToken);   
+    
+    return new UserLoginTokenResponse
+    {
+      UserId = apiToken.UserId,
+      Token = apiToken.Token
+    };
   }
 }

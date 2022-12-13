@@ -1,11 +1,11 @@
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Task;
-using Microsoft.AspNetCore.Cors;
+using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.Task;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
-namespace CkpTodoApp.Controllers;
+namespace CkpTodoApp.Controllers.Task;
 
 [Route("api/task/delete/{id}")]
 [ApiController]
@@ -15,7 +15,7 @@ public class DeleteTaskController : ControllerBase
     public RootResponse Get(int id)
     {
         Request.Headers.TryGetValue("token", out StringValues headerValues);
-        string? jsonWebToken = headerValues.FirstOrDefault();
+        var jsonWebToken = headerValues.FirstOrDefault();
 
         if (string.IsNullOrEmpty(jsonWebToken))
         {
@@ -23,8 +23,9 @@ public class DeleteTaskController : ControllerBase
             return new RootResponse { Status = "auth-failed" };
         }
 
-        ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-        apiToken.Verify();
+        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+        var apiTokenService = new ApiTokenService();
+        apiTokenService.Verify(apiToken);
 
         if (apiToken.UserId == 0)
         {
@@ -32,7 +33,7 @@ public class DeleteTaskController : ControllerBase
             return new RootResponse { Status = "auth-failed" };
         }
 
-        var taskManager = new TaskManager();
+        var taskManager = new TaskService();
         
         try
         {

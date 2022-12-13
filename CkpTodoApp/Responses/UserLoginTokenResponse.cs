@@ -1,9 +1,8 @@
-﻿namespace CkpTodoApp.Responses
-{
-  public class UserLoginTokenResponse
-  {
-    public int UserId { get; set; }
+﻿namespace CkpTodoApp.Responses;
 
-    public string? Token { get; set; }
-  }
+public class UserLoginTokenResponse
+{
+  public int UserId { get; set; }
+
+  public string? Token { get; set; }
 }

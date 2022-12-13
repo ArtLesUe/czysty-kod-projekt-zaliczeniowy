@@ -35,7 +35,7 @@ describe('POST /api/task/edit/{id} (no token)', () => {
 
     expect(response.status).toBe(401); 
     expect(response.statusText).toBe('Unauthorized'); 
-    expect(response_json.status).toEqual('wrong-auth');
+    expect(response_json.status).toEqual('auth-failed');
   });
 });
 
@@ -59,7 +59,7 @@ describe('POST /api/task/edit/{id} (bad token)', () => {
 
     expect(response.status).toBe(401); 
     expect(response.statusText).toBe('Unauthorized'); 
-    expect(response_json.status).toEqual('wrong-auth');
+    expect(response_json.status).toEqual('auth-failed');
   });
 });
 

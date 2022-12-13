@@ -1,70 +1,62 @@
-using CkpTodoApp.Models;
-using CkpTodoApp.Requests;
+using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Models.ApiUser;
+using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
+using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.ApiUserService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Net.NetworkInformation;
-using System.Security.Cryptography;
-using System.Text;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.User;
+
+[Route("api/user/password/{id:int}")]
+[ApiController]
+public class UserPasswordController : ControllerBase
 {
-  [Route("api/user/password/{id}")]
-  [ApiController]
-  public class UserPasswordController : ControllerBase
+  [HttpPost]
+  public RootResponse Post(UserPasswordRequest userPasswordRequest, int id)
   {
-    private readonly ILogger<UserPasswordController> _logger;
+    Request.Headers.TryGetValue("token", out StringValues headerValues);
+    var jsonWebToken = headerValues.FirstOrDefault();
 
-    public UserPasswordController(ILogger<UserPasswordController> logger)
+    if (string.IsNullOrEmpty(jsonWebToken))
     {
-      _logger = logger;
+      Response.StatusCode = 401;
+      return new RootResponse { Status = "auth-failed" };
     }
 
-    [HttpPost]
-    public RootResponse Post(UserPasswordRequest userPasswordRequest, int id)
+    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+    var apiTokenService = new ApiTokenService();
+    apiTokenService.Verify(apiToken);
+    
+    if (apiToken.UserId == 0)
     {
-      Request.Headers.TryGetValue("token", out StringValues headerValues);
-      string? jsonWebToken = headerValues.FirstOrDefault();
-
-      if (string.IsNullOrEmpty(jsonWebToken))
-      {
-        Response.StatusCode = 401;
-        return new RootResponse { Status = "auth-failed" };
-      }
-
-      ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-      apiToken.Verify();
-
-      if (apiToken.UserId == 0)
-      {
-        Response.StatusCode = 401;
-        return new RootResponse { Status = "auth-failed" };
-      }
-
-      if (string.IsNullOrEmpty(userPasswordRequest.Password))
-      {
-        Response.StatusCode = 406;
-        return new RootResponse { Status = "empty-password-not-permitted" };
-      }
-
-      ApiUserModel user;
-
-      try 
-      {
-        user = new ApiUserModel(id);
-      }
-      catch (Exception)
-      {
-        Response.StatusCode = 406;
-        return new RootResponse { Status = "user-not-exists" };
-      }
-
-      user.PasswordChange(UserRegisterController.Md5(userPasswordRequest.Password));
-
-      Response.StatusCode = 201;
-      return new RootResponse { Status = "OK" };
+      Response.StatusCode = 401;
+      return new RootResponse { Status = "auth-failed" };
     }
+
+    if (string.IsNullOrEmpty(userPasswordRequest.Password))
+    {
+      Response.StatusCode = 406;
+      return new RootResponse { Status = "empty-password-not-permitted" };
+    }
+
+    ApiUserModel user;
+
+    try 
+    {
+      user = new ApiUserModel(id);
+    }
+    catch (Exception)
+    {
+      Response.StatusCode = 406;
+      return new RootResponse { Status = "user-not-exists" };
+    }
+
+    var apiUserService = new ApiUserService();
+    apiUserService.ChangePassword(user, UserRegisterController.Md5(userPasswordRequest.Password));
+
+    Response.StatusCode = 201;
+    return new RootResponse { Status = "OK" };
   }
 }

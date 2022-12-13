@@ -1,13 +1,13 @@
-using CkpTodoApp.Models;
+using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Event;
-using Microsoft.AspNetCore.Cors;
+using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.Event;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
-namespace CkpTodoApp.Controllers;
+namespace CkpTodoApp.Controllers.Event;
 
-[Route("api/events/delete/{id}")]
+[Route("api/events/delete/{id:int}")]
 [ApiController]
 public class DeleteEventController : ControllerBase
 {
@@ -15,7 +15,7 @@ public class DeleteEventController : ControllerBase
     public RootResponse Get(int id)
     {
         Request.Headers.TryGetValue("token", out StringValues headerValues);
-        string? jsonWebToken = headerValues.FirstOrDefault();
+        var jsonWebToken = headerValues.FirstOrDefault();
 
         if (string.IsNullOrEmpty(jsonWebToken))
         {
@@ -23,9 +23,10 @@ public class DeleteEventController : ControllerBase
             return new RootResponse { Status = "auth-failed" };
         }
 
-        ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-        apiToken.Verify();
-
+        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+        var apiTokenService = new ApiTokenService();
+        apiTokenService.Verify(apiToken);
+        
         if (apiToken.UserId == 0)
         {
             Response.StatusCode = 401;
@@ -33,7 +34,7 @@ public class DeleteEventController : ControllerBase
         }
 
         var eventService = new EventService();
-        
+            
         try
         {
             eventService.DeleteEventById(id);

@@ -1,11 +1,13 @@
-﻿using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Models;
-using Microsoft.AspNetCore.Cors;
+﻿using System.Text.Json;
+using CkpTodoApp.DatabaseControllers;
+using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Models.Task;
+using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Text.Json;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.Task
 {
   [Route("api/tasks/list")]
   [ApiController]
@@ -24,15 +26,16 @@ namespace CkpTodoApp.Controllers
       }
 
       var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-      apiToken.Verify();
-
+      var apiTokenService = new ApiTokenService();
+      apiTokenService.Verify(apiToken);
+      
       if (apiToken.UserId == 0)
       {
         Response.StatusCode = 401;
         return new List<TaskModel>();
       }
 
-      var databaseManagerController = new DatabaseManagerController();
+      var databaseManagerController = new DatabaseService();
       var resultSql = databaseManagerController.ExecuteSQLQuery(
         @"SELECT json_group_array( 
           json_object(

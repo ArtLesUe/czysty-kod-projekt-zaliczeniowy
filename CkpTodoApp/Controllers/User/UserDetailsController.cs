@@ -1,49 +1,43 @@
+using System.Text.Json;
 using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Models;
-using CkpTodoApp.Responses;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
+using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Models.ApiUser;
+using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Text.Json;
 
-namespace CkpTodoApp.Controllers
+namespace CkpTodoApp.Controllers.User;
+
+[Route("api/user/details/{id:int}")]
+[ApiController]
+public class UserDetailsController : ControllerBase
 {
-  [Route("api/user/details/{id}")]
-  [ApiController]
-  public class UserDetailsController : ControllerBase
+  [HttpGet]
+  public List<ApiUserModel>? Get(int id)
   {
-    private readonly ILogger<UserDetailsController> _logger;
+    Request.Headers.TryGetValue("token", out StringValues headerValues);
+    var jsonWebToken = headerValues.FirstOrDefault();
 
-    public UserDetailsController(ILogger<UserDetailsController> logger)
+    if (string.IsNullOrEmpty(jsonWebToken))
     {
-      _logger = logger;
+      Response.StatusCode = 401;
+      return new List<ApiUserModel>();
     }
 
-    [HttpGet]
-    public List<ApiUserModel>? Get(int id)
+    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+    var apiTokenService = new ApiTokenService();
+    apiTokenService.Verify(apiToken);
+    
+    if (apiToken.UserId == 0)
     {
-      Request.Headers.TryGetValue("token", out StringValues headerValues);
-      string? jsonWebToken = headerValues.FirstOrDefault();
+      Response.StatusCode = 401;
+      return new List<ApiUserModel>();
+    }
 
-      if (string.IsNullOrEmpty(jsonWebToken))
-      {
-        Response.StatusCode = 401;
-        return new List<ApiUserModel>();
-      }
-
-      ApiTokenModel apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-      apiToken.Verify();
-
-      if (apiToken.UserId == 0)
-      {
-        Response.StatusCode = 401;
-        return new List<ApiUserModel>();
-      }
-
-      DatabaseManagerController databaseManagerController = new DatabaseManagerController();
-      String resultSql = databaseManagerController.ExecuteSQLQuery(
-        @"SELECT json_group_array( 
+    var databaseManagerController = new DatabaseService();
+    var resultSql = databaseManagerController.ExecuteSQLQuery(
+      @"SELECT json_group_array( 
           json_object(
             'Id', Id,
             'Name', Name,
@@ -58,12 +52,8 @@ namespace CkpTodoApp.Controllers
         )
         FROM users
         WHERE Id = '" + id.ToString() + @"';"
-      );
+    );
 
-      if (resultSql.Length == 0)
-        return new List<ApiUserModel>();
-
-      return JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
-    }
+    return resultSql.Length == 0 ? new List<ApiUserModel>() : JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
   }
 }

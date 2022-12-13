@@ -1,4 +1,5 @@
 using CkpTodoApp.DatabaseControllers;
+using CkpTodoApp.Services.DatabaseService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +14,10 @@ app.MapControllers();
 app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) 
+                .SetIsOriginAllowed(_ => true) 
                 .AllowCredentials());
 
-DatabaseManagerController databaseManagerController = new DatabaseManagerController();
+var databaseManagerController = new DatabaseService();
 databaseManagerController.InitDatabase();
 databaseManagerController.SeedDatabase();
 

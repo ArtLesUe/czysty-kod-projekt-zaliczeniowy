@@ -1,3 +1,4 @@
+using CkpTodoApp.Constants;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
@@ -16,7 +17,7 @@ public class UserEditController : AuthService
   {
     var rootResponse = CheckAuth();
     
-    if (rootResponse.Status != "OK")
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
       return rootResponse;
     }
@@ -30,7 +31,7 @@ public class UserEditController : AuthService
     catch(Exception)
     {
       Response.StatusCode = 406;
-      return new RootResponse { Status = "user-dont-exists" };
+      return new RootResponse { Status = StatusCodeEnum.UserDoesNotExist.ToString() };
     }
 
     var newUser = new ApiUserModel(
@@ -49,6 +50,6 @@ public class UserEditController : AuthService
     apiUserService.Update(newUser);
 
     Response.StatusCode = 201;
-    return new RootResponse { Status = "OK" };
+    return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

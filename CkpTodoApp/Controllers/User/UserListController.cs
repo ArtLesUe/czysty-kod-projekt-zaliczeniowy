@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using CkpTodoApp.Constants;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Services.AuthService;
 using CkpTodoApp.Services.DatabaseService;
@@ -15,7 +16,7 @@ public class UserListController : AuthService
   {
     var rootResponse = CheckAuth();
     
-    if (rootResponse.Status != "OK")
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
       return new List<ApiUserModel>();
     }

@@ -1,3 +1,4 @@
+using CkpTodoApp.Constants;
 using CkpTodoApp.Models.Task;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
@@ -16,7 +17,7 @@ public class AddTaskService : AuthService
   {
     var rootResponse = CheckAuth();
     
-    if (rootResponse.Status != "OK")
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
       return rootResponse;
     }
@@ -24,7 +25,7 @@ public class AddTaskService : AuthService
     if (string.IsNullOrEmpty(taskRequest.Title))
     {
       Response.StatusCode = 422;
-      return new RootResponse { Status = "wrong-data" };
+      return new RootResponse { Status = StatusCodeEnum.WrongData.ToString() };
     }
       
     var newTask = new TaskModel(
@@ -35,7 +36,7 @@ public class AddTaskService : AuthService
     taskManager.Add(newTask);
     
     Response.StatusCode = 201;
-    return new RootResponse { Status = "OK" };
+    return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
 
   }
 }

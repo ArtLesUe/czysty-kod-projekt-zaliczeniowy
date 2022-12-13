@@ -1,4 +1,5 @@
-﻿using CkpTodoApp.Models.ApiUser;
+﻿using CkpTodoApp.Constants;
+using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.ApiUserService;
 using CkpTodoApp.Services.AuthService;
@@ -15,7 +16,7 @@ public class UserDeleteController : AuthService
   {
     var rootResponse = CheckAuth();
     
-    if (rootResponse.Status != "OK")
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
       return rootResponse;
     }
@@ -23,7 +24,7 @@ public class UserDeleteController : AuthService
     if (id == 0)
     {
       Response.StatusCode = 406;
-      return new RootResponse { Status = "self-deletion-forbidden" };
+      return new RootResponse { Status = StatusCodeEnum.SelfDeletionForbidden.ToString() };
     }
 
     try 
@@ -35,9 +36,9 @@ public class UserDeleteController : AuthService
     catch (Exception)
     {
       Response.StatusCode = 406;
-      return new RootResponse { Status = "deleting-not-existing-forbidden" };
+      return new RootResponse { Status = StatusCodeEnum.DeletingNotExistingForbidden.ToString() };
     }
 
-    return new RootResponse { Status = "deleted" };
+    return new RootResponse { Status = StatusCodeEnum.Deleted.ToString() };
   }
 }

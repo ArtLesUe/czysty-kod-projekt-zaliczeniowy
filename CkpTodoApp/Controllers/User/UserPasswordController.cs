@@ -1,3 +1,4 @@
+using CkpTodoApp.Constants;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
@@ -16,7 +17,7 @@ public class UserPasswordController : AuthService
   {
     var rootResponse = CheckAuth();
     
-    if (rootResponse.Status != "OK")
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
       return rootResponse;
     }
@@ -24,7 +25,7 @@ public class UserPasswordController : AuthService
     if (string.IsNullOrEmpty(userPasswordRequest.Password))
     {
       Response.StatusCode = 406;
-      return new RootResponse { Status = "empty-password-not-permitted" };
+      return new RootResponse { Status = StatusCodeEnum.EmptyPasswordNotPermitted.ToString() };
     }
 
     ApiUserModel user;
@@ -36,13 +37,13 @@ public class UserPasswordController : AuthService
     catch (Exception)
     {
       Response.StatusCode = 406;
-      return new RootResponse { Status = "user-not-exists" };
+      return new RootResponse { Status = StatusCodeEnum.UserDoesNotExist.ToString() };
     }
 
     var apiUserService = new ApiUserService();
     apiUserService.ChangePassword(user, UserRegisterController.Md5(userPasswordRequest.Password));
 
     Response.StatusCode = 201;
-    return new RootResponse { Status = "OK" };
+    return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

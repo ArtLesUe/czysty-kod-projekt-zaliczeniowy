@@ -1,3 +1,4 @@
+using CkpTodoApp.Constants;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.AuthService;
 using CkpTodoApp.Services.Task;
@@ -14,7 +15,7 @@ public class DeleteTaskController : AuthService
     {
         var rootResponse = CheckAuth();
     
-        if (rootResponse.Status != "OK")
+        if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
         {
             return rootResponse;
         }
@@ -28,9 +29,9 @@ public class DeleteTaskController : AuthService
         catch (Exception)
         {
             Response.StatusCode = 406;
-            return new RootResponse { Status = "deleting-not-existing-forbidden" };
+            return new RootResponse { Status = StatusCodeEnum.DeletingNotExistingForbidden.ToString() };
         }
 
-        return new RootResponse { Status = "checked" };
+        return new RootResponse { Status = StatusCodeEnum.Deleted.ToString() };
     }
 }

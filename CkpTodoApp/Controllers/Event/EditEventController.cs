@@ -1,3 +1,4 @@
+using CkpTodoApp.Constants;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.AuthService;
@@ -15,7 +16,7 @@ public class EditEventController : AuthService
     {
         var rootResponse = CheckAuth();
     
-        if (rootResponse.Status != "OK")
+        if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
         {
             return rootResponse;
         }
@@ -29,6 +30,6 @@ public class EditEventController : AuthService
             eventRequest.EndDate);
   
         Response.StatusCode = 201;
-        return new RootResponse { Status = "OK" };
+        return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
     }
 }

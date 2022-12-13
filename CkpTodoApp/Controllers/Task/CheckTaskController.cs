@@ -1,3 +1,4 @@
+using CkpTodoApp.Constants;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.AuthService;
 using CkpTodoApp.Services.Task;
@@ -14,7 +15,7 @@ public class CheckTaskController : AuthService
     {
         var rootResponse = CheckAuth();
     
-        if (rootResponse.Status != "OK")
+        if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
         {
             return rootResponse;
         }
@@ -28,9 +29,9 @@ public class CheckTaskController : AuthService
         catch (Exception)
         {
             Response.StatusCode = 406;
-            return new RootResponse { Status = "checking-not-existing-forbidden" };
+            return new RootResponse { Status = StatusCodeEnum.CheckingNotExistingForbidden.ToString() };
         }
 
-        return new RootResponse { Status = "checked" };
+        return new RootResponse { Status = StatusCodeEnum.Checked.ToString() };
     }
 }

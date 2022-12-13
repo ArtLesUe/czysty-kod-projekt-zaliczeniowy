@@ -1,4 +1,5 @@
 using System.Globalization;
+using CkpTodoApp.Constants;
 using CkpTodoApp.Models.Event;
 using CkpTodoApp.Requests;
 using CkpTodoApp.Responses;
@@ -17,7 +18,7 @@ public class AddEventController : AuthService
   {  
     var rootResponse = CheckAuth();
     
-    if (rootResponse.Status != "OK")
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
       return rootResponse;
     }
@@ -32,6 +33,6 @@ public class AddEventController : AuthService
     eventService.Add(newEvent);
   
     Response.StatusCode = 201;
-    return new RootResponse { Status = "OK" };
+    return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

@@ -1,4 +1,5 @@
-﻿using CkpTodoApp.Models.ApiToken;
+﻿using CkpTodoApp.Constants;
+using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -15,7 +16,7 @@ public class AuthService: ControllerBase, IAuthServiceInterface
             if (string.IsNullOrEmpty(jsonWebToken))
         {
             Response.StatusCode = 401;
-            return new RootResponse { Status = "auth-failed" };
+            return new RootResponse { Status = StatusCodeEnum.AuthFailed.ToString() };
         }
 
         var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
@@ -24,10 +25,10 @@ public class AuthService: ControllerBase, IAuthServiceInterface
 
         if (apiToken.UserId != 0)
         {
-            return new RootResponse { Status = "OK" };
+            return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
         }
         
         Response.StatusCode = 401;
-        return new RootResponse { Status = "auth-failed" };
+        return new RootResponse { Status = StatusCodeEnum.AuthFailed.ToString() };
     }
 }

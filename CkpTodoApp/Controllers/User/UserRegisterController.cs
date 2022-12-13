@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using CkpTodoApp.Constants;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
@@ -26,14 +27,14 @@ public class UserRegisterController : AuthService
   {
     var rootResponse = CheckAuth();
     
-    if (rootResponse.Status != "OK")
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
       return rootResponse;
     }
 
     if (!userRegisterRequest.Validate()) {
       Response.StatusCode = 422;
-      return new RootResponse { Status = "wrong-data" };
+      return new RootResponse { Status = StatusCodeEnum.WrongData.ToString() };
     }
 
     var newUser = new ApiUserModel(
@@ -52,6 +53,6 @@ public class UserRegisterController : AuthService
     apiUserService.Save(newUser);
 
     Response.StatusCode = 201;
-    return new RootResponse { Status = "OK" };
+    return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

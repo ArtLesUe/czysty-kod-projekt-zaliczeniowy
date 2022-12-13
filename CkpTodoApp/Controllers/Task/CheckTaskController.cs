@@ -28,7 +28,7 @@ public class CheckTaskController : AuthService
         } 
         catch (Exception)
         {
-            Response.StatusCode = 406;
+            Response.StatusCode = StatusCodes.Status406NotAcceptable;
             return new RootResponse { Status = StatusCodeEnum.CheckingNotExistingForbidden.ToString() };
         }
 

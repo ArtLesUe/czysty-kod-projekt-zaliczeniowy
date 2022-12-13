@@ -21,7 +21,7 @@ public class UserDetailsController : ControllerBase
 
     if (string.IsNullOrEmpty(jsonWebToken))
     {
-      Response.StatusCode = 401;
+      Response.StatusCode = StatusCodes.Status401Unauthorized;
       return new List<ApiUserModel>();
     }
 
@@ -31,7 +31,7 @@ public class UserDetailsController : ControllerBase
     
     if (apiToken.UserId == 0)
     {
-      Response.StatusCode = 401;
+      Response.StatusCode = StatusCodes.Status401Unauthorized;
       return new List<ApiUserModel>();
     }
 

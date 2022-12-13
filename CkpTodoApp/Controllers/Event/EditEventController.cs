@@ -29,7 +29,7 @@ public class EditEventController : AuthService
             eventRequest.StartDate,
             eventRequest.EndDate);
   
-        Response.StatusCode = 201;
+        Response.StatusCode = StatusCodes.Status201Created;
         return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
     }
 }

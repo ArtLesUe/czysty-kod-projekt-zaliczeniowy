@@ -33,7 +33,7 @@ public class UserRegisterController : AuthService
     }
 
     if (!userRegisterRequest.Validate()) {
-      Response.StatusCode = 422;
+      Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
       return new RootResponse { Status = StatusCodeEnum.WrongData.ToString() };
     }
 
@@ -52,7 +52,7 @@ public class UserRegisterController : AuthService
     var apiUserService = new ApiUserService();
     apiUserService.Save(newUser);
 
-    Response.StatusCode = 201;
+    Response.StatusCode = StatusCodes.Status201Created;
     return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

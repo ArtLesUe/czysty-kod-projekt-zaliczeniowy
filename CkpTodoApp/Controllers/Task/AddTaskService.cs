@@ -24,7 +24,7 @@ public class AddTaskService : AuthService
     
     if (string.IsNullOrEmpty(taskRequest.Title))
     {
-      Response.StatusCode = 422;
+      Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
       return new RootResponse { Status = StatusCodeEnum.WrongData.ToString() };
     }
       
@@ -35,7 +35,7 @@ public class AddTaskService : AuthService
     var taskManager = new TaskService();
     taskManager.Add(newTask);
     
-    Response.StatusCode = 201;
+    Response.StatusCode = StatusCodes.Status201Created;
     return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
 
   }

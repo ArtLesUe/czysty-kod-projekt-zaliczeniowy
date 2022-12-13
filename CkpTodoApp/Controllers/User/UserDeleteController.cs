@@ -23,7 +23,7 @@ public class UserDeleteController : AuthService
 
     if (id == 0)
     {
-      Response.StatusCode = 406;
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
       return new RootResponse { Status = StatusCodeEnum.SelfDeletionForbidden.ToString() };
     }
 
@@ -35,7 +35,7 @@ public class UserDeleteController : AuthService
     } 
     catch (Exception)
     {
-      Response.StatusCode = 406;
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
       return new RootResponse { Status = StatusCodeEnum.DeletingNotExistingForbidden.ToString() };
     }
 

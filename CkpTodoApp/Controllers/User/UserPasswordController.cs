@@ -24,7 +24,7 @@ public class UserPasswordController : AuthService
 
     if (string.IsNullOrEmpty(userPasswordRequest.Password))
     {
-      Response.StatusCode = 406;
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
       return new RootResponse { Status = StatusCodeEnum.EmptyPasswordNotPermitted.ToString() };
     }
 
@@ -36,14 +36,14 @@ public class UserPasswordController : AuthService
     }
     catch (Exception)
     {
-      Response.StatusCode = 406;
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
       return new RootResponse { Status = StatusCodeEnum.UserDoesNotExist.ToString() };
     }
 
     var apiUserService = new ApiUserService();
     apiUserService.ChangePassword(user, UserRegisterController.Md5(userPasswordRequest.Password));
 
-    Response.StatusCode = 201;
+    Response.StatusCode = StatusCodes.Status201Created;
     return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

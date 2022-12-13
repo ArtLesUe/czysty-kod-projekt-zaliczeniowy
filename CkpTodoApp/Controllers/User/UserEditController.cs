@@ -30,7 +30,7 @@ public class UserEditController : AuthService
     } 
     catch(Exception)
     {
-      Response.StatusCode = 406;
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
       return new RootResponse { Status = StatusCodeEnum.UserDoesNotExist.ToString() };
     }
 
@@ -49,7 +49,7 @@ public class UserEditController : AuthService
     var apiUserService = new ApiUserService();
     apiUserService.Update(newUser);
 
-    Response.StatusCode = 201;
+    Response.StatusCode = StatusCodes.Status201Created;
     return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

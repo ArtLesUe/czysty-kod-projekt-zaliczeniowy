@@ -24,7 +24,7 @@ public class EditTaskController : AuthService
         var taskManager = new TaskService();
         taskManager.EditTaskById(id, taskRequest.Title, taskRequest.Description);
   
-        Response.StatusCode = 201;
+        Response.StatusCode = StatusCodes.Status201Created;
         return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
     }
 }

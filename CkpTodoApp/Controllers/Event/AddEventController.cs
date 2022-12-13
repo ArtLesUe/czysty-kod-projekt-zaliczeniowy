@@ -32,7 +32,7 @@ public class AddEventController : AuthService
     var eventService = new EventService();
     eventService.Add(newEvent);
   
-    Response.StatusCode = 201;
+    Response.StatusCode = StatusCodes.Status201Created;
     return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

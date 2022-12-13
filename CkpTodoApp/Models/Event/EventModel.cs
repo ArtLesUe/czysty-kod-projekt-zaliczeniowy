@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 
 namespace CkpTodoApp.Models.Event;
 
@@ -10,6 +11,16 @@ public class EventModel : IEventInterface
         Description = description;
         StartDate = startDate;
         EndDate = endDate;
+    }
+
+    [JsonConstructor]
+    public EventModel(int id, string title, string description, string startDate, string endDate)
+    {
+      Id = id;
+      Title = title;
+      Description = description;
+      StartDate = startDate;
+      EndDate = endDate;
     }
 
     public int Id { get; }

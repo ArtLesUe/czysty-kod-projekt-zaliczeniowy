@@ -32,28 +32,28 @@ public class EventService : IEventServiceInterface
         if (newDescription != null)
         {
             _databaseService.ExecuteSQL(
-                @"UPDATE tasks SET Description='" + newDescription + @"'WHERE id=" + id + @";"
+                @"UPDATE events SET Description = '" + newDescription + @"' WHERE id = '" + id + @"';"
             );
         }
 
         if (newTitle != null)
         {
             _databaseService.ExecuteSQL(
-                @"UPDATE events SET Title='" + newTitle + @"' WHERE id=" + id + @";"
+                @"UPDATE events SET Title = '" + newTitle + @"' WHERE id = '" + id + @"';"
             );
         }
 
         if (newStartDate != null)
         {
             _databaseService.ExecuteSQL(
-                @"UPDATE events SET StartDate='" + newStartDate + @"' WHERE id=" + id + @";"
+                @"UPDATE events SET StartDate = '" + newStartDate + @"' WHERE id = '" + id + @"';"
             );
         }
 
         if (newEndDate != null)
         {
             _databaseService.ExecuteSQL(
-                @"UPDATE events SET EndDate='" + newEndDate + @"' WHERE id=" + id + @";"
+                @"UPDATE events SET EndDate = '" + newEndDate + @"' WHERE id = '" + id + @"';"
             );
         }
     }

@@ -21,7 +21,7 @@ public class UserDeleteController : AuthService
       return rootResponse;
     }
 
-    if (id == 0)
+    if (id == LoggedUserId())
     {
       Response.StatusCode = StatusCodes.Status406NotAcceptable;
       return new RootResponse { Status = StatusCodeEnum.SelfDeletionForbidden.ToString() };

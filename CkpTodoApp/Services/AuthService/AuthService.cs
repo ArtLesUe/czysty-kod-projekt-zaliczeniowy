@@ -13,7 +13,7 @@ public class AuthService: ControllerBase, IAuthServiceInterface
         Request.Headers.TryGetValue("token", out StringValues headerValues);
         var jsonWebToken = headerValues.FirstOrDefault();
 
-            if (string.IsNullOrEmpty(jsonWebToken))
+        if (string.IsNullOrEmpty(jsonWebToken))
         {
             Response.StatusCode = 401;
             return new RootResponse { Status = StatusCodeEnum.AuthFailed.ToString() };
@@ -30,5 +30,19 @@ public class AuthService: ControllerBase, IAuthServiceInterface
         
         Response.StatusCode = 401;
         return new RootResponse { Status = StatusCodeEnum.AuthFailed.ToString() };
+    }
+
+    public int LoggedUserId()
+    {
+        Request.Headers.TryGetValue("token", out StringValues headerValues);
+        var jsonWebToken = headerValues.FirstOrDefault();
+
+        if (string.IsNullOrEmpty(jsonWebToken)) return 0;
+
+        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
+        var apiTokenService = new ApiTokenService.ApiTokenService();
+        apiTokenService.Verify(apiToken);
+
+        return apiToken.UserId;
     }
 }

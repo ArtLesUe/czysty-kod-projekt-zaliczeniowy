@@ -14,7 +14,7 @@ public class UserLoginTokenController : ControllerBase
   public UserLoginTokenResponse Post(UserLoginRequest userLoginRequest)
   {
     if (!userLoginRequest.Validate()) {
-      Response.StatusCode = 422;
+      Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
       return new UserLoginTokenResponse();
     }
 
@@ -22,7 +22,7 @@ public class UserLoginTokenController : ControllerBase
 
     if (userId == 0)
     {
-      Response.StatusCode = 401;
+      Response.StatusCode = StatusCodes.Status401Unauthorized;
       return new UserLoginTokenResponse();
     }
 

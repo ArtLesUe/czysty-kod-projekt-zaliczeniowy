@@ -1,53 +1,32 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Commons;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Services.ApiTokenService;
 using CkpTodoApp.Services.ApiUserService;
+using CkpTodoApp.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.User;
 
 [Route("api/user/register")]
 [ApiController]
-public class UserRegisterController : ControllerBase
+public class UserRegisterController : AuthService
 {
-  public static string Md5(string text)
-  {
-    var hasher = MD5.Create();
-    var inputBytes = Encoding.ASCII.GetBytes(text);
-    var hashBytes = hasher.ComputeHash(inputBytes);
-    return Convert.ToHexString(hashBytes);
-  }
-
   [HttpPost]
   public RootResponse Post(UserRegisterRequest userRegisterRequest)
   {
-    Request.Headers.TryGetValue("token", out StringValues headerValues);
-    var jsonWebToken = headerValues.FirstOrDefault();
-
-    if (string.IsNullOrEmpty(jsonWebToken))
-    {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "wrong-auth" };
-    }
-
-    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    var apiTokenService = new ApiTokenService();
-    apiTokenService.Verify(apiToken);
+    var rootResponse = CheckAuth();
     
-    if (apiToken.UserId == 0)
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "wrong-auth" };
+      return rootResponse;
     }
 
     if (!userRegisterRequest.Validate()) {
-      Response.StatusCode = 422;
-      return new RootResponse { Status = "wrong-data" };
+      Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+      return new RootResponse { Status = StatusCodeEnum.WrongData.ToString() };
     }
 
     var newUser = new ApiUserModel(
@@ -55,7 +34,7 @@ public class UserRegisterController : ControllerBase
       string.IsNullOrEmpty(userRegisterRequest.Name) ? "" : userRegisterRequest.Name,
       string.IsNullOrEmpty(userRegisterRequest.Surname) ? "" : userRegisterRequest.Surname,
       string.IsNullOrEmpty(userRegisterRequest.Email) ? "" : userRegisterRequest.Email,
-      string.IsNullOrEmpty(userRegisterRequest.Password) ? "" : Md5(userRegisterRequest.Password),
+      string.IsNullOrEmpty(userRegisterRequest.Password) ? "" : Md5HashGenerator.TextToMd5(userRegisterRequest.Password),
       string.IsNullOrEmpty(userRegisterRequest.AboutMe) ? "" : userRegisterRequest.AboutMe,
       string.IsNullOrEmpty(userRegisterRequest.City) ? "" : userRegisterRequest.City,
       string.IsNullOrEmpty(userRegisterRequest.Country) ? "" : userRegisterRequest.Country,
@@ -65,7 +44,7 @@ public class UserRegisterController : ControllerBase
     var apiUserService = new ApiUserService();
     apiUserService.Save(newUser);
 
-    Response.StatusCode = 201;
-    return new RootResponse { Status = "OK" };
+    Response.StatusCode = StatusCodes.Status201Created;
+    return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

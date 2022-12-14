@@ -1,43 +1,30 @@
-﻿using CkpTodoApp.Models.ApiToken;
+﻿using CkpTodoApp.Commons;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Services.ApiTokenService;
 using CkpTodoApp.Services.ApiUserService;
+using CkpTodoApp.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.User;
 
 [Route("api/user/delete/{id:int}")]
 [ApiController]
-public class UserDeleteController : ControllerBase
+public class UserDeleteController : AuthService
 {
   [HttpGet]
   public RootResponse Get(int id)
   {
-    Request.Headers.TryGetValue("token", out StringValues headerValues);
-    var jsonWebToken = headerValues.FirstOrDefault();
-
-    if (string.IsNullOrEmpty(jsonWebToken))
-    {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "auth-failed" };
-    }
-
-    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    var apiTokenService = new ApiTokenService();
-    apiTokenService.Verify(apiToken);
+    var rootResponse = CheckAuth();
     
-    if (apiToken.UserId == 0)
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "auth-failed" };
+      return rootResponse;
     }
 
-    if (apiToken.UserId == id)
+    if (id == LoggedUserId())
     {
-      Response.StatusCode = 406;
-      return new RootResponse { Status = "self-deletion-forbidden" };
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
+      return new RootResponse { Status = StatusCodeEnum.SelfDeletionForbidden.ToString() };
     }
 
     try 
@@ -48,10 +35,10 @@ public class UserDeleteController : ControllerBase
     } 
     catch (Exception)
     {
-      Response.StatusCode = 406;
-      return new RootResponse { Status = "deleting-not-existing-forbidden" };
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
+      return new RootResponse { Status = StatusCodeEnum.DeletingNotExistingForbidden.ToString() };
     }
 
-    return new RootResponse { Status = "deleted" };
+    return new RootResponse { Status = StatusCodeEnum.Deleted.ToString() };
   }
 }

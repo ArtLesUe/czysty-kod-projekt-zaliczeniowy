@@ -1,40 +1,26 @@
 ﻿using System.Text.Json;
-using CkpTodoApp.DatabaseControllers;
-using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Commons;
 using CkpTodoApp.Models.ApiUser;
-using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.AuthService;
 using CkpTodoApp.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.User;
 
 [Route("api/user/list")]
 [ApiController]
-public class UserListController : ControllerBase
+public class UserListController : AuthService
 {
   [HttpGet]
   public List<ApiUserModel>? Get()
   {
-    Request.Headers.TryGetValue("token", out StringValues headerValues);
-    var jsonWebToken = headerValues.FirstOrDefault();
-
-    if (string.IsNullOrEmpty(jsonWebToken))
-    {
-      Response.StatusCode = 401;
-      return new List<ApiUserModel>();
-    }
-
-    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    var apiTokenService = new ApiTokenService();
-    apiTokenService.Verify(apiToken);
+    var rootResponse = CheckAuth();
     
-    if (apiToken.UserId == 0)
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
-      Response.StatusCode = 401;
       return new List<ApiUserModel>();
     }
-
+    
     var databaseManagerController = new DatabaseService();
     var resultSql = databaseManagerController.ExecuteSQLQuery(
       @"SELECT json_group_array( 

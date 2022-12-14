@@ -1,36 +1,23 @@
-using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Commons;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Services.ApiTokenService;
+using CkpTodoApp.Services.AuthService;
 using CkpTodoApp.Services.Event;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.Event;
 
 [Route("api/events/delete/{id:int}")]
 [ApiController]
-public class DeleteEventController : ControllerBase
+public class DeleteEventController : AuthService
 {
     [HttpGet]
     public RootResponse Get(int id)
     {
-        Request.Headers.TryGetValue("token", out StringValues headerValues);
-        var jsonWebToken = headerValues.FirstOrDefault();
-
-        if (string.IsNullOrEmpty(jsonWebToken))
+        var rootResponse = CheckAuth();
+    
+        if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
         {
-            Response.StatusCode = 401;
-            return new RootResponse { Status = "auth-failed" };
-        }
-
-        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-        var apiTokenService = new ApiTokenService();
-        apiTokenService.Verify(apiToken);
-        
-        if (apiToken.UserId == 0)
-        {
-            Response.StatusCode = 401;
-            return new RootResponse { Status = "auth-failed" };
+            return rootResponse;
         }
 
         var eventService = new EventService();
@@ -41,10 +28,10 @@ public class DeleteEventController : ControllerBase
         } 
         catch (Exception)
         {
-            Response.StatusCode = 406;
-            return new RootResponse { Status = "deleting-not-existing-forbidden" };
+            Response.StatusCode = StatusCodes.Status406NotAcceptable;
+            return new RootResponse { Status = StatusCodeEnum.DeletingNotExistingForbidden.ToString() };
         }
 
-        return new RootResponse { Status = "checked" };
+        return new RootResponse { Status = StatusCodeEnum.Deleted.ToString() };
     }
 }

@@ -1,44 +1,31 @@
-using CkpTodoApp.Models.ApiToken;
+using CkpTodoApp.Commons;
 using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
-using CkpTodoApp.Services.ApiTokenService;
 using CkpTodoApp.Services.ApiUserService;
+using CkpTodoApp.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.User;
 
 [Route("api/user/password/{id:int}")]
 [ApiController]
-public class UserPasswordController : ControllerBase
+public class UserPasswordController : AuthService
 {
   [HttpPost]
   public RootResponse Post(UserPasswordRequest userPasswordRequest, int id)
   {
-    Request.Headers.TryGetValue("token", out StringValues headerValues);
-    var jsonWebToken = headerValues.FirstOrDefault();
-
-    if (string.IsNullOrEmpty(jsonWebToken))
-    {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "auth-failed" };
-    }
-
-    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    var apiTokenService = new ApiTokenService();
-    apiTokenService.Verify(apiToken);
+    var rootResponse = CheckAuth();
     
-    if (apiToken.UserId == 0)
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
-      Response.StatusCode = 401;
-      return new RootResponse { Status = "auth-failed" };
+      return rootResponse;
     }
 
     if (string.IsNullOrEmpty(userPasswordRequest.Password))
     {
-      Response.StatusCode = 406;
-      return new RootResponse { Status = "empty-password-not-permitted" };
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
+      return new RootResponse { Status = StatusCodeEnum.EmptyPasswordNotPermitted.ToString() };
     }
 
     ApiUserModel user;
@@ -49,14 +36,14 @@ public class UserPasswordController : ControllerBase
     }
     catch (Exception)
     {
-      Response.StatusCode = 406;
-      return new RootResponse { Status = "user-not-exists" };
+      Response.StatusCode = StatusCodes.Status406NotAcceptable;
+      return new RootResponse { Status = StatusCodeEnum.UserDoesNotExist.ToString() };
     }
 
     var apiUserService = new ApiUserService();
-    apiUserService.ChangePassword(user, UserRegisterController.Md5(userPasswordRequest.Password));
+    apiUserService.ChangePassword(user,  Md5HashGenerator.TextToMd5(userPasswordRequest.Password));
 
-    Response.StatusCode = 201;
-    return new RootResponse { Status = "OK" };
+    Response.StatusCode = StatusCodes.Status201Created;
+    return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
   }
 }

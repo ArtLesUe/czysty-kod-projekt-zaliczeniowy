@@ -1,4 +1,5 @@
-﻿using CkpTodoApp.Responses;
+﻿using CkpTodoApp.Commons;
+using CkpTodoApp.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers;
@@ -11,7 +12,7 @@ public class RootController : ControllerBase
   public RootResponse Get()
   {
     return new RootResponse { 
-      Status = "ok" 
+      Status = StatusCodeEnum.Ok.ToString()
     };
   }
 }

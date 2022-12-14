@@ -36,7 +36,7 @@ describe('GET /api/task/delete/{id} (bad token)', () => {
 });
 
 describe('GET /api/task/delete/{id} (good token, not existing task)', () => {
-  test('http status code: 200, http status text: OK, response = { "status": "checked" }', async () => {
+  test('http status code: 200, http status text: OK, response = { "status": "deleted" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
       headers: {
@@ -69,12 +69,12 @@ describe('GET /api/task/delete/{id} (good token, not existing task)', () => {
 
     expect(response.status).toBe(200); 
     expect(response.statusText).toBe('OK'); 
-    expect(response_json).toEqual({ "status": "checked" });
+    expect(response_json).toEqual({ "status": "deleted" });
   });
 });
 
 describe('GET /api/task/delete/{id} (good token, existing task, delete success)', () => {
-  test('http status code: 200, http status text: OK, response = { "status": "checked" }', async () => {
+  test('http status code: 200, http status text: OK, response = { "status": "deleted" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
       headers: {
@@ -147,7 +147,7 @@ describe('GET /api/task/delete/{id} (good token, existing task, delete success)'
 
     expect(response.status).toBe(200); 
     expect(response.statusText).toBe('OK'); 
-    expect(response_json).toEqual({ "status": "checked" });
+    expect(response_json).toEqual({ "status": "deleted" });
 
     response = await fetch(process.env.TEST_API_URL + '/api/tasks/list', {
       method: 'GET',

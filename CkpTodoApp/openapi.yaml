@@ -288,7 +288,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RootResponse'
-              example: { "Status": "checked" }
+              example: { "Status": "deleted" }
   /api/task/check/{id}:
     get:
       tags:
@@ -458,7 +458,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RootResponse'
-              example: { "Status": "checked" }
+              example: { "Status": "deleted" }
   /api/user/details/{id}:
     get:
       tags:

@@ -103,7 +103,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RootResponse'
-              example: { "Status": "wrong-auth" }
+              example: { "Status": "auth-failed" }
         '422':
           description: Do zapytania przekazano niewłaściwe parametry lub brakuje wartości w niektóych wymaganych polach. Status zwracany również, jeżeli użytkownik o podanym adresie e-mail jest już zarejestrowany.
           content:

@@ -17,7 +17,7 @@ describe('POST /api/user/register (bad request)', () => {
 });
 
 describe('POST /api/user/register (no token)', () => {
-  test('http status code: 401, http status text: Unauthorized, response.status: wrong-auth', async () => {
+  test('http status code: 401, http status text: Unauthorized, response.status: auth-failed', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/register', {
       method: 'POST',
       headers: {
@@ -35,12 +35,12 @@ describe('POST /api/user/register (no token)', () => {
 
     expect(response.status).toBe(401); 
     expect(response.statusText).toBe('Unauthorized'); 
-    expect(response_json.status).toEqual('wrong-auth');
+    expect(response_json.status).toEqual('auth-failed');
   });
 });
 
 describe('POST /api/user/register (bad token)', () => {
-  test('http status code: 401, http status text: Unauthorized, response.status: wrong-auth', async () => {
+  test('http status code: 401, http status text: Unauthorized, response.status: auth-failed', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/register', {
       method: 'POST',
       headers: {
@@ -59,7 +59,7 @@ describe('POST /api/user/register (bad token)', () => {
 
     expect(response.status).toBe(401); 
     expect(response.statusText).toBe('Unauthorized'); 
-    expect(response_json.status).toEqual('wrong-auth');
+    expect(response_json.status).toEqual('auth-failed');
   });
 });
 

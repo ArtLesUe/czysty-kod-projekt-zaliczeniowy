@@ -17,7 +17,7 @@ describe('POST /api/events/add (bad request)', () => {
 });
 
 describe('POST /api/events/add (no token)', () => {
-  test('http status code: 401, http status text: Unauthorized, response.status: wrong-auth', async () => {
+  test('http status code: 401, http status text: Unauthorized, response.status: auth-failed', async () => {
     new_task = {
       "Id": 0,
       "Title": Math.random().toString(36),
@@ -43,7 +43,7 @@ describe('POST /api/events/add (no token)', () => {
 });
 
 describe('POST /api/events/add (bad token)', () => {
-  test('http status code: 401, http status text: Unauthorized, response.status: wrong-auth', async () => {
+  test('http status code: 401, http status text: Unauthorized, response.status: auth-failed', async () => {
     new_task = {
       "Id": 0,
       "Title": Math.random().toString(36),

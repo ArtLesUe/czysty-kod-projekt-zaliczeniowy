@@ -40,7 +40,7 @@ describe('PATCH /api/user/password/{id} (bad token)', () => {
 describe('PATCH /api/user/password/{id} (good token)', () => {
   test('http status code: 200, http status text: OK, edited: true', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },

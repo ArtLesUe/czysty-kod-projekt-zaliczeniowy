@@ -38,7 +38,7 @@ describe('PATCH /api/task/check/{id} (bad token)', () => {
 describe('PATCH /api/task/check/{id} (good token, not existing task)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "checked" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
@@ -76,7 +76,7 @@ describe('PATCH /api/task/check/{id} (good token, not existing task)', () => {
 describe('PATCH /api/task/check/{id} (good token, existing task, check success)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "checked" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },

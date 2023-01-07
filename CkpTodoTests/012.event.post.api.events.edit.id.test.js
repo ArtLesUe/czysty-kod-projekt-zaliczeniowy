@@ -72,7 +72,7 @@ describe('PATCH /api/events/edit/{id} (bad token)', () => {
 describe('PATCH /api/events/edit/{id} (good token, bad all data)', () => {
   test('http status code: 201, http status text: Created, response.status: OK', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
@@ -119,7 +119,7 @@ describe('PATCH /api/events/edit/{id} (good token, bad all data)', () => {
 describe('PATCH /api/events/edit/{id} (good token, not-existing)', () => {
   test('http status code: 201, http status text: Created, response.status: OK', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },

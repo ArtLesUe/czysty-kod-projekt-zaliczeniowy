@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.Task;
 
-[Route("api/task/delete/{id}")]
+[Route(GlobalConstants.BASE_URL_TASK + "/delete/{id}")]
 [ApiController]
 public class DeleteTaskController : AuthService
 {

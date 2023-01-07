@@ -1,4 +1,5 @@
 using System.Text.Json;
+using CkpTodoApp.Commons;
 using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Models.ApiUser;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace CkpTodoApp.Controllers.User;
 
-[Route("api/user/details/{id:int}")]
+[Route(GlobalConstants.BASE_URL_USER + "/details/{id:int}")]
 [ApiController]
 public class UserDetailsController : ControllerBase
 {

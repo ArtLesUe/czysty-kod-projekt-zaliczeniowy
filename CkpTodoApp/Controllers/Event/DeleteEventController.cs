@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.Event;
 
-[Route("api/events/delete/{id:int}")]
+[Route(GlobalConstants.BASE_URL_EVENT + "/delete/{id:int}")]
 [ApiController]
 public class DeleteEventController : AuthService
 {

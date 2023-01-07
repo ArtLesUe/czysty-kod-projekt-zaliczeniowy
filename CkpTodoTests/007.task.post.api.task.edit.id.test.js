@@ -193,7 +193,7 @@ describe('POST /api/task/edit/{id} (good token, good data)', () => {
     expect(response.statusText).toBe('Created'); 
     expect(response_json.status).toEqual('OK');
 
-    response = await fetch(process.env.TEST_API_URL + '/api/tasks/list', {
+    response = await fetch(process.env.TEST_API_URL + '/api/task/list', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -233,7 +233,7 @@ describe('POST /api/task/edit/{id} (good token, good data)', () => {
     expect(response.statusText).toBe('Created'); 
     expect(response_json.status).toEqual('OK');
 
-    response = await fetch(process.env.TEST_API_URL + '/api/tasks/list', {
+    response = await fetch(process.env.TEST_API_URL + '/api/task/list', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',

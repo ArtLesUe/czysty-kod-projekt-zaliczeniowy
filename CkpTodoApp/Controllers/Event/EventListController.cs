@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.Event;
 
-[Route("api/events/list")]
+[Route(GlobalConstants.BASE_URL_EVENT + "/list")]
 [ApiController]
 public class EventListController : AuthService
 {

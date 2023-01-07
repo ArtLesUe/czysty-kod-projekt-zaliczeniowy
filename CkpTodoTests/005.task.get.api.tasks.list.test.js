@@ -1,8 +1,8 @@
 require("dotenv").config();
 
-describe('GET /api/tasks/list (no token)', () => {
+describe('GET /api/task/list (no token)', () => {
   test('http status code: 401, http status text: Unauthorized, responseBody = []', async () => {
-    response = await fetch(process.env.TEST_API_URL + '/api/tasks/list', {
+    response = await fetch(process.env.TEST_API_URL + '/api/task/list', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json'
@@ -17,9 +17,9 @@ describe('GET /api/tasks/list (no token)', () => {
   });
 });
 
-describe('GET /api/tasks/list (bad token)', () => {
+describe('GET /api/task/list (bad token)', () => {
   test('http status code: 401, http status text: Unauthorized, responseBody = []', async () => {
-    response = await fetch(process.env.TEST_API_URL + '/api/tasks/list', {
+    response = await fetch(process.env.TEST_API_URL + '/api/task/list', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -35,7 +35,7 @@ describe('GET /api/tasks/list (bad token)', () => {
   });
 });
 
-describe('GET /api/tasks/list (good token)', () => {
+describe('GET /api/task/list (good token)', () => {
   test('http status code: 200, http status text: OK', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
@@ -57,7 +57,7 @@ describe('GET /api/tasks/list (good token)', () => {
 
     auth_token = response_json.token;
 
-    response = await fetch(process.env.TEST_API_URL + '/api/tasks/list', {
+    response = await fetch(process.env.TEST_API_URL + '/api/task/list', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',

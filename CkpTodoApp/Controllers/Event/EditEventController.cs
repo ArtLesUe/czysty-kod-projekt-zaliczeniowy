@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.Event;
 
-[Route("api/events/edit/{id:int}")]
+[Route(GlobalConstants.BASE_URL_EVENT + "/edit/{id:int}")]
 [ApiController]
 public class EditEventController : AuthService
 {

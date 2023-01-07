@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.User;
 
-[Route("api/user/list")]
+[Route(GlobalConstants.BASE_URL_USER + "/list")]
 [ApiController]
 public class UserListController : AuthService
 {

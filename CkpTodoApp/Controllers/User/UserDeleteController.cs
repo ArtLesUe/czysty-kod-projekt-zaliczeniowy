@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.User;
 
-[Route("api/user/delete/{id:int}")]
+[Route(GlobalConstants.BASE_URL_USER + "/delete/{id:int}")]
 [ApiController]
 public class UserDeleteController : AuthService
 {

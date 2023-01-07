@@ -159,7 +159,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RootResponse'
               example: { "Status": "deleted" }
-  /api/tasks/list:
+  /api/task/list:
     get:
       tags:
         - task

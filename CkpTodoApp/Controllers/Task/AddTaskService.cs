@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.Task;
 
-[Route("api/task/add")]
+[Route(GlobalConstants.BASE_URL_TASK + "/add")]
 [ApiController]
 public class AddTaskService : AuthService
 {

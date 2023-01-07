@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.Task;
 
-[Route("api/task/edit/{id:int}")]
+[Route(GlobalConstants.BASE_URL_TASK + "/edit/{id:int}")]
 [ApiController]
 public class EditTaskController : AuthService
 {

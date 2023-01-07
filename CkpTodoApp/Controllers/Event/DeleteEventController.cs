@@ -10,8 +10,8 @@ namespace CkpTodoApp.Controllers.Event;
 [ApiController]
 public class DeleteEventController : AuthService
 {
-    [HttpGet]
-    public RootResponse Get(int id)
+    [HttpDelete]
+    public RootResponse Delete(int id)
     {
         var rootResponse = CheckAuth();
     

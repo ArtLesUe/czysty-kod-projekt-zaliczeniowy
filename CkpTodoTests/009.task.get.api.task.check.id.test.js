@@ -130,7 +130,7 @@ describe('GET /api/task/check/{id} (good token, existing task, check success)', 
     expect(response_json.length > 0).toBeTruthy();
 
     search = response_json.filter(obj => {
-      return obj.title === new_task.Title && obj.isCheck == 0
+      return obj.title === new_task.Title && obj.isChecked == false
     });
 
     expect(search.length == 1).toBeTruthy();
@@ -164,7 +164,7 @@ describe('GET /api/task/check/{id} (good token, existing task, check success)', 
     expect(response_json.length > 0).toBeTruthy();
 
     search = response_json.filter(obj => {
-      return obj.title === new_task.Title && obj.isCheck == 1
+      return obj.title === new_task.Title && obj.isChecked == true
     });
 
     expect(search.length == 1).toBeTruthy();

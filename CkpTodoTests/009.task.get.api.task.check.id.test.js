@@ -115,7 +115,7 @@ describe('GET /api/task/check/{id} (good token, existing task, check success)', 
     expect(response.statusText).toBe('Created'); 
     expect(response_json.status).toEqual('OK');
 
-    response = await fetch(process.env.TEST_API_URL + '/api/tasks/list', {
+    response = await fetch(process.env.TEST_API_URL + '/api/task/list', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -149,7 +149,7 @@ describe('GET /api/task/check/{id} (good token, existing task, check success)', 
     expect(response.statusText).toBe('OK'); 
     expect(response_json).toEqual({ "status": "checked" });
 
-    response = await fetch(process.env.TEST_API_URL + '/api/tasks/list', {
+    response = await fetch(process.env.TEST_API_URL + '/api/task/list', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',

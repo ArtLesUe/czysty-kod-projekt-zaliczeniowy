@@ -38,7 +38,7 @@ describe('DELETE /api/task/delete/{id} (bad token)', () => {
 describe('DELETE /api/task/delete/{id} (good token, not existing task)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "deleted" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
@@ -76,7 +76,7 @@ describe('DELETE /api/task/delete/{id} (good token, not existing task)', () => {
 describe('DELETE /api/task/delete/{id} (good token, existing task, delete success)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "deleted" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },

@@ -38,7 +38,7 @@ describe('DELETE /api/user/delete/{id} (bad token)', () => {
 describe('DELETE /api/user/delete/{id} (good token, not existing user)', () => {
   test('http status code: 406, http status text: Not Acceptable, response = { "status": "deleting-not-existing-forbidden" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
@@ -76,7 +76,7 @@ describe('DELETE /api/user/delete/{id} (good token, not existing user)', () => {
 describe('DELETE /api/user/delete/{id} (good token, self deletion)', () => {
   test('http status code: 406, http status text: Not Acceptable, response = { "status": "self-deletion-forbidden" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
@@ -114,7 +114,7 @@ describe('DELETE /api/user/delete/{id} (good token, self deletion)', () => {
 describe('DELETE /api/user/delete/{id} (good token, existing user, not logged, deleted success)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "deleted" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },

@@ -1,4 +1,5 @@
-﻿using CkpTodoApp.Models.ApiToken;
+﻿using CkpTodoApp.Commons;
+using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Requests.User;
 using CkpTodoApp.Responses;
 using CkpTodoApp.Services.ApiTokenService;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.User;
 
-[Route("api/user/login")]
+[Route(GlobalConstants.BASE_URL_USER + "/login")]
 [ApiController]
 public class UserLoginTokenController : ControllerBase
 {

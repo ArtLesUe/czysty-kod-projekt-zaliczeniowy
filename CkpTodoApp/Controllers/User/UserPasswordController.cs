@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.User;
 
-[Route("api/user/password/{id:int}")]
+[Route(GlobalConstants.BASE_URL_USER + "/password/{id:int}")]
 [ApiController]
 public class UserPasswordController : AuthService
 {

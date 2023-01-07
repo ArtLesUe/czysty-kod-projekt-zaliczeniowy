@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.User;
 
-[Route("api/user/edit/{id:int}")]
+[Route(GlobalConstants.BASE_URL_USER + "/edit/{id:int}")]
 [ApiController]
 public class UserEditController : AuthService
 {

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.Task
 {
-  [Route("api/tasks/list")]
+  [Route(GlobalConstants.BASE_URL_TASK + "/list")]
   [ApiController]
   public class TasksListController : AuthService
   {

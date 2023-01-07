@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.Event;
 
-[Route("api/events/add")]
+[Route(GlobalConstants.BASE_URL_EVENT + "/add")]
 [ApiController]
 public class AddEventController : AuthService
 {

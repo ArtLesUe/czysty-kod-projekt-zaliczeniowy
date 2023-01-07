@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CkpTodoApp.Controllers.User;
 
-[Route("api/user/register")]
+[Route(GlobalConstants.BASE_URL_USER + "/register")]
 [ApiController]
 public class UserRegisterController : AuthService
 {

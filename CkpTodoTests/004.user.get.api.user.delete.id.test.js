@@ -1,9 +1,9 @@
 require("dotenv").config();
 
-describe('GET /api/user/delete/{id} (no token)', () => {
+describe('DELETE /api/user/delete/{id} (no token)', () => {
   test('http status code: 401, http status text: Unauthorized, response = { "status": "auth-failed" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/delete/0', {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json'
       }
@@ -17,10 +17,10 @@ describe('GET /api/user/delete/{id} (no token)', () => {
   });
 });
 
-describe('GET /api/user/delete/{id} (bad token)', () => {
+describe('DELETE /api/user/delete/{id} (bad token)', () => {
   test('http status code: 401, http status text: Unauthorized, response = { "status": "auth-failed" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/delete/0', {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
         token: 'bad-token'
@@ -35,7 +35,7 @@ describe('GET /api/user/delete/{id} (bad token)', () => {
   });
 });
 
-describe('GET /api/user/delete/{id} (good token, not existing user)', () => {
+describe('DELETE /api/user/delete/{id} (good token, not existing user)', () => {
   test('http status code: 406, http status text: Not Acceptable, response = { "status": "deleting-not-existing-forbidden" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
@@ -58,7 +58,7 @@ describe('GET /api/user/delete/{id} (good token, not existing user)', () => {
     auth_token = response_json.token;
 
     response = await fetch(process.env.TEST_API_URL + '/api/user/delete/0', {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
         token: auth_token
@@ -73,7 +73,7 @@ describe('GET /api/user/delete/{id} (good token, not existing user)', () => {
   });
 });
 
-describe('GET /api/user/delete/{id} (good token, self deletion)', () => {
+describe('DELETE /api/user/delete/{id} (good token, self deletion)', () => {
   test('http status code: 406, http status text: Not Acceptable, response = { "status": "self-deletion-forbidden" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
@@ -96,7 +96,7 @@ describe('GET /api/user/delete/{id} (good token, self deletion)', () => {
     auth_token = response_json.token;
 
     response = await fetch(process.env.TEST_API_URL + '/api/user/delete/1', {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
         token: auth_token
@@ -111,7 +111,7 @@ describe('GET /api/user/delete/{id} (good token, self deletion)', () => {
   });
 });
 
-describe('GET /api/user/delete/{id} (good token, existing user, not logged, deleted success)', () => {
+describe('DELETE /api/user/delete/{id} (good token, existing user, not logged, deleted success)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "deleted" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
@@ -178,7 +178,7 @@ describe('GET /api/user/delete/{id} (good token, existing user, not logged, dele
     expect(search.length == 1).toBeTruthy();
 
     response = await fetch(process.env.TEST_API_URL + '/api/user/delete/' + search[0].id.toString(), {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
         token: auth_token

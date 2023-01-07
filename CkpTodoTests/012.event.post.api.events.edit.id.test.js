@@ -1,9 +1,9 @@
 require("dotenv").config();
 
-describe('POST /api/events/edit/{id} (bad request)', () => {
+describe('PATCH /api/events/edit/{id} (bad request)', () => {
   test('http status code: 400, http status text: Bad Request', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/events/edit/0', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json'
       }
@@ -16,7 +16,7 @@ describe('POST /api/events/edit/{id} (bad request)', () => {
   });
 });
 
-describe('POST /api/events/edit/{id} (no token)', () => {
+describe('PATCH /api/events/edit/{id} (no token)', () => {
   test('http status code: 401, http status text: Unauthorized, response.status: auth-failed', async () => {
     new_task = {
       "Id": 0,
@@ -27,7 +27,7 @@ describe('POST /api/events/edit/{id} (no token)', () => {
     }; 
 
     response = await fetch(process.env.TEST_API_URL + '/api/events/edit/0', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json'
       },
@@ -42,7 +42,7 @@ describe('POST /api/events/edit/{id} (no token)', () => {
   });
 });
 
-describe('POST /api/events/edit/{id} (bad token)', () => {
+describe('PATCH /api/events/edit/{id} (bad token)', () => {
   test('http status code: 401, http status text: Unauthorized, response.status: auth-failed', async () => {
     new_task = {
       "Id": 0,
@@ -53,7 +53,7 @@ describe('POST /api/events/edit/{id} (bad token)', () => {
     }; 
 
     response = await fetch(process.env.TEST_API_URL + '/api/events/edit/0', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         token: 'bad-token'
@@ -69,7 +69,7 @@ describe('POST /api/events/edit/{id} (bad token)', () => {
   });
 });
 
-describe('POST /api/events/edit/{id} (good token, bad all data)', () => {
+describe('PATCH /api/events/edit/{id} (good token, bad all data)', () => {
   test('http status code: 201, http status text: Created, response.status: OK', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
@@ -100,7 +100,7 @@ describe('POST /api/events/edit/{id} (good token, bad all data)', () => {
     }; 
 
     response = await fetch(process.env.TEST_API_URL + '/api/events/edit/0', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         token: auth_token
@@ -116,7 +116,7 @@ describe('POST /api/events/edit/{id} (good token, bad all data)', () => {
   });
 });
 
-describe('POST /api/events/edit/{id} (good token, not-existing)', () => {
+describe('PATCH /api/events/edit/{id} (good token, not-existing)', () => {
   test('http status code: 201, http status text: Created, response.status: OK', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
@@ -147,7 +147,7 @@ describe('POST /api/events/edit/{id} (good token, not-existing)', () => {
     }; 
 
     response = await fetch(process.env.TEST_API_URL + '/api/events/edit/0', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         token: auth_token
@@ -163,7 +163,7 @@ describe('POST /api/events/edit/{id} (good token, not-existing)', () => {
   });
 });
 
-describe('POST /api/events/edit/{id} (good token, good data)', () => {
+describe('PATCH /api/events/edit/{id} (good token, good data)', () => {
   test('http status code: 201, http status text: Created, response.status: OK, task: modified', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
       method: 'POST',
@@ -237,7 +237,7 @@ describe('POST /api/events/edit/{id} (good token, good data)', () => {
     }; 
 
     response = await fetch(process.env.TEST_API_URL + '/api/events/edit/' + search[0].id.toString(), {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         token: auth_token

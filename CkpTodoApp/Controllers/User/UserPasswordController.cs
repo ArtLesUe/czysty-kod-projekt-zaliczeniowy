@@ -12,8 +12,8 @@ namespace CkpTodoApp.Controllers.User;
 [ApiController]
 public class UserPasswordController : AuthService
 {
-  [HttpPost]
-  public RootResponse Post(UserPasswordRequest userPasswordRequest, int id)
+  [HttpPatch]
+  public RootResponse Patch(UserPasswordRequest userPasswordRequest, int id)
   {
     var rootResponse = CheckAuth();
     

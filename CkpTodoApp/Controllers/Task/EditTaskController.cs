@@ -11,8 +11,8 @@ namespace CkpTodoApp.Controllers.Task;
 [ApiController]
 public class EditTaskController : AuthService
 {
-    [HttpPost]
-    public RootResponse Post(TaskRequest taskRequest, int id)
+    [HttpPatch]
+    public RootResponse Patch(TaskRequest taskRequest, int id)
     {   
         var rootResponse = CheckAuth();
     

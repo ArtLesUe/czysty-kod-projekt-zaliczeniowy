@@ -11,8 +11,8 @@ namespace CkpTodoApp.Controllers.Event;
 [ApiController]
 public class EditEventController : AuthService
 {
-    [HttpPost]
-    public RootResponse Post(EventRequest eventRequest, int id)
+    [HttpPatch]
+    public RootResponse Patch(EventRequest eventRequest, int id)
     {
         var rootResponse = CheckAuth();
     

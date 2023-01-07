@@ -12,8 +12,8 @@ namespace CkpTodoApp.Controllers.User;
 [ApiController]
 public class UserEditController : AuthService
 {
-  [HttpPost]
-  public RootResponse Post(UserEditRequest userEditRequest, int id)
+  [HttpPatch]
+  public RootResponse Patch(UserEditRequest userEditRequest, int id)
   {
     var rootResponse = CheckAuth();
     

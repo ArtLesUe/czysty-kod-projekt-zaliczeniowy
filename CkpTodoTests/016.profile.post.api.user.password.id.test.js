@@ -1,9 +1,9 @@
 require("dotenv").config();
 
-describe('POST /api/user/password/{id} (no token)', () => {
+describe('PATCH /api/user/password/{id} (no token)', () => {
   test('http status code: 401, http status text: Unauthorized', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/password/1', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json'
       },
@@ -18,10 +18,10 @@ describe('POST /api/user/password/{id} (no token)', () => {
   });
 });
 
-describe('POST /api/user/password/{id} (bad token)', () => {
+describe('PATCH /api/user/password/{id} (bad token)', () => {
   test('http status code: 401, http status text: Unauthorized', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/password/1', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         'token': 'bad-token'
@@ -37,10 +37,10 @@ describe('POST /api/user/password/{id} (bad token)', () => {
   });
 });
 
-describe('POST /api/user/password/{id} (good token)', () => {
+describe('PATCH /api/user/password/{id} (good token)', () => {
   test('http status code: 200, http status text: OK, edited: true', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json'
       },
@@ -64,7 +64,7 @@ describe('POST /api/user/password/{id} (good token)', () => {
     };
 
     response = await fetch(process.env.TEST_API_URL + '/api/user/password/1', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         'token': auth_token
@@ -99,7 +99,7 @@ describe('POST /api/user/password/{id} (good token)', () => {
     auth_token = response_json.token;
 
     response = await fetch(process.env.TEST_API_URL + '/api/user/password/1', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         'token': auth_token

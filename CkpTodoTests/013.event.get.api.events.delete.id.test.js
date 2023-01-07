@@ -1,9 +1,9 @@
 require("dotenv").config();
 
-describe('GET /api/events/delete/{id} (no token)', () => {
+describe('DELETE /api/events/delete/{id} (no token)', () => {
   test('http status code: 401, http status text: Unauthorized, response = { "status": "auth-failed" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/events/delete/0', {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json'
       }
@@ -17,10 +17,10 @@ describe('GET /api/events/delete/{id} (no token)', () => {
   });
 });
 
-describe('GET /api/events/delete/{id} (bad token)', () => {
+describe('DELETE /api/events/delete/{id} (bad token)', () => {
   test('http status code: 401, http status text: Unauthorized, response = { "status": "auth-failed" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/events/delete/0', {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
         token: 'bad-token'
@@ -35,10 +35,10 @@ describe('GET /api/events/delete/{id} (bad token)', () => {
   });
 });
 
-describe('GET /api/events/delete/{id} (good token, not existing task)', () => {
+describe('DELETE /api/events/delete/{id} (good token, not existing task)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "deleted" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'POST',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json'
       },
@@ -58,7 +58,7 @@ describe('GET /api/events/delete/{id} (good token, not existing task)', () => {
     auth_token = response_json.token;
 
     response = await fetch(process.env.TEST_API_URL + '/api/events/delete/0', {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
         token: auth_token
@@ -73,10 +73,10 @@ describe('GET /api/events/delete/{id} (good token, not existing task)', () => {
   });
 });
 
-describe('GET /api/events/delete/{id} (good token, existing task, delete success)', () => {
+describe('DELETE /api/events/delete/{id} (good token, existing task, delete success)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "deleted" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'POST',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json'
       },
@@ -139,7 +139,7 @@ describe('GET /api/events/delete/{id} (good token, existing task, delete success
     expect(search.length == 1).toBeTruthy();
 
     response = await fetch(process.env.TEST_API_URL + '/api/events/delete/' + search[0].id.toString(), {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
         token: auth_token

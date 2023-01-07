@@ -1,9 +1,9 @@
 require("dotenv").config();
 
-describe('GET /api/task/check/{id} (no token)', () => {
+describe('PATCH /api/task/check/{id} (no token)', () => {
   test('http status code: 401, http status text: Unauthorized, response = { "status": "auth-failed" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/task/check/0', {
-      method: 'GET',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json'
       }
@@ -17,10 +17,10 @@ describe('GET /api/task/check/{id} (no token)', () => {
   });
 });
 
-describe('GET /api/task/check/{id} (bad token)', () => {
+describe('PATCH /api/task/check/{id} (bad token)', () => {
   test('http status code: 401, http status text: Unauthorized, response = { "status": "auth-failed" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/task/check/0', {
-      method: 'GET',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         token: 'bad-token'
@@ -35,10 +35,10 @@ describe('GET /api/task/check/{id} (bad token)', () => {
   });
 });
 
-describe('GET /api/task/check/{id} (good token, not existing task)', () => {
+describe('PATCH /api/task/check/{id} (good token, not existing task)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "checked" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json'
       },
@@ -58,7 +58,7 @@ describe('GET /api/task/check/{id} (good token, not existing task)', () => {
     auth_token = response_json.token;
 
     response = await fetch(process.env.TEST_API_URL + '/api/task/check/0', {
-      method: 'GET',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         token: auth_token
@@ -73,10 +73,10 @@ describe('GET /api/task/check/{id} (good token, not existing task)', () => {
   });
 });
 
-describe('GET /api/task/check/{id} (good token, existing task, check success)', () => {
+describe('PATCH /api/task/check/{id} (good token, existing task, check success)', () => {
   test('http status code: 200, http status text: OK, response = { "status": "checked" }', async () => {
     response = await fetch(process.env.TEST_API_URL + '/api/user/login', {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json'
       },
@@ -136,7 +136,7 @@ describe('GET /api/task/check/{id} (good token, existing task, check success)', 
     expect(search.length == 1).toBeTruthy();
 
     response = await fetch(process.env.TEST_API_URL + '/api/task/check/' + search[0].id.toString(), {
-      method: 'GET',
+      method: 'PATCH',
       headers: {
         'Content-type': 'application/json',
         token: auth_token

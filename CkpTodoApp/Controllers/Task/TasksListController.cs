@@ -28,12 +28,15 @@ namespace CkpTodoApp.Controllers.Task
             'Id', Id,
             'Title', Title,
             'Description', Description,
-            'IsCheck', IsCheck
+            'IsChecked', IsChecked
           )
         )
         FROM tasks
         ORDER BY id ASC;"
       );
+
+      resultSql = resultSql.Replace("\"IsChecked\":0", "\"IsChecked\":false");
+      resultSql = resultSql.Replace("\"IsChecked\":1", "\"IsChecked\":true");
 
       return JsonSerializer.Deserialize<List<TaskModel>>(resultSql);
     }

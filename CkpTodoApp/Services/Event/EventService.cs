@@ -29,32 +29,13 @@ public class EventService : IEventServiceInterface
 
     public void EditEventById(int id, string? newTitle, string? newDescription, string? newStartDate, string? newEndDate)
     {
-        if (newDescription != null)
-        {
-            _databaseService.ExecuteSQL(
-                @"UPDATE events SET Description = '" + newDescription + @"' WHERE id = '" + id + @"';"
-            );
-        }
-
-        if (newTitle != null)
-        {
-            _databaseService.ExecuteSQL(
-                @"UPDATE events SET Title = '" + newTitle + @"' WHERE id = '" + id + @"';"
-            );
-        }
-
-        if (newStartDate != null)
-        {
-            _databaseService.ExecuteSQL(
-                @"UPDATE events SET StartDate = '" + newStartDate + @"' WHERE id = '" + id + @"';"
-            );
-        }
-
-        if (newEndDate != null)
-        {
-            _databaseService.ExecuteSQL(
-                @"UPDATE events SET EndDate = '" + newEndDate + @"' WHERE id = '" + id + @"';"
-            );
-        }
+        _databaseService.ExecuteSQL(
+            @"UPDATE events SET " +
+            @"Description = " + (string.IsNullOrEmpty(newDescription) ? @"Description, " : "'" + newDescription + "', ") +
+            @"Title = " + (string.IsNullOrEmpty(newTitle) ? @"Title, " : "'" + newTitle + "', ") +
+            @"StartDate = " + (string.IsNullOrEmpty(newStartDate) ? @"StartDate, " : "'" + newStartDate + "', ") +
+            @"EndDate = " + (string.IsNullOrEmpty(newEndDate) ? @"EndDate " : "'" + newEndDate + "' ") +
+            @"WHERE id = '" + id + @"';"
+        );
     }
 }

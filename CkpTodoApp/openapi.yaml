@@ -720,7 +720,7 @@ components:
           type: string
           format: string
           example: "Opis przykładowego zadania"
-        IsCheck:
+        IsChecked:
           type: boolean
           format: boolean
           example: false

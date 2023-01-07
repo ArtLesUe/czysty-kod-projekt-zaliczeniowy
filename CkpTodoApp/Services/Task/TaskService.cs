@@ -11,7 +11,7 @@ public class TaskService : ITaskServiceInterface
     public void Add(TaskModel task)
     {
         _databaseService.ExecuteSQL(
-            @"INSERT INTO tasks (Title, Description, IsCheck) VALUES (
+            @"INSERT INTO tasks (Title, Description, IsChecked) VALUES (
                 '" + task.Title + @"', 
                 '" + task.Description + @"',
                 0
@@ -22,7 +22,7 @@ public class TaskService : ITaskServiceInterface
     public void CheckTaskById(int id)
     {
         _databaseService.ExecuteSQL(
-            @"UPDATE tasks SET IsCheck = 1 WHERE id = '" + id + @"';"
+            @"UPDATE tasks SET IsChecked = 1 WHERE id = '" + id + @"';"
         );
     }
     

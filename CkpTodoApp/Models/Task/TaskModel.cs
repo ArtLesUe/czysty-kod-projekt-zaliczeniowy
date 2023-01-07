@@ -4,21 +4,21 @@ namespace CkpTodoApp.Models.Task;
 
 public class TaskModel : ITaskInterface
 {
-    public TaskModel(string title, string description, int isCheck = 0)
+    public TaskModel(string title, string description, bool isChecked = false)
     {
         Id = 0;
         Title = title;
         Description = description;
-        IsCheck = isCheck;
+        IsChecked = isChecked;
     }
 
     [JsonConstructor] 
-    public TaskModel(int id, string title, string description, int isCheck = 0)
+    public TaskModel(int id, string title, string description, bool isChecked = false)
     {
         Id = id;
         Title = title;
         Description = description;
-        IsCheck = isCheck;
+        IsChecked = isChecked;
     }
 
     public int Id { get; }
@@ -27,5 +27,5 @@ public class TaskModel : ITaskInterface
 
     public string Description { get; set; }
         
-    public int IsCheck { get; set; }
+    public bool IsChecked { get; set; }
 }

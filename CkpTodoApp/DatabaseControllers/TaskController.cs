@@ -18,9 +18,9 @@ public class TaskController: IMigrantInterface
                   'Id' INTEGER NOT NULL UNIQUE,
                   'Title' TEXT NOT NULL,
                   'Description' TEXT NOT NULL,
-                  'IsCheck' INTEGER NOT NULL,
+                  'IsChecked' BOOLEAN NOT NULL,
                   PRIMARY KEY ('Id' AUTOINCREMENT)
-                );"
+            );"
         );
     }
 }

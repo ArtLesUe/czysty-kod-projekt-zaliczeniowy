@@ -6,5 +6,5 @@ public interface ITaskInterface
 
     string Description { get; set; }
         
-    int IsCheck { get; set; }
+    bool IsChecked { get; set; }
 }

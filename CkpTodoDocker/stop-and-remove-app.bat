@@ -12,4 +12,8 @@ docker stop ckp-backend-node-4
 docker rm ckp-backend-node-4
 docker image rm ckp-proj:backend --force
 
+docker stop ckp-load-balancer
+docker rm ckp-load-balancer
+docker image rm ckp-proj:balancer --force
+
 docker volume rm ckp-database

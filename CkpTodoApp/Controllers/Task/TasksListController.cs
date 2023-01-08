@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using CkpTodoApp.Commons;
+using CkpTodoApp.Models.ApiUser;
 using CkpTodoApp.Models.Task;
 using CkpTodoApp.Services.AuthService;
 using CkpTodoApp.Services.DatabaseService;
@@ -21,24 +22,11 @@ namespace CkpTodoApp.Controllers.Task
         return new List<TaskModel>();
       }
 
-      var databaseManagerController = new DatabaseService();
-      var resultSql = databaseManagerController.ExecuteSQLQuery(
-        @"SELECT json_group_array( 
-          json_object(
-            'Id', Id,
-            'Title', Title,
-            'Description', Description,
-            'IsChecked', IsChecked
-          )
-        )
-        FROM tasks
-        ORDER BY id ASC;"
-      );
-
-      resultSql = resultSql.Replace("\"IsChecked\":0", "\"IsChecked\":false");
-      resultSql = resultSql.Replace("\"IsChecked\":1", "\"IsChecked\":true");
-
-      return JsonSerializer.Deserialize<List<TaskModel>>(resultSql);
+      using (var context = new DatabaseFrameworkService())
+      {
+        List<TaskModel> tasks = context.TaskModels.Where(f => f.Id > 0).ToList();
+        return tasks;
+      }
     }
   }
 }

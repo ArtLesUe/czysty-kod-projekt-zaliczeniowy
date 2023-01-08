@@ -1,41 +1,56 @@
 using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models.Event;
+using CkpTodoApp.Models.Task;
 using CkpTodoApp.Services.DatabaseService;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace CkpTodoApp.Services.Event;
 
 public class EventService : IEventServiceInterface
 {
-    private readonly DatabaseService.DatabaseService _databaseService = new();
-
     public void Add(EventModel @event)
     {
-        _databaseService.ExecuteSQL(
-            @"INSERT INTO events (Title, Description, StartDate, EndDate) VALUES (
-            '" + @event.Title + @"', 
-            '" + @event.Description + @"',
-            '" + @event.StartDate + @"',
-            '" + @event.EndDate + @"'
-            );"
-        );
+        using (var context = new DatabaseFrameworkService())
+        {
+            EventModel newEvent = new EventModel
+            {
+                Title = @event.Title,
+                Description = @event.Description,
+                StartDate = @event.StartDate,
+                EndDate = @event.EndDate
+            };
+
+            context.EventModels.Add(newEvent);
+            context.SaveChanges();
+        }
     }
 
     public void DeleteEventById(int id)
     {
-        _databaseService.ExecuteSQL(
-            @"DELETE FROM events WHERE id=" + id + @";"
-            );
+        using (var context = new DatabaseFrameworkService())
+        {
+            EventModel? eventItem = context.EventModels.Find(id);
+            if (eventItem == null) { return; }
+            context.EventModels.Remove(eventItem);
+            context.SaveChanges();
+        }
     }
 
     public void EditEventById(int id, string? newTitle, string? newDescription, string? newStartDate, string? newEndDate)
     {
-        _databaseService.ExecuteSQL(
-            @"UPDATE events SET " +
-            @"Description = " + (string.IsNullOrEmpty(newDescription) ? @"Description, " : "'" + newDescription + "', ") +
-            @"Title = " + (string.IsNullOrEmpty(newTitle) ? @"Title, " : "'" + newTitle + "', ") +
-            @"StartDate = " + (string.IsNullOrEmpty(newStartDate) ? @"StartDate, " : "'" + newStartDate + "', ") +
-            @"EndDate = " + (string.IsNullOrEmpty(newEndDate) ? @"EndDate " : "'" + newEndDate + "' ") +
-            @"WHERE id = '" + id + @"';"
-        );
+        using (var context = new DatabaseFrameworkService())
+        {
+            EventModel? eventItem = context.EventModels.Find(id);
+            if (eventItem == null) { return; }
+
+            eventItem.Description = string.IsNullOrEmpty(newDescription) ? eventItem.Description : newDescription;
+            eventItem.Title = string.IsNullOrEmpty(newTitle) ? eventItem.Title : newTitle;
+            eventItem.StartDate = string.IsNullOrEmpty(newStartDate) ? eventItem.StartDate : newStartDate;
+            eventItem.EndDate = string.IsNullOrEmpty(newEndDate) ? eventItem.EndDate : newEndDate;
+
+            context.EventModels.Update(eventItem);
+            context.SaveChanges();
+        }
     }
 }

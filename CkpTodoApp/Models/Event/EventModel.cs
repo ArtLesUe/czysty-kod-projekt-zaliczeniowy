@@ -1,9 +1,18 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace CkpTodoApp.Models.Event;
 
 public class EventModel : IEventInterface
 {
+    public EventModel()
+    {
+        Title = "";
+        Description = "";
+        StartDate = "";
+        EndDate = "";
+    }
+  
     public EventModel(string title, string description, string startDate, string endDate)
     {
         Id = 0;
@@ -23,7 +32,8 @@ public class EventModel : IEventInterface
       EndDate = endDate;
     }
 
-    public int Id { get; }
+    [Key]
+    public int Id { get; set; }
         
     public string Title { get; set; }
 

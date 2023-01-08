@@ -1,9 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace CkpTodoApp.Models.Task;
 
 public class TaskModel : ITaskInterface
 {
+    public TaskModel() 
+    {
+        Title = "";
+        Description = "";
+    }
+  
     public TaskModel(string title, string description, bool isChecked = false)
     {
         Id = 0;
@@ -21,7 +29,8 @@ public class TaskModel : ITaskInterface
         IsChecked = isChecked;
     }
 
-    public int Id { get; }
+    [Key]
+    public int Id { get; set; }
         
     public string Title { get; set; }
 

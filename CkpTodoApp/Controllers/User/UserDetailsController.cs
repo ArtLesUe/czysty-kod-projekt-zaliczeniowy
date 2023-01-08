@@ -7,54 +7,33 @@ using CkpTodoApp.Services.ApiTokenService;
 using CkpTodoApp.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using CkpTodoApp.Services.AuthService;
 
 namespace CkpTodoApp.Controllers.User;
 
 [Route(GlobalConstants.BASE_URL_USER + "/details/{id:int}")]
 [ApiController]
-public class UserDetailsController : ControllerBase
+public class UserDetailsController : AuthService
 {
   [HttpGet]
   public List<ApiUserModel>? Get(int id)
   {
-    Request.Headers.TryGetValue("token", out StringValues headerValues);
-    var jsonWebToken = headerValues.FirstOrDefault();
+    var rootResponse = CheckAuth();
 
-    if (string.IsNullOrEmpty(jsonWebToken))
+    if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
-      Response.StatusCode = StatusCodes.Status401Unauthorized;
-      return new List<ApiUserModel>();
+        Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return new List<ApiUserModel>();
     }
 
-    var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-    var apiTokenService = new ApiTokenService();
-    apiTokenService.Verify(apiToken);
-    
-    if (apiToken.UserId == 0)
+    using (var context = new DatabaseFrameworkService())
     {
-      Response.StatusCode = StatusCodes.Status401Unauthorized;
-      return new List<ApiUserModel>();
+      List<ApiUserModel> users = context.ApiUserModels.Where(f => f.Id == id).ToList();
+      
+      if (users.Count > 0)
+        users[0].PasswordHashed = "";
+
+      return users;
     }
-
-    var databaseManagerController = new DatabaseService();
-    var resultSql = databaseManagerController.ExecuteSQLQuery(
-      @"SELECT json_group_array( 
-          json_object(
-            'Id', Id,
-            'Name', Name,
-            'Surname', Surname,
-            'Email', Email,
-            'PasswordHashed', '',
-            'AboutMe', AboutMe,
-            'City', City,
-            'Country', Country,
-            'University', University
-          )
-        )
-        FROM users
-        WHERE Id = '" + id.ToString() + @"';"
-    );
-
-    return resultSql.Length == 0 ? new List<ApiUserModel>() : JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
   }
 }

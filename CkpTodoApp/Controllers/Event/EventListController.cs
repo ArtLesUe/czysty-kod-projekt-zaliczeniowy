@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using CkpTodoApp.Commons;
 using CkpTodoApp.Models.Event;
+using CkpTodoApp.Models.Task;
 using CkpTodoApp.Services.AuthService;
 using CkpTodoApp.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
@@ -21,21 +22,10 @@ public class EventListController : AuthService
       return new List<EventModel>();
     }
 
-    var databaseManagerController = new DatabaseService();
-    var resultSql = databaseManagerController.ExecuteSQLQuery(
-      @"SELECT json_group_array( 
-          json_object(
-            'Id', Id,
-            'Title', Title,
-            'Description', Description,
-            'StartDate', StartDate,
-            'EndDate', EndDate
-          )
-        )
-        FROM events
-        ORDER BY id ASC;"
-    );
-
-    return JsonSerializer.Deserialize<List<EventModel>>(resultSql);
+    using (var context = new DatabaseFrameworkService())
+    {
+      List<EventModel> events = context.EventModels.Where(f => f.Id > 0).ToList();
+      return events;
+    }
   }
 }

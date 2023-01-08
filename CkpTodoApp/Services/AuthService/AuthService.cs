@@ -1,6 +1,7 @@
 ﻿using CkpTodoApp.Commons;
 using CkpTodoApp.Models.ApiToken;
 using CkpTodoApp.Responses;
+using CkpTodoApp.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -9,7 +10,7 @@ namespace CkpTodoApp.Services.AuthService;
 public class AuthService: ControllerBase, IAuthServiceInterface
 {
     public RootResponse CheckAuth()
-    {
+    {  
         Request.Headers.TryGetValue("token", out StringValues headerValues);
         var jsonWebToken = headerValues.FirstOrDefault();
 
@@ -19,17 +20,18 @@ public class AuthService: ControllerBase, IAuthServiceInterface
             return new RootResponse { Status = StatusCodeEnum.AuthFailed.ToString() };
         }
 
-        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-        var apiTokenService = new ApiTokenService.ApiTokenService();
-        apiTokenService.Verify(apiToken);
-
-        if (apiToken.UserId != 0)
+        using (var context = new DatabaseFrameworkService())
         {
+            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).FirstOrDefault();
+
+            if (apiToken == null) 
+            {
+                Response.StatusCode = 401;
+                return new RootResponse { Status = StatusCodeEnum.AuthFailed.ToString() }; 
+            }
+
             return new RootResponse { Status = StatusCodeEnum.Ok.ToString() };
         }
-        
-        Response.StatusCode = 401;
-        return new RootResponse { Status = StatusCodeEnum.AuthFailed.ToString() };
     }
 
     public int LoggedUserId()
@@ -39,10 +41,16 @@ public class AuthService: ControllerBase, IAuthServiceInterface
 
         if (string.IsNullOrEmpty(jsonWebToken)) return 0;
 
-        var apiToken = new ApiTokenModel(0, 0, jsonWebToken);
-        var apiTokenService = new ApiTokenService.ApiTokenService();
-        apiTokenService.Verify(apiToken);
+        using (var context = new DatabaseFrameworkService())
+        {
+            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).FirstOrDefault();
 
-        return apiToken.UserId;
+            if (apiToken == null)
+            {
+                return 0;
+            }
+
+            return apiToken.UserId;
+        }
     }
 }

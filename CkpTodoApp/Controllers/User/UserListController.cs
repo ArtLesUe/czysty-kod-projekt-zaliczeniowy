@@ -20,21 +20,11 @@ public class UserListController : AuthService
     {
       return new List<ApiUserModel>();
     }
-    
-    var databaseManagerController = new DatabaseService();
-    var resultSql = databaseManagerController.ExecuteSQLQuery(
-      @"SELECT json_group_array( 
-          json_object(
-            'Id', Id,
-            'Name', Name,
-            'Surname', Surname,
-            'Email', Email
-          )
-        )
-        FROM users
-        ORDER BY id ASC;"
-    );
 
-    return JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
+    using (var context = new DatabaseFrameworkService())
+    {
+      List<ApiUserModel> users = context.ApiUserModels.Where(f => f.Id > 0).ToList();
+      return users;
+    }
   }
 }

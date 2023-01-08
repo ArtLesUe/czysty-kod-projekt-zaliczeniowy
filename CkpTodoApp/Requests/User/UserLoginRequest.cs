@@ -22,30 +22,15 @@ namespace CkpTodoApp.Requests.User
     public int Authenticate()
     {
       MD5 hasher = MD5.Create();
-      byte[] inputBytes = Encoding.ASCII.GetBytes(Password);
+      byte[] inputBytes = Encoding.ASCII.GetBytes(Password ?? "");
       byte[] hashBytes = hasher.ComputeHash(inputBytes);
 
-      DatabaseService databaseService = new DatabaseService();
-      String resultSql = databaseService.ExecuteSQLQuery(
-        @"SELECT json_group_array( 
-          json_object(
-            'Id', Id,
-            'Name', Name,
-            'Surname', Surname,
-            'Email', Email,
-            'PasswordHashed', PasswordHashed
-          )
-        )
-        FROM users
-        WHERE Email = '" + Login + @"' AND PasswordHashed = '" + 
-        Convert.ToHexString(hashBytes) + @"';"
-      );
-
-      var userList = JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
-      if ((userList == null) || (userList.Count == 0)) { return 0; }
-      int userId = userList[0].Id;
-
-      return userId;
+      using (var context = new DatabaseFrameworkService())
+      {
+        ApiUserModel user = context.ApiUserModels.Where(f => f.Email == Login).Where(f => f.PasswordHashed == Convert.ToHexString(hashBytes)).First();
+        if (user == null) { return 0; }
+        return user.Id;
+      }
     }
   }
 }

@@ -24,7 +24,6 @@ using (var scope = app.Services.CreateScope())
 }
 
 var databaseManagerController = new DatabaseService();
-databaseManagerController.InitDatabase();
 databaseManagerController.SeedDatabase();
 
 app.Run();

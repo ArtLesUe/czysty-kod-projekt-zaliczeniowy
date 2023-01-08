@@ -5,6 +5,14 @@ namespace CkpTodoApp.Models.Event;
 
 public class EventModel : IEventInterface
 {
+    public EventModel()
+    {
+        Title = "";
+        Description = "";
+        StartDate = "";
+        EndDate = "";
+    }
+  
     public EventModel(string title, string description, string startDate, string endDate)
     {
         Id = 0;

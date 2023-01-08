@@ -22,7 +22,7 @@ public class AuthService: ControllerBase, IAuthServiceInterface
 
         using (var context = new DatabaseFrameworkService())
         {
-            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).FirstOrDefault();
+            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).First();
 
             if (apiToken == null) 
             {
@@ -43,7 +43,7 @@ public class AuthService: ControllerBase, IAuthServiceInterface
 
         using (var context = new DatabaseFrameworkService())
         {
-            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).FirstOrDefault();
+            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).First();
 
             if (apiToken == null)
             {

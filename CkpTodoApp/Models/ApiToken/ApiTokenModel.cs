@@ -4,6 +4,11 @@ namespace CkpTodoApp.Models.ApiToken;
 
 public class ApiTokenModel : IApiTokenInterface 
 {
+  public ApiTokenModel()
+  {
+    Token = "";
+  }
+  
   public ApiTokenModel(int id, int userId, string token)
   {
     Id = id;

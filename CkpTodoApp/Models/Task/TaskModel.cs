@@ -6,6 +6,12 @@ namespace CkpTodoApp.Models.Task;
 
 public class TaskModel : ITaskInterface
 {
+    public TaskModel() 
+    {
+        Title = "";
+        Description = "";
+    }
+  
     public TaskModel(string title, string description, bool isChecked = false)
     {
         Id = 0;

@@ -1,4 +1,6 @@
-﻿namespace CkpTodoApp.Models.ApiToken;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CkpTodoApp.Models.ApiToken;
 
 public class ApiTokenModel : IApiTokenInterface 
 {
@@ -9,6 +11,7 @@ public class ApiTokenModel : IApiTokenInterface
     Token = token;
   }
 
+  [Key]
   public int Id { get; set; }
 
   public int UserId { get; set; }

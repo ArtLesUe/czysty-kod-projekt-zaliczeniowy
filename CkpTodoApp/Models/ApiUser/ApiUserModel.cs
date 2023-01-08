@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Services.DatabaseService;
@@ -73,6 +74,7 @@ public class ApiUserModel : IApiUserInterface
     University = university;
   }
 
+  [Key]
   public int Id { get; set; }
 
   public string Name { get; set; }

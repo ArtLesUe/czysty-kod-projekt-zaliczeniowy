@@ -1,4 +1,3 @@
-using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Services.DatabaseService;
 
 var builder = WebApplication.CreateBuilder(args);

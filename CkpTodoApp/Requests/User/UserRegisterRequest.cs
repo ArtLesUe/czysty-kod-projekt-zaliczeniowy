@@ -39,22 +39,12 @@ namespace CkpTodoApp.Requests.User
 
     public static bool IsEmailNotDuplicated(string email)
     {
-      DatabaseService databaseService = new DatabaseService();
-      String resultSql = databaseService.ExecuteSQLQuery(
-        @"SELECT json_group_array( 
-          json_object(
-            'Id', Id,
-            'Email', Email
-          )
-        )
-        FROM users
-        WHERE Email = '" + email + @"';"
-      );
-
-      var userList = JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
-      if ((userList == null) || (userList.Count == 0)) { return true; }
-
-      return false;
+      using (var context = new DatabaseFrameworkService())
+      {
+        List<ApiUserModel> userList = context.ApiUserModels.Where(f => f.Email == email).ToList();
+        if (userList.Count == 0) return true;
+        return false;
+      }
     }
 
     public bool Validate()

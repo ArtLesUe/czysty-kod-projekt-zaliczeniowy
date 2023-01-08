@@ -27,7 +27,7 @@ namespace CkpTodoApp.Requests.User
 
       using (var context = new DatabaseFrameworkService())
       {
-        ApiUserModel user = context.ApiUserModels.Where(f => f.Email == Login).Where(f => f.PasswordHashed == Convert.ToHexString(hashBytes)).First();
+        ApiUserModel? user = context.ApiUserModels.Where(f => f.Email == Login).Where(f => f.PasswordHashed == Convert.ToHexString(hashBytes)).FirstOrDefault();
         if (user == null) { return 0; }
         return user.Id;
       }

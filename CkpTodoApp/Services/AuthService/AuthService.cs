@@ -10,7 +10,7 @@ namespace CkpTodoApp.Services.AuthService;
 public class AuthService: ControllerBase, IAuthServiceInterface
 {
     public RootResponse CheckAuth()
-    {
+    {  
         Request.Headers.TryGetValue("token", out StringValues headerValues);
         var jsonWebToken = headerValues.FirstOrDefault();
 
@@ -22,7 +22,7 @@ public class AuthService: ControllerBase, IAuthServiceInterface
 
         using (var context = new DatabaseFrameworkService())
         {
-            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).First();
+            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).FirstOrDefault();
 
             if (apiToken == null) 
             {
@@ -43,7 +43,7 @@ public class AuthService: ControllerBase, IAuthServiceInterface
 
         using (var context = new DatabaseFrameworkService())
         {
-            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).First();
+            ApiTokenModel? apiToken = context.ApiTokenModels.Where(f => f.Token == jsonWebToken).FirstOrDefault();
 
             if (apiToken == null)
             {

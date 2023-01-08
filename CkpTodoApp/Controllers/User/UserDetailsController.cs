@@ -13,13 +13,12 @@ namespace CkpTodoApp.Controllers.User;
 
 [Route(GlobalConstants.BASE_URL_USER + "/details/{id:int}")]
 [ApiController]
-public class UserDetailsController : ControllerBase
+public class UserDetailsController : AuthService
 {
   [HttpGet]
   public List<ApiUserModel>? Get(int id)
   {
-    AuthService authService = new AuthService();
-    var rootResponse = authService.CheckAuth();
+    var rootResponse = CheckAuth();
 
     if (rootResponse.Status != StatusCodeEnum.Ok.ToString())
     {
@@ -30,6 +29,10 @@ public class UserDetailsController : ControllerBase
     using (var context = new DatabaseFrameworkService())
     {
       List<ApiUserModel> users = context.ApiUserModels.Where(f => f.Id == id).ToList();
+      
+      if (users.Count > 0)
+        users[0].PasswordHashed = "";
+
       return users;
     }
   }

@@ -23,40 +23,23 @@ public class ApiUserModel : IApiUserInterface
     
   public ApiUserModel(int id)
   {
-    Id = id;
+    using (var context = new DatabaseFrameworkService())
+    {
+      ApiUserModel? user = context.ApiUserModels.Find(id);
 
-    var databaseManagerController = new DatabaseService();
-    var resultSql = databaseManagerController.ExecuteSQLQuery(
-      @"SELECT json_group_array( 
-          json_object(
-            'Id', Id,
-            'Name', Name,
-            'Surname', Surname,
-            'Email', Email,
-            'PasswordHashed', PasswordHashed,
-            'AboutMe', AboutMe,
-            'City', City,
-            'Country', Country,
-            'University', University
-          )
-        )
-        FROM users
-        WHERE Id = '" + Id + @"';"
-    );
+      if (user == null)
+        throw new Exception("User with specified Id don't exists in database.");
 
-    var userList = JsonSerializer.Deserialize<List<ApiUserModel>>(resultSql);
-
-    if ((userList == null) || (userList.Count == 0)) 
-      throw new Exception("User with specified Id don't exists in database.");
-
-    Name = userList[0].Name;
-    Surname = userList[0].Surname;
-    Email = userList[0].Email;
-    PasswordHashed = userList[0].PasswordHashed;
-    AboutMe = userList[0].AboutMe;
-    City = userList[0].City;
-    Country = userList[0].Country;
-    University = userList[0].University;
+      Id = id;
+      Name = user.Name;
+      Surname = user.Surname;
+      Email = user.Email;
+      PasswordHashed = user.PasswordHashed;
+      AboutMe = user.AboutMe;
+      City = user.City;
+      Country = user.Country;
+      University = user.University;
+    }    
   }
 
   [JsonConstructor]

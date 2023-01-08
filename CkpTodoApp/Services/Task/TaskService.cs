@@ -1,52 +1,63 @@
-using CkpTodoApp.DatabaseControllers;
 using CkpTodoApp.Models.Task;
 using CkpTodoApp.Services.DatabaseService;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CkpTodoApp.Services.Task;
 
 public class TaskService : ITaskServiceInterface
 {
-    private readonly DatabaseService.DatabaseService _databaseService = new();
-    
     public void Add(TaskModel task)
     {
-        _databaseService.ExecuteSQL(
-            @"INSERT INTO tasks (Title, Description, IsChecked) VALUES (
-                '" + task.Title + @"', 
-                '" + task.Description + @"',
-                0
-            );"
-        );
+        using (var context = new DatabaseFrameworkService())
+        {
+            TaskModel newTask = new TaskModel
+            {
+                Title = task.Title,
+                Description = task.Description,
+                IsChecked = false
+            };
+
+            context.TaskModels.Add(newTask);
+            context.SaveChanges();
+        }
     }
 
     public void CheckTaskById(int id)
     {
-        _databaseService.ExecuteSQL(
-            @"UPDATE tasks SET IsChecked = 1 WHERE id = '" + id + @"';"
-        );
+        using (var context = new DatabaseFrameworkService())
+        {
+            TaskModel? task = context.TaskModels.Find(id);
+            if (task == null) { return; }
+            task.IsChecked = true;
+            context.TaskModels.Update(task);
+            context.SaveChanges();
+        }
     }
     
     public void DeleteTaskById(int id)
-    {  
-        _databaseService.ExecuteSQL(
-            @"DELETE FROM tasks WHERE id = '" + id + @"';"
-        );
+    {
+        using (var context = new DatabaseFrameworkService())
+        {
+            TaskModel? task = context.TaskModels.Find(id);
+            if (task == null) { return; }
+            context.TaskModels.Remove(task);
+            context.SaveChanges();
+        }
     }
     
     public void EditTaskById(int id, string? newTitle, string? newDescription)
     {
-        if (newDescription != null)
+        using (var context = new DatabaseFrameworkService())
         {
-            _databaseService.ExecuteSQL(
-                @"UPDATE tasks SET Description = '" + newDescription + @"' WHERE Id = '" + id + @"';"
-            );
-        } 
-        
-        if (newTitle != null)
-        {
-            _databaseService.ExecuteSQL(
-                @"UPDATE tasks SET Title = '" + newTitle + @"' WHERE Id = '" + id + @"';"
-            );
+            TaskModel? task = context.TaskModels.Find(id);
+            if (task == null) { return; }
+
+            task.Description = string.IsNullOrEmpty(newDescription) ? task.Description : newDescription;
+            task.Title = string.IsNullOrEmpty(newTitle) ? task.Title : newTitle;
+
+            context.TaskModels.Update(task);
+            context.SaveChanges();
         }
     }
 }

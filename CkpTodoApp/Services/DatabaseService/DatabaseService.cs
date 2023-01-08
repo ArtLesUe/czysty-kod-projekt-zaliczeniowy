@@ -6,6 +6,18 @@ namespace CkpTodoApp.Services.DatabaseService;
 
 public class DatabaseService : IDatabaseServiceInterface
 {
+  public string DatabasePathFramework()
+  {
+    var folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+    var appFolder = folder ?? Environment.CurrentDirectory;
+    var dbFolder = Path.Combine(appFolder, "database");
+
+    Directory.CreateDirectory(dbFolder);
+
+    var dbFile = Path.Combine(dbFolder, "database.db");
+    return dbFile;
+  }
+
   public string DatabasePath()
   {
     var folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -14,7 +26,7 @@ public class DatabaseService : IDatabaseServiceInterface
       
     Directory.CreateDirectory(dbFolder);
       
-    var dbFile = Path.Combine(dbFolder, "database.db");
+    var dbFile = Path.Combine(dbFolder, "database.old.db");
     return dbFile;
   }
 

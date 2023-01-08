@@ -9,6 +9,15 @@ copy CkpTodoDocker\Config\baseUrl.ts CkpTodoFrontend\src\api\consts\baseUrl.ts /
 
 docker builder prune --force
 
+cd CkpTodoDocker/Balancer
+docker stop ckp-load-balancer
+docker rm ckp-load-balancer
+docker image rm ckp-proj:balancer --force
+docker build --network=host --tag ckp-proj:balancer --file Dockerfile ./
+docker run --restart unless-stopped --publish 8000:8000 --name ckp-load-balancer --detach ckp-proj:balancer
+cd ..
+cd ..
+
 docker stop ckp-frontend-node-1
 docker rm ckp-frontend-node-1
 docker image rm ckp-proj:frontend --force

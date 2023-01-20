@@ -8,6 +8,12 @@ namespace CkpTodoApp.Controllers;
 [ApiController]
 public class RootController : ControllerBase
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpGet]
   public RootResponse Get()
   {

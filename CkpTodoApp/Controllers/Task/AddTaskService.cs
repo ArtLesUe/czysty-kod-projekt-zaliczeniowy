@@ -12,6 +12,12 @@ namespace CkpTodoApp.Controllers.Task;
 [ApiController]
 public class AddTaskService : AuthService
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpPost]
   public RootResponse Post(TaskRequest taskRequest)
   {

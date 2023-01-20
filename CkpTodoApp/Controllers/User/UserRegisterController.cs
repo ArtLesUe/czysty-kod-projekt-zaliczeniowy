@@ -14,6 +14,12 @@ namespace CkpTodoApp.Controllers.User;
 [ApiController]
 public class UserRegisterController : AuthService
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpPost]
   public RootResponse Post(UserRegisterRequest userRegisterRequest)
   {

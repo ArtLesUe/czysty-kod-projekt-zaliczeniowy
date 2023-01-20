@@ -11,6 +11,12 @@ namespace CkpTodoApp.Controllers.User;
 [ApiController]
 public class UserListController : AuthService
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+  
   [HttpGet]
   public List<ApiUserModel>? Get()
   {

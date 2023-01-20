@@ -10,7 +10,13 @@ namespace CkpTodoApp.Controllers.Task;
 [ApiController]
 public class CheckTaskController : AuthService
 {
-    [HttpPatch]
+    [HttpOptions]
+    public void Options()
+    {
+      return;
+    }
+
+  [HttpPatch]
     public RootResponse Patch(int id)
     {
         var rootResponse = CheckAuth();

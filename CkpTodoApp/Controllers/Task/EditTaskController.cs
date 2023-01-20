@@ -11,6 +11,12 @@ namespace CkpTodoApp.Controllers.Task;
 [ApiController]
 public class EditTaskController : AuthService
 {
+    [HttpOptions]
+    public void Options()
+    {
+      return;
+    }
+
     [HttpPatch]
     public RootResponse Patch(TaskRequest taskRequest, int id)
     {   

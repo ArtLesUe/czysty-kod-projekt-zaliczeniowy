@@ -12,6 +12,12 @@ namespace CkpTodoApp.Controllers.User;
 [ApiController]
 public class UserPasswordController : AuthService
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpPatch]
   public RootResponse Patch(UserPasswordRequest userPasswordRequest, int id)
   {

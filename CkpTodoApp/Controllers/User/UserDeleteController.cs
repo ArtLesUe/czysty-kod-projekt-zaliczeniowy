@@ -11,6 +11,12 @@ namespace CkpTodoApp.Controllers.User;
 [ApiController]
 public class UserDeleteController : AuthService
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpDelete]
   public RootResponse Delete(int id)
   {

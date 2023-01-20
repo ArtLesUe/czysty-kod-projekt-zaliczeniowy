@@ -12,6 +12,12 @@ namespace CkpTodoApp.Controllers.Task
   [ApiController]
   public class TasksListController : AuthService
   {
+    [HttpOptions]
+    public void Options()
+    {
+      return;
+    }
+
     [HttpGet]
     public List<TaskModel>? Get()
     {

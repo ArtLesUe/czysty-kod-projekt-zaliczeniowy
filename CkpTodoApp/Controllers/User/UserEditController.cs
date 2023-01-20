@@ -12,6 +12,12 @@ namespace CkpTodoApp.Controllers.User;
 [ApiController]
 public class UserEditController : AuthService
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpPatch]
   public RootResponse Patch(UserEditRequest userEditRequest, int id)
   {

@@ -10,6 +10,12 @@ namespace CkpTodoApp.Controllers.Task;
 [ApiController]
 public class DeleteTaskController : AuthService
 {
+    [HttpOptions]
+    public void Options()
+    {
+      return;
+    }
+
     [HttpDelete]
     public RootResponse Delete(int id)
     {

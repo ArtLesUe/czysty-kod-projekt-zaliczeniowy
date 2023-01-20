@@ -13,6 +13,12 @@ namespace CkpTodoApp.Controllers.Event;
 [ApiController]
 public class AddEventController : AuthService
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpPost]
   public RootResponse Post(EventRequest eventRequest)
   {  

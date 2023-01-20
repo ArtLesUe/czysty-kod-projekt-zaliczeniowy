@@ -11,6 +11,12 @@ namespace CkpTodoApp.Controllers.User;
 [ApiController]
 public class UserLoginTokenController : ControllerBase
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpPost]
   public UserLoginTokenResponse Post(UserLoginRequest userLoginRequest)
   {

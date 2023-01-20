@@ -11,6 +11,12 @@ namespace CkpTodoApp.Controllers.Event;
 [ApiController]
 public class EditEventController : AuthService
 {
+    [HttpOptions]
+    public void Options()
+    {
+      return;
+    }
+
     [HttpPatch]
     public RootResponse Patch(EventRequest eventRequest, int id)
     {

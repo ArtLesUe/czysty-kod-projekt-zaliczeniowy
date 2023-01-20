@@ -12,6 +12,12 @@ namespace CkpTodoApp.Controllers.Event;
 [ApiController]
 public class EventListController : AuthService
 {
+  [HttpOptions]
+  public void Options()
+  {
+    return;
+  }
+
   [HttpGet]
   public List<EventModel>? Get()
   {
